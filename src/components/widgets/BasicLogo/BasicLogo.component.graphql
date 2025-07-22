@@ -1,0 +1,11 @@
+fragment BasicLogoData on BasicLogo {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  IsMobileSpecific
+  LogoImage
+  MobileSpecificImage
+  ParentId
+  Zone
+}

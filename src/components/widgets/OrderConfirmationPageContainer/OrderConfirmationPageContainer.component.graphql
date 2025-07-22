@@ -1,0 +1,9 @@
+fragment OrderConfirmationPageContainerData on OrderConfirmationPageContainer {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

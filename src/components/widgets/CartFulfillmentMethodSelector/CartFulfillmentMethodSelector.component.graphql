@@ -1,0 +1,12 @@
+fragment CartFulfillmentMethodSelectorData on CartFulfillmentMethodSelector {
+  __typename
+  CustomCSS
+  DisplayStyle
+  Id
+  IsLayout
+  ParentId
+  ShipToHomeMessage
+  StorePickUpMessage
+  Type
+  Zone
+}

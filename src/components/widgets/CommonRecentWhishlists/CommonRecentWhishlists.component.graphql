@@ -1,0 +1,10 @@
+fragment CommonRecentWhishlistsData on CommonRecentWhishlists {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  NumberOfRecords
+  ParentId
+  Type
+  Zone
+}

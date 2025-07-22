@@ -1,0 +1,9 @@
+fragment CartHeaderData on CartHeader {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

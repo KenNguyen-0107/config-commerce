@@ -1,0 +1,9 @@
+fragment OrderConfirmationOrderInformationData on OrderConfirmationOrderInformation {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

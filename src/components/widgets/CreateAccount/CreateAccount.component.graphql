@@ -1,0 +1,9 @@
+fragment CreateAccountData on CreateAccount {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

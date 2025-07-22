@@ -1,0 +1,9 @@
+fragment CheckoutReviewAndSubmitPaymentDetailsData on CheckoutReviewAndSubmitPaymentDetails {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

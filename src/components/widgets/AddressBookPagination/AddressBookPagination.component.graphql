@@ -1,0 +1,9 @@
+fragment AddressBookPaginationData on AddressBookPagination {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

@@ -1,0 +1,10 @@
+fragment SharedContentData on SharedContent {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  PageId
+  ParentId
+  Type
+  Zone
+}

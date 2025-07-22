@@ -1,0 +1,9 @@
+fragment OrderDetailsVmiLocationData on OrderDetailsVmiLocation {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

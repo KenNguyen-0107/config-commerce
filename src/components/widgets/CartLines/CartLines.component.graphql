@@ -1,0 +1,21 @@
+fragment CartLinesData on CartLines {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  ShowAddToList
+  ShowBackToTop
+  ShowBrand
+  ShowImage
+  ShowItemCount
+  ShowLineNotes
+  ShowPerUnitPrice
+  ShowPriceLabel
+  ShowProductNumber
+  ShowProductTitle
+  ShowRemoveAllActions
+  ShowVmiBinDetails
+  Type
+  Zone
+}

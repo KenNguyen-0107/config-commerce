@@ -1,0 +1,11 @@
+fragment SignInExistingAccountData on SignInExistingAccount {
+  __typename
+  ChangePasswordInstructions
+  CustomCSS
+  FullWidthButton
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

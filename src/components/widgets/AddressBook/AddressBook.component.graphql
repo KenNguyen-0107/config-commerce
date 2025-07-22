@@ -1,0 +1,9 @@
+fragment AddressBookData on AddressBook {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

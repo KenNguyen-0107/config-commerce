@@ -1,0 +1,9 @@
+fragment CreateAddressButtonData on CreateAddressButton {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

@@ -1,0 +1,9 @@
+fragment CommonRecentQuotesData on CommonRecentQuotes {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

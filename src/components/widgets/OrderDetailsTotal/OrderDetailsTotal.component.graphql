@@ -1,0 +1,9 @@
+fragment OrderDetailsTotalData on OrderDetailsTotal {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

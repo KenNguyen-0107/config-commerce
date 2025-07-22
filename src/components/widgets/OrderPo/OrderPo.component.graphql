@@ -1,0 +1,9 @@
+fragment OrderPoData on OrderPo {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

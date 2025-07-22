@@ -1,0 +1,17 @@
+fragment BasicButtonData on BasicButton {
+  __typename
+  Alignment
+  CssClass
+  CustomCSS
+  Id
+  IsLayout
+  Label
+  Link {
+    Type
+    Value
+    Url  
+  }
+  ParentId
+  Variant
+  Zone
+}

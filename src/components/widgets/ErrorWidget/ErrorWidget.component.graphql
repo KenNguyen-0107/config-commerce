@@ -1,0 +1,10 @@
+fragment ErrorWidgetData on ErrorWidget {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  Message
+  ParentId
+  Type
+  Zone
+}

@@ -1,0 +1,9 @@
+fragment CheckoutShippingHeaderData on CheckoutShippingHeader {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

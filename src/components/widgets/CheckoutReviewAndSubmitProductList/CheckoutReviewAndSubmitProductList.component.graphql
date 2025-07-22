@@ -1,0 +1,9 @@
+fragment CheckoutReviewAndSubmitProductListData on CheckoutReviewAndSubmitProductList {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

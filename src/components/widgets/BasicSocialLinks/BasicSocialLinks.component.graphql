@@ -1,0 +1,27 @@
+fragment BasicSocialLinksData on BasicSocialLinks {
+  __typename
+  Alignment
+  BackgroundColor
+  CustomCSS
+  Direction
+  IconColor
+  IconSize
+  Id
+  IsLayout
+  Links {
+    LinkItems {
+      Destination {
+        Type
+        Value
+      }
+      Icon
+      OpenInNewWindow
+      OverriddenTitle
+      Title
+    }
+  }
+  LinksPerRow
+  ParentId
+  VisibilityState
+  Zone
+}

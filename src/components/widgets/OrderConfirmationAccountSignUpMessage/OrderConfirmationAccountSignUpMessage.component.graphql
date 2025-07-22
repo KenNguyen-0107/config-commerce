@@ -1,0 +1,9 @@
+fragment OrderConfirmationAccountSignUpMessageData on OrderConfirmationAccountSignUpMessage {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

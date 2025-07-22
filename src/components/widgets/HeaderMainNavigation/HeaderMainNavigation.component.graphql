@@ -1,0 +1,36 @@
+fragment HeaderMainNavigationData on HeaderMainNavigation {
+  CustomCSS
+  __typename
+  Id
+  IsLayout
+  Links {
+    LinkItems {
+      SubLinksContainer {
+          SubLinks {
+            Id
+            Level
+            Title
+            Url
+            Type
+            
+          }
+        }
+      Title
+      LinkType
+      OverrideTitle
+      OverriddenTitle
+      Destination {
+        Type
+        Url
+        Value
+      }
+    }
+  }
+  OpenParentPages
+  ParentId
+  ShowQuickOrder
+  Zone
+  _id
+  _modified
+  _score
+}

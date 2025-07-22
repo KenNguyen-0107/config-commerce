@@ -1,0 +1,9 @@
+fragment OrderCancelNotificationData on OrderCancelNotification {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

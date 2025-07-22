@@ -1,0 +1,9 @@
+fragment OrderDetailsVatNumberData on OrderDetailsVatNumber {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

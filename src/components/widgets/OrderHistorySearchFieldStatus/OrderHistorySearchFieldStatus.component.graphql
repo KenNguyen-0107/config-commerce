@@ -1,0 +1,9 @@
+fragment OrderHistorySearchFieldStatusData on OrderHistorySearchFieldStatus {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

@@ -1,0 +1,36 @@
+query getRatingReview($url: String!){
+  RatingAndReviewPage (where:  { Destination: { Url: {eq: $url }  } }){
+    items {
+      Status
+      Id
+      LayoutPageId
+      Name
+      NodeId
+      ParentId
+      SortOrder
+      TemplateHash
+      Type
+      VariantName
+      WebsiteId
+      ExcludeFromNavigation
+      ExcludeFromSignInRequired
+      HideBreadcrumbs
+      HideFooter
+      HideHeader
+      HorizontalRule
+      LayoutPage
+      StructuredPageData
+      MetaKeywords
+      MetaDescription
+      OpenGraphTitle
+      OpenGraphUrl
+      OpenGraphImage
+      Title
+      UrlSegment
+      Url
+      Body
+      Rating
+      Verified
+    }
+  }
+}

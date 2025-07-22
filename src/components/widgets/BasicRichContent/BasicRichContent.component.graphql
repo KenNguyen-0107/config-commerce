@@ -1,0 +1,12 @@
+fragment BasicRichContentData on BasicRichContent {
+  __typename
+  BackgroundColor
+  Content
+  CssClass
+  CustomCSS
+  Id
+  IsLayout
+  Padding
+  ParentId
+  Zone
+}

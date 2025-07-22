@@ -1,0 +1,9 @@
+fragment OrderHistorySearchFieldDateRangeData on OrderHistorySearchFieldDateRange {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

@@ -1,0 +1,16 @@
+fragment CommonRatingAndReviewData on CommonRatingAndReview {
+  __typename
+  CustomCSS
+  Destination {
+    Type
+    Value
+    Url
+  }
+  Id
+  IsLayout
+  MaxNumberOfItems
+  ParentId
+  Title
+  Type
+  Zone
+}

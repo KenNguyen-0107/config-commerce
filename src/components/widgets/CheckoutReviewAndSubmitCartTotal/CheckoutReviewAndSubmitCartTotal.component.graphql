@@ -1,0 +1,9 @@
+fragment CheckoutReviewAndSubmitCartTotalData on CheckoutReviewAndSubmitCartTotal {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

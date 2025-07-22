@@ -1,0 +1,9 @@
+fragment OrderHistorySearchFieldOrderTotalOperatorData on OrderHistorySearchFieldOrderTotalOperator {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

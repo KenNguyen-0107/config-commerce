@@ -1,0 +1,9 @@
+fragment OrderHistoryResultCountData on OrderHistoryResultCount {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

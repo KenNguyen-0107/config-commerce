@@ -1,0 +1,9 @@
+fragment OrderHistorySearchFieldShipTosData on OrderHistorySearchFieldShipTos {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

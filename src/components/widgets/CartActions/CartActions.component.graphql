@@ -1,0 +1,14 @@
+fragment CartActionsData on CartActions {
+  __typename
+  AddAllToListVariant
+  CheckoutVariant
+  CustomCSS
+  FullWidthButton
+  Id
+  IsLayout
+  ParentId
+  RequestForQuoteVariant
+  SaveOrderVariant
+  Type
+  Zone
+}

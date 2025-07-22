@@ -1,0 +1,9 @@
+fragment OrderDetailsPaymentTermsData on OrderDetailsPaymentTerms {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

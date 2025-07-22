@@ -1,0 +1,30 @@
+query getAddress {
+  Website {
+    items {
+      Id
+      ParentId
+      BillToAddressContainer {
+        BillToAddresses {
+          FieldName
+          DisplayName
+          IsVisible
+          IsSystemField
+          IsRequired
+          IsMaxFieldLengthRequired
+          MaxFieldLength
+        }
+      }
+      ShipToAddressContainer {
+        ShipToAddresses{
+          FieldName
+          DisplayName
+          IsVisible
+          IsSystemField
+          IsRequired
+          IsMaxFieldLengthRequired
+          MaxFieldLength
+        }
+      }
+    }
+  }
+} 

@@ -1,0 +1,9 @@
+fragment OrderHistorySearchTagsData on OrderHistorySearchTags {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

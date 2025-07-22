@@ -1,0 +1,47 @@
+
+import { ButtonLink, Maybe, Scalars } from "@/gql/graphql";
+
+export interface BasicBannerProps {
+  children?: React.ReactNode;
+__typename?: 'BasicBanner';
+Background?: Maybe<Scalars['String']['output']>;
+BackgroundColor?: Maybe<Scalars['String']['output']>;
+BackgroundImage?: Maybe<Scalars['String']['output']>;
+ButtonLabel?: Maybe<Scalars['String']['output']>;
+ButtonLink?: Maybe<ButtonLink>;
+CenterTextVertically?: Maybe<Scalars['Boolean']['output']>;
+ContentPadding?: Maybe<Scalars['Int']['output']>;
+CssClass?: Maybe<Scalars['String']['output']>;
+CustomCSS?: Maybe<Scalars['String']['output']>;
+CustomFontSizes?: Maybe<Scalars['Boolean']['output']>;
+Description?: Maybe<Scalars['String']['output']>;
+DisableButton?: Maybe<Scalars['Boolean']['output']>;
+FocalPoint?: Maybe<Scalars['String']['output']>;
+H1FontSize?: Maybe<Scalars['String']['output']>;
+H2FontSize?: Maybe<Scalars['Int']['output']>;
+H3FontSize?: Maybe<Scalars['String']['output']>;
+H4FontSize?: Maybe<Scalars['String']['output']>;
+H5FontSize?: Maybe<Scalars['String']['output']>;
+H6FontSize?: Maybe<Scalars['String']['output']>;
+Heading?: Maybe<Scalars['String']['output']>;
+Id?: Maybe<Scalars['String']['output']>;
+Image?: Maybe<Scalars['String']['output']>;
+ImageOverlay?: Maybe<Scalars['String']['output']>;
+ImageWidth?: Maybe<Scalars['String']['output']>;
+ImageHeight?: Maybe<Scalars['String']['output']>;
+IsLayout?: Maybe<Scalars['Boolean']['output']>;
+MinimumHeight?: Maybe<Scalars['String']['output']>;
+NormalFontSize?: Maybe<Scalars['String']['output']>;
+ParentId?: Maybe<Scalars['String']['output']>;
+PartialOverlay?: Maybe<Scalars['Boolean']['output']>;
+PartialOverlayPositioning?: Maybe<Scalars['String']['output']>;
+ResponsiveFontSizes?: Maybe<Scalars['Boolean']['output']>;
+Section?: Maybe<Scalars['String']['output']>;
+SiteHost?: Maybe<Scalars['String']['output']>;
+Subheading?: Maybe<Scalars['String']['output']>;
+Variant?: Maybe<Scalars['String']['output']>;
+Zone?: Maybe<Scalars['String']['output']>;
+_id?: Maybe<Scalars['String']['output']>;
+Info?: Record<string, any>;
+Loading?: "lazy" | "eager" | undefined;
+};

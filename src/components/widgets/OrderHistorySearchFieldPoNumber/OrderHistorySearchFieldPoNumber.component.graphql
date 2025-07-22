@@ -1,0 +1,9 @@
+fragment OrderHistorySearchFieldPoNumberData on OrderHistorySearchFieldPoNumber {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

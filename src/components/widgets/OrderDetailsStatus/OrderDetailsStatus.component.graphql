@@ -1,0 +1,9 @@
+fragment OrderDetailsStatusData on OrderDetailsStatus {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

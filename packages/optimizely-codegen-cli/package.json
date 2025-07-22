@@ -1,0 +1,13 @@
+{
+  "name": "optimizely-codegen-cli",
+  "version": "0.1.4",
+  "description": "A CLI tool to generate widget files from GraphQL types.",
+  "main": "generate.js",
+  "bin": {
+    "create-opti-widgets": "generate.js"
+  },
+  "scripts": {
+    "codegen": "node generate.js"
+  },
+  "dependencies": {}
+}

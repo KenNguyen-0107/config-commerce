@@ -1,0 +1,13 @@
+fragment BasicLinkData on BasicLink {
+  __typename
+  CustomCSS
+  Destination {
+    Type
+    Value
+  }
+  Id
+  IsLayout
+  OverrideTitle
+  ParentId
+  Zone
+}

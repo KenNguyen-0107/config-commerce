@@ -1,0 +1,16 @@
+fragment BasicGridData on BasicGrid {
+  __typename
+  CssClass
+  CustomCSS
+  ExtraLargeColumnCount
+  ExtraLargeRowCount
+  ExtraSmallColumnCount
+  Id
+  IsFullWidth
+  IsLayout
+  LargeColumnCount
+  MediumColumnCount
+  ParentId
+  SmallColumnCount
+  Zone
+}

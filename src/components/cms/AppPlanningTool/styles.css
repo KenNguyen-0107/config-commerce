@@ -1,0 +1,31 @@
+.swiper-slide {
+  height: unset;
+}
+
+.swiper-pagination {
+  position: relative;
+}
+
+.swiper-pagination-bullet {
+  display: inline-block;
+  background-clip: content-box;
+  background-color: #ffffff;
+  height: 2px;
+  width: 30px;
+}
+
+.swiper-pagination-bullet-active {
+  display: inline-block;
+  background-color: #E2B010;
+  height: 2px;
+  width: 30px;
+}
+
+.modifierAppPlanningPaginationbullets  {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  height: 2px;
+  margin-top: 40px;
+}

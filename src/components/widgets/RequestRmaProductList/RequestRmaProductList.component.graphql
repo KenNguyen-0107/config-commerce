@@ -1,0 +1,9 @@
+fragment RequestRmaProductListData on RequestRmaProductList {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

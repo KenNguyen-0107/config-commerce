@@ -1,0 +1,7 @@
+query getProductsByIds($ids: [String!]!) {
+  Product(where: { Id: { in: $ids } }) {
+    items {
+      ...ProductData
+    }
+  }
+}

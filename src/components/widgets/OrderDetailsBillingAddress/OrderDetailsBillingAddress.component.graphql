@@ -1,0 +1,9 @@
+fragment OrderDetailsBillingAddressData on OrderDetailsBillingAddress {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

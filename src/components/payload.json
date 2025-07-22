@@ -1,0 +1,420 @@
+{
+	"page": {
+			"nodeId": "7ab0dac3-e816-44a4-83a3-0234b0afd571",
+			"name": "Home",
+			"type": "HomePage",
+			"parentId": "00000000-0000-0000-0000-000000000000",
+			"sortOrder": 0,
+			"websiteId": "c2c53320-98dc-4eca-8022-9efc00dea0dc",
+			"variantName": null,
+			"layoutPageId": null,
+			"templateHash": "22cb40506c8fe0f21081a5f29300d9971b64bda1246ddea884915e5e3600f7fd",
+			"widgets": [
+					{
+							"parentId": "4b30987c-54b3-46d5-86c7-9c1231debadb",
+							"type": "Basic/Rows",
+							"zone": "Content",
+							"isLayout": false,
+							"id": "8814fa18-05fc-4a3d-bfdc-f83f12c5d7cd",
+							"generalFields": {
+									"rowCount": 5,
+									"gap": 35,
+									"isFullWidth": false,
+									"customCSS": "\u0026 {\n\n}"
+							},
+							"translatableFields": {},
+							"contextualFields": {}
+					},
+					{
+							"parentId": "8814fa18-05fc-4a3d-bfdc-f83f12c5d7cd",
+							"type": "Basic/Banner",
+							"zone": "Content0",
+							"isLayout": false,
+							"id": "510c16cd-d5a0-44bd-bfe4-986bd4da10af",
+							"generalFields": {},
+							"translatableFields": {},
+							"contextualFields": {
+									"background": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "image"
+									},
+									"focalPoint": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "center"
+									},
+									"backgroundColor": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "black"
+									},
+									"buttonLink": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": {
+													"type": "Page",
+													"value": "e9efe420-e1c4-4ff0-a432-8b1d215f6b99"
+											}
+									},
+									"minimumHeight": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "1/4 viewport"
+									},
+									"variant": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "primary"
+									},
+									"image": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "/images/home-page-banner.webp"
+									},
+									"heading": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "\u003ch3 style=\u0022line-height: 1;\u0022\u003e\u003cspan style=\u0022font-size: 24px;\u0022\u003e\u003cstrong\u003eGRAFTED FOR LIFE, MADE WITH PASSION\u003cbr\u003e\u003c/strong\u003e\u003c/span\u003e\u003c/h3\u003e"
+									},
+									"subheading": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "\u003ch4\u003e\u003cspan style=\u0022font-size: 24px;\u0022\u003e\u003cstrong\u003ePremium garden Fencing, Gates and Accessories with a 25 year guarantee.\u003cbr\u003e\u003c/strong\u003e\u003c/span\u003e\u003c/h4\u003e"
+									},
+									"buttonLabel": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "Discover Fencing"
+									},
+									"imageOverlay": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": ""
+									},
+									"partialOverlay": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"partialOverlayPositioning": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "bottom"
+									},
+									"disableButton": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"responsiveFontSizes": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": true
+									},
+									"contentPadding": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 50
+									},
+									"centerTextVertically": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"customFontSizes": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"normalFontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"h1FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 40
+									},
+									"h2FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 32
+									},
+									"h3FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"h4FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"h5FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"h6FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"customCSS": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": ".banner-wrapper {\n}\n\n.banner-overlay-wrapper {\n}\n\n.banner-center-wrapper {\n}\n\n.banner-heading {\n}\n\n.banner-subheading {\n}\n"
+									}
+							}
+					},
+					{
+							"parentId": "8814fa18-05fc-4a3d-bfdc-f83f12c5d7cd",
+							"type": "Basic/Grid",
+							"zone": "Content0",
+							"isLayout": false,
+							"id": "7ef578d7-a014-46ef-b09a-f5a3fb7de930",
+							"generalFields": {
+									"extraLargeColumnCount": 4,
+									"extraLargeRowCount": 4,
+									"largeColumnCount": 4,
+									"mediumColumnCount": 1,
+									"smallColumnCount": 1,
+									"extraSmallColumnCount": 1,
+									"isFullWidth": false,
+									"customCSS": "\u0026 {\n\n}"
+							},
+							"translatableFields": {},
+							"contextualFields": {}
+					},
+					{
+							"parentId": "8814fa18-05fc-4a3d-bfdc-f83f12c5d7cd",
+							"type": "Basic/RichContent",
+							"zone": "Content1",
+							"isLayout": false,
+							"id": "498e003e-1939-483e-b2eb-4ba31f5b01a6",
+							"generalFields": {
+									"backgroundColor": "",
+									"padding": 8,
+									"customCSS": ".wrapper{\n}"
+							},
+							"translatableFields": {},
+							"contextualFields": {
+									"content": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "\u003cp style=\u0022text-align: center;\u0022\u003e\u003cstrong\u003e\u003cspan style=\u0022font-size: 24px;\u0022\u003eShop by Category\u003c/span\u003e\u003c/strong\u003e\u003c/p\u003e"
+									}
+							}
+					},
+					{
+							"parentId": "8814fa18-05fc-4a3d-bfdc-f83f12c5d7cd",
+							"type": "Category/CategoryList",
+							"zone": "Content1",
+							"isLayout": false,
+							"id": "15b14649-0bb4-433e-9e13-7258523bdc6a",
+							"generalFields": {
+									"showImages": false,
+									"showOnlyTopLevelCategories": false
+							},
+							"translatableFields": {},
+							"contextualFields": {}
+					},
+					{
+							"parentId": "8814fa18-05fc-4a3d-bfdc-f83f12c5d7cd",
+							"type": "Basic/PageTitle",
+							"zone": "Content1",
+							"isLayout": false,
+							"id": "98199c2d-08dc-4bd7-aec1-26ff2d039520",
+							"generalFields": {},
+							"translatableFields": {},
+							"contextualFields": {}
+					},
+					{
+							"parentId": "8814fa18-05fc-4a3d-bfdc-f83f12c5d7cd",
+							"type": "Basic/Banner",
+							"zone": "Content2",
+							"isLayout": false,
+							"id": "c87b197c-8286-4b2c-96a7-bb7fd2ec5b6e",
+							"generalFields": {},
+							"translatableFields": {},
+							"contextualFields": {
+									"background": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "image"
+									},
+									"focalPoint": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "center"
+									},
+									"backgroundColor": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "black"
+									},
+									"buttonLink": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": {
+													"type": "Page",
+													"value": "c8b97f15-18bc-468f-a344-ce64c4828a6a"
+											}
+									},
+									"minimumHeight": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "1/4 viewport"
+									},
+									"variant": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "primary"
+									},
+									"image": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "/images/home-page-banner.webp"
+									},
+									"heading": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "\u003cp\u003e\u003cstrong\u003e\u003cspan style=\u0022font-size: 18px;\u0022\u003eCAUGHT IN THE STORM\u003c/span\u003e\u003c/strong\u003e\u003c/p\u003e"
+									},
+									"subheading": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "\u003cp\u003e\u003cstrong\u003e\u003cspan style=\u0022font-size: 24px;\u0022\u003eSTAND UP IN THE STORMS\u003c/span\u003e\u003c/strong\u003e\u003c/p\u003e"
+									},
+									"buttonLabel": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "LET US HELP OR READ OUR ADVICE"
+									},
+									"imageOverlay": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": ""
+									},
+									"partialOverlay": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"partialOverlayPositioning": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "bottom"
+									},
+									"disableButton": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"responsiveFontSizes": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": true
+									},
+									"contentPadding": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 50
+									},
+									"centerTextVertically": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"customFontSizes": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"normalFontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"h1FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 40
+									},
+									"h2FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 32
+									},
+									"h3FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"h4FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"h5FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"h6FontSize": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": null
+									},
+									"customCSS": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": ".banner-wrapper {\n}\n\n.banner-overlay-wrapper {\n}\n\n.banner-center-wrapper {\n}\n\n.banner-heading {\n}\n\n.banner-subheading {\n}\n"
+									}
+							}
+					},
+					{
+							"parentId": "8814fa18-05fc-4a3d-bfdc-f83f12c5d7cd",
+							"type": "Brand/BrandGallery",
+							"zone": "Content3",
+							"isLayout": false,
+							"id": "bf81e981-9e3f-41a8-925f-634b3a81f55a",
+							"generalFields": {},
+							"translatableFields": {},
+							"contextualFields": {
+									"brandsToDisplay": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "random"
+									},
+									"numberOfBrandsToDisplay": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "11"
+									},
+									"brandsSelected": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": []
+									},
+									"maximumNumberOfBrandsPerRow": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "6"
+									},
+									"maximumBrandImageHeight": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 140
+									},
+									"title": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "Shop by Brands"
+									}
+							}
+					},
+					{
+							"parentId": "8814fa18-05fc-4a3d-bfdc-f83f12c5d7cd",
+							"type": "Common/ProductCarousel",
+							"zone": "Content4",
+							"isLayout": false,
+							"id": "e6e2e140-ee9c-4787-8f76-c1e1bbef1b84",
+							"generalFields": {
+									"titleAlignment": "center",
+									"visibleElementsTitle": "",
+									"customCSS": ".wrapper {\n}\n\n.titleText {\n}\n"
+							},
+							"translatableFields": {},
+							"contextualFields": {
+									"title": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "Featured Products"
+									},
+									"carouselType": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "topSellers"
+									},
+									"displayProductsFrom": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "allCategories"
+									},
+									"selectedCategoryIds": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": []
+									},
+									"relatedProductType": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": ""
+									},
+									"numberOfProductsToDisplay": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 10
+									},
+									"seedWithManuallyAssigned": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": ""
+									},
+									"maxNumberOfColumns": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 4
+									},
+									"showImage": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": true
+									},
+									"showTitle": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": true
+									},
+									"showBrandName": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": true
+									},
+									"showPartNumbers": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": true
+									},
+									"showPrice": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": true
+									},
+									"showAddToCart": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": true
+									},
+									"showAddToList": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": true
+									},
+									"widgetPosition": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": 1
+									},
+									"showImageBadges": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"maximumNumberOfImageBadges": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "4"
+									},
+									"showTextBadges": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": false
+									},
+									"maximumNumberOfTextBadges": {
+											"a26095ef-c714-e311-ba31-d43d7e4e88b2|Desktop|d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9": "4"
+									}
+							}
+					}
+			],
+			"id": "4b30987c-54b3-46d5-86c7-9c1231debadb",
+			"generalFields": {
+					"horizontalRule": "",
+					"tags": [],
+					"hideBreadcrumbs": true,
+					"variantName": "",
+					"layoutPage": "",
+					"structuredPageData": "",
+					"hideHeader": false,
+					"hideFooter": false,
+					"excludeFromNavigation": false,
+					"excludeFromSignInRequired": false
+			},
+			"translatableFields": {
+					"title": {
+							"a26095ef-c714-e311-ba31-d43d7e4e88b2": "Home"
+					},
+					"openGraphTitle": {
+							"a26095ef-c714-e311-ba31-d43d7e4e88b2": ""
+					},
+					"openGraphUrl": {
+							"a26095ef-c714-e311-ba31-d43d7e4e88b2": ""
+					},
+					"openGraphImage": {
+							"a26095ef-c714-e311-ba31-d43d7e4e88b2": ""
+					},
+					"metaKeywords": {
+							"a26095ef-c714-e311-ba31-d43d7e4e88b2": ""
+					},
+					"metaDescription": {
+							"a26095ef-c714-e311-ba31-d43d7e4e88b2": ""
+					},
+					"urlSegment": {}
+			},
+			"contextualFields": {}
+	},
+	"statusCode": 200,
+	"redirectTo": null,
+	"authorizationFailed": false,
+	"isAuthenticatedOnServer": false,
+	"bypassedAuthorization": false,
+	"requiresAuthorization": false,
+	"alternateLanguageUrls": {}
+}

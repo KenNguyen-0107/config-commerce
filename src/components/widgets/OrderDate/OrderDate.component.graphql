@@ -1,0 +1,9 @@
+fragment OrderDateData on OrderDate {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

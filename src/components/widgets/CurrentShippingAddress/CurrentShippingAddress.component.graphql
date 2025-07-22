@@ -1,0 +1,9 @@
+fragment CurrentShippingAddressData on CurrentShippingAddress {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

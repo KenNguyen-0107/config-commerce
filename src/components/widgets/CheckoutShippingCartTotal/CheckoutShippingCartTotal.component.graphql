@@ -1,0 +1,9 @@
+fragment CheckoutShippingCartTotalData on CheckoutShippingCartTotal {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

@@ -1,0 +1,15 @@
+fragment SubscribeData on Subscribe {
+  __typename
+  Alignment
+  CustomCSS
+  Description
+  Disclaimer
+  Id
+  IsLayout
+  Label
+  ParentId
+  Placeholder
+  Title
+  Type
+  Zone
+}

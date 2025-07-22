@@ -1,0 +1,31 @@
+fragment B2BPageData on B2BPage {
+  __typename
+  ExcludeFromNavigation
+  ExcludeFromSignInRequired
+  HideBreadcrumbs
+  HideFooter
+  HideHeader
+  HorizontalRule
+  Id
+  Languages
+  LayoutPage
+  LayoutPageId
+  MetaDescription
+  MetaKeywords
+  Name
+  NodeId
+  OpenGraphImage
+  OpenGraphTitle
+  OpenGraphUrl
+  ParentId
+  SortOrder
+  StructuredPageData
+  Tags
+  TemplateHash
+  Title
+  Type
+  Url
+  UrlSegment
+  VariantName
+  WebsiteId
+}

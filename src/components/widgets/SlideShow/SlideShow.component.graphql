@@ -1,0 +1,46 @@
+fragment SlideShowData on SlideShow {
+  __typename
+  Autoplay
+  CssClass
+  CustomCSS
+  CustomFontSizes
+  Height
+  Id
+  IsLayout
+  ParentId
+  ResponsiveFontSizes
+  ShowArrows
+  SlideContainer {
+    SlideItems {
+      Background
+      BackgroundColor
+      ButtonLabel
+      ButtonLink {
+        Type
+        Url
+        Value
+      }
+      BackgroundLink {
+        Type
+        Value
+        Url
+      }
+      ButtonVariant
+      CenterTextVertically
+      ContentPadding
+      FocalPoint
+      Heading
+      Image
+      ImageOverlay
+      PartialOverlay
+      PartialOverlayPositioning
+      ResponsiveImageBehavior
+      SlideTitle
+      Subheading
+    }
+  }
+  SlideIndicator
+  SlideType
+  TextAlignment
+  Zone
+}

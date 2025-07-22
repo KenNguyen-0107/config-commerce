@@ -1,0 +1,9 @@
+fragment BasicPageTitleData on BasicPageTitle {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

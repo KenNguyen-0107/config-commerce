@@ -1,0 +1,10 @@
+fragment CommonRecentOrdersData on CommonRecentOrders {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  NumberOfRecords
+  ParentId
+  Type
+  Zone
+}

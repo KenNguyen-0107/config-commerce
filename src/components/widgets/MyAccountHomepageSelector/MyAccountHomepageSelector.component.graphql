@@ -1,0 +1,9 @@
+fragment MyAccountHomepageSelectorData on MyAccountHomepageSelector {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

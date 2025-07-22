@@ -1,0 +1,44 @@
+fragment BasicBannerData on BasicBanner {
+  __typename
+  Background
+  BackgroundColor
+  BackgroundImage
+  ButtonLabel
+  ButtonLink {
+    Type
+    Url
+    Value
+  }
+  CenterTextVertically
+  ContentPadding
+  CssClass
+  CustomCSS
+  CustomFontSizes
+  Description
+  DisableButton
+  FocalPoint
+  H1FontSize
+  H2FontSize
+  H3FontSize
+  H4FontSize
+  H5FontSize
+  H6FontSize
+  Heading
+  Id
+  Image
+  ImageOverlay
+  ImageWidth
+  ImageHeight
+  IsLayout
+  MinimumHeight
+  NormalFontSize
+  ParentId
+  PartialOverlay
+  PartialOverlayPositioning
+  ResponsiveFontSizes
+  Subheading
+  Variant
+  Zone
+  SiteHost
+  Loading
+}

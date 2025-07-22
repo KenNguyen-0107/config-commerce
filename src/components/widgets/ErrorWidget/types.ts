@@ -1,0 +1,15 @@
+
+import { Maybe, Scalars } from "@/gql/graphql";
+
+export interface ErrorWidgetProps {
+  children?: React.ReactNode;
+__typename?: 'ErrorWidget';
+CustomCSS?: Maybe<Scalars['String']['output']>;
+Id?: Maybe<Scalars['String']['output']>;
+IsLayout?: Maybe<Scalars['Boolean']['output']>;
+Message?: Maybe<Scalars['String']['output']>;
+ParentId?: Maybe<Scalars['String']['output']>;
+Type?: Maybe<Scalars['String']['output']>;
+Zone?: Maybe<Scalars['String']['output']>;
+_id?: Maybe<Scalars['String']['output']>;
+};

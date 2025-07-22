@@ -1,0 +1,9 @@
+fragment CheckoutShippingFulfillmentMethodSelectorData on CheckoutShippingFulfillmentMethodSelector {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

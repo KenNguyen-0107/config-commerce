@@ -1,0 +1,9 @@
+fragment CheckoutReviewAndSubmitCarrierServiceData on CheckoutReviewAndSubmitCarrierService {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

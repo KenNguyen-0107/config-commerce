@@ -1,0 +1,7 @@
+query getProductDetailByPath($path: String!) {
+  Product(where: { Url: { eq: $path } }) {
+    items {
+      ...ProductData
+    }
+  }
+}

@@ -1,0 +1,10 @@
+fragment CommonCartLinkData on CommonCartLink {
+  __typename
+  CustomCSS
+  Icon
+  Id
+  IsLayout
+  ParentId
+  VisibilityState
+  Zone
+}

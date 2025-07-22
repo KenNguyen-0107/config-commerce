@@ -1,0 +1,9 @@
+fragment OrderHistorySearchFieldProductErpNumber2Data on OrderHistorySearchFieldProductErpNumber2 {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

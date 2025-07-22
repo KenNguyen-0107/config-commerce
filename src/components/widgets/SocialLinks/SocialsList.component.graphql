@@ -1,0 +1,12 @@
+fragment SocialsListData on SocialsList {
+  Id
+  ParentId
+  Zone
+  IsLayout
+  CustomCSS
+  __typename
+  Socials {
+    Platform
+    URL
+  }
+} 

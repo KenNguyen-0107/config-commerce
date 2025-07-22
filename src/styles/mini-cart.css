@@ -1,0 +1,32 @@
+@layer components {
+  .mini-cart-overlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 z-50;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .mini-cart-container {
+    @apply bg-white rounded-lg shadow-xl;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+

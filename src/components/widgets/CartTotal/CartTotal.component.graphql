@@ -1,0 +1,10 @@
+fragment CartTotalData on CartTotal {
+  __typename
+  CustomCSS
+  Id
+  IncludeActions
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

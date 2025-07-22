@@ -1,0 +1,9 @@
+fragment MyAccountViewData on MyAccountView {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

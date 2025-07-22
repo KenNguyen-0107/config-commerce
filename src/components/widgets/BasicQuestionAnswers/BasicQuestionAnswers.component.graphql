@@ -1,0 +1,17 @@
+fragment BasicQuestionAnswersData on BasicQuestionAnswers {
+  __typename
+  CustomCSS
+  Description
+  Id
+  IsLayout
+  ParentId
+  QuestionAnswersContainer {
+    QuestionAnswers {
+      Answer
+      Question
+    }
+  }
+  Title
+  Type
+  Zone
+}

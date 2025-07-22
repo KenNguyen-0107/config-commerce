@@ -1,0 +1,9 @@
+fragment OrderConfirmationHeaderData on OrderConfirmationHeader {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

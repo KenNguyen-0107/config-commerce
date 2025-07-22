@@ -1,0 +1,9 @@
+fragment CheckoutReviewAndSubmitPromotionCodeData on CheckoutReviewAndSubmitPromotionCode {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

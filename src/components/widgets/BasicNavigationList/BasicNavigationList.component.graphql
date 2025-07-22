@@ -1,0 +1,17 @@
+fragment BasicNavigationListData on BasicNavigationList {
+  __typename
+  CustomCSS
+  Depth
+  Id
+  IsLayout
+  LeftMargin
+  Link {
+    Type
+    Value
+    Url  
+  }
+  MarginBottom
+  ParentId
+  Type
+  Zone
+}

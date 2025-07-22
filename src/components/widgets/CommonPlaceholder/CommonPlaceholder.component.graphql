@@ -1,0 +1,10 @@
+fragment CommonPlaceholderData on CommonPlaceholder {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Variant
+  Zone
+}

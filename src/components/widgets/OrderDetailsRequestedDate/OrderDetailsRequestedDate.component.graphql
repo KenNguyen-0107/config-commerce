@@ -1,0 +1,9 @@
+fragment OrderDetailsRequestedDateData on OrderDetailsRequestedDate {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

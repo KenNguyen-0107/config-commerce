@@ -1,0 +1,9 @@
+fragment OrderHistoryTableData on OrderHistoryTable {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

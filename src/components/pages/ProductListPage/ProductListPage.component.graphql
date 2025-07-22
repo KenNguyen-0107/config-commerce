@@ -1,0 +1,32 @@
+fragment ProductListPageData on ProductListPage {
+  __typename
+  CategoryId
+  ExcludeFromNavigation
+  ExcludeFromSignInRequired
+  HideBreadcrumbs
+  HideFooter
+  HideHeader
+  HorizontalRule
+  Id
+  Languages
+  LayoutPage
+  LayoutPageId
+  MetaDescription
+  MetaKeywords
+  Name
+  NodeId
+  OpenGraphImage
+  OpenGraphTitle
+  OpenGraphUrl
+  ParentId
+  SortOrder
+  StructuredPageData
+  Tags
+  TemplateHash
+  Title
+  Type
+  Url
+  UrlSegment
+  VariantName
+  WebsiteId
+}

@@ -1,0 +1,9 @@
+query getProductByKeyword($keyword: String!) {
+  Product(
+    where: { _fulltext: { contains: $keyword } }
+  ) {
+    items {
+      ...ProductData
+    }
+  }
+}

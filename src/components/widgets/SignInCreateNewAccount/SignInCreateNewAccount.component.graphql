@@ -1,0 +1,11 @@
+fragment SignInCreateNewAccountData on SignInCreateNewAccount {
+  __typename
+  CustomCSS
+  FullWidthButton
+  Id
+  IsLayout
+  ParentId
+  Text
+  Type
+  Zone
+}

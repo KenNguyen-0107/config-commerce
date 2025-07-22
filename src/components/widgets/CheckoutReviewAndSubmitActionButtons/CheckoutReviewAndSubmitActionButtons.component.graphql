@@ -1,0 +1,9 @@
+fragment CheckoutReviewAndSubmitActionButtonsData on CheckoutReviewAndSubmitActionButtons {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

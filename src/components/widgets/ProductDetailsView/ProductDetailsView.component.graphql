@@ -1,0 +1,9 @@
+fragment ProductDetailsViewData on ProductDetailsView {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

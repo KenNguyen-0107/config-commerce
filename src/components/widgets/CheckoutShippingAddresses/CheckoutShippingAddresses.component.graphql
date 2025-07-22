@@ -1,0 +1,9 @@
+fragment CheckoutShippingAddressesData on CheckoutShippingAddresses {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

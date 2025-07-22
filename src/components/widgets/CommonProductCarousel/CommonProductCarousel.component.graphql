@@ -1,0 +1,30 @@
+fragment CommonProductCarouselData on CommonProductCarousel {
+  __typename
+  CarouselType
+  CustomCSS
+  DisplayProductsFrom
+  Id
+  IsLayout
+  MaxNumberOfColumns
+  MaximumNumberOfImageBadges
+  MaximumNumberOfTextBadges
+  NumberOfProductsToDisplay
+  ParentId
+  RelatedProductType
+  SeedWithManuallyAssigned
+  SelectedCategoryIds
+  ShowAddToCart
+  ShowAddToList
+  ShowBrandName
+  ShowImage
+  ShowImageBadges
+  ShowPartNumbers
+  ShowPrice
+  ShowTextBadges
+  ShowTitle
+  Title
+  TitleAlignment
+  Type
+  WidgetPosition
+  Zone
+}

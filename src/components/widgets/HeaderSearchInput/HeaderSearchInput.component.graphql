@@ -1,0 +1,8 @@
+fragment HeaderSearchInputData on HeaderSearchInput {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Zone
+}

@@ -1,0 +1,17 @@
+fragment OrderDetailsButtonSetData on OrderDetailsButtonSet {
+  __typename
+  ButtonOrderContainer {
+    ButtonOrders {
+      Fields {
+        Name
+      }
+    }
+  }
+  CustomCSS
+  GenerateEmailAttachmentFromWebpage
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

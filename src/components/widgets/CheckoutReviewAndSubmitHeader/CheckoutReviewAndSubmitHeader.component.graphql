@@ -1,0 +1,9 @@
+fragment CheckoutReviewAndSubmitHeaderData on CheckoutReviewAndSubmitHeader {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

@@ -1,0 +1,35 @@
+:root {
+  --color-primary: 40 94 97; /* teal-600 */
+  --color-secondary: 226 232 240; /* slate-200 */
+  --color-accent: 236 72 153; /* pink-500 */
+  --color-background: 255 255 255; /* white */
+  --color-text: 15 23 42; /* slate-900 */
+  --brand-navy: #283270;
+  --text-gray: #8c8b90;
+  --white: #ffffff;
+}
+
+.dark {
+  --color-primary: 94 234 212; /* teal-300 */
+  --color-secondary: 71 85 105; /* slate-600 */
+  --color-accent: 249 168 212; /* pink-300 */
+  --color-background: 15 23 42; /* slate-900 */
+  --color-text: 241 245 249; /* slate-100 */
+}
+
+.footer-heading {
+  color: var(--brand-navy);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-link {
+  color: var(--text-gray);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: var(--brand-navy);
+}

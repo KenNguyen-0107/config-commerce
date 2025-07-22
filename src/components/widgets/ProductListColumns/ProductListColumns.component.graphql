@@ -1,0 +1,9 @@
+fragment ProductListColumnsData on ProductListColumns {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

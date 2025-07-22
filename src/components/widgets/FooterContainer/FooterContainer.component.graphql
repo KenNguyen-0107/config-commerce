@@ -1,0 +1,8 @@
+fragment FooterContainerData on FooterContainer {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Zone
+}

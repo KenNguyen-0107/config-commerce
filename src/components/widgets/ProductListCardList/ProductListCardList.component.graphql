@@ -1,0 +1,9 @@
+fragment ProductListCardListData on ProductListCardList {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

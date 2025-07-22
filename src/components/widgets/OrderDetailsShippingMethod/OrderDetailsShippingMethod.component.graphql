@@ -1,0 +1,9 @@
+fragment OrderDetailsShippingMethodData on OrderDetailsShippingMethod {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}

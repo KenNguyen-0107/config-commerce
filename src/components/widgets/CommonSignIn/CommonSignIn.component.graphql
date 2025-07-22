@@ -1,0 +1,9 @@
+fragment CommonSignInData on CommonSignIn {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}
