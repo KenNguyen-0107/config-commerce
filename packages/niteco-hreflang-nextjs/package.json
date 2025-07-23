@@ -1,0 +1,47 @@
+{
+	"name": "@niteco/hreflang-nextjs",
+	"version": "1.0.0",
+	"description": "A flexible hreflang implementation for Next.js applications",
+	"main": "dist/index.js",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc",
+		"lint": "tsc",
+		"dev": "tsup index.ts --format cjs,esm --dts --watch",
+		"clean": "rm -rf dist",
+		"prepublishOnly": "npm run build"
+	},
+	"keywords": [
+		"nextjs",
+		"seo",
+		"hreflang",
+		"localization",
+		"i18n",
+		"internationalization"
+	],
+	"author": "Niteco",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://NitecoGroup@dev.azure.com/NitecoGroup/Niteco-Vietnam.0IN-ChampionAndTechnicalLeadership/_git/niteco-npm-nextjs"
+	},
+	"bugs": {
+		"url": "https://dev.azure.com/NitecoGroup/Niteco-Vietnam.0IN-ChampionAndTechnicalLeadership/_git/niteco-npm-nextjs?path=/niteco-hreflang-nextjs"
+	},
+	"homepage": "https://dev.azure.com/NitecoGroup/Niteco-Vietnam.0IN-ChampionAndTechnicalLeadership/_git/niteco-npm-nextjs?path=/niteco-hreflang-nextjs/README.md",
+	"peerDependencies": {
+		"next": ">=13.0.0",
+		"react": ">=18.0.0",
+		"react-dom": ">=18.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.0.0",
+		"@types/react": "^18.0.0",
+		"tsup": "^8.0.1",
+		"typescript": "^5.0.0"
+	}
+}

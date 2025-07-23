@@ -1,14 +1,8 @@
 "use client";
-import Icon from "@/components/shared/icons";
+import CommonImage from "@/components/shared/CommonImage";
 import { useSwiper } from "@/hook/useSwiper";
 import { cn } from "@/lib/utils";
-import {
-	Dispatch,
-	ReactNode,
-	SetStateAction,
-	useEffect,
-	useState,
-} from "react";
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 import { FreeMode, Pagination, Virtual } from "swiper/modules";
 import { Swiper } from "swiper/react";
 import { FreeModeOptions, SwiperOptions } from "swiper/types";
@@ -35,9 +29,7 @@ export interface CustomSwiperProps {
 	};
 	resistance?: boolean | undefined;
 	spaceBetween?: number;
-	breakpoints?:
-		| { [width: number]: SwiperOptions; [ratio: string]: SwiperOptions }
-		| undefined;
+	breakpoints?: { [width: number]: SwiperOptions; [ratio: string]: SwiperOptions } | undefined;
 	paginationEl?: string[];
 	iconProps?: {
 		startPosition: number;
@@ -83,7 +75,7 @@ const CustomSwiper = ({
 				spaceBetween={32}
 				pagination={pagination ? pagination : undefined}
 				onSwiper={setSwiperRef}
-        loop={loop}
+				loop={loop}
 				onSlideChange={(swiper) => {
 					setIndex?.(swiper.activeIndex);
 					setIsReachBegin(swiper.isBeginning);
@@ -108,13 +100,20 @@ const CustomSwiper = ({
 							"disabled:opacity-50",
 							buttonPrevClass
 						)}
+						style={{
+							minWidth: iconProps.size,
+							minHeight: iconProps.size,
+						}}
 					>
-						<Icon
-							iconName="chevronleft"
-							startPosition={iconProps.startPosition}
-							viewSize={iconProps.viewSize}
-							size={iconProps.size}
-							className="fill-white"
+						<CommonImage
+							src={`/icons/chevron-right.svg`}
+							alt="chevron left"
+							width={iconProps.size}
+							height={iconProps.size}
+							unoptimized
+							style={{
+								transform: "rotate(180deg)",
+							}}
 						/>
 					</button>
 
@@ -130,13 +129,17 @@ const CustomSwiper = ({
 							"disabled:opacity-50",
 							buttonNextClass
 						)}
+						style={{
+							minWidth: iconProps.size,
+							minHeight: iconProps.size,
+						}}
 					>
-						<Icon
-							iconName="chevronright"
-							startPosition={iconProps.startPosition}
-							viewSize={iconProps.viewSize}
-							size={iconProps.size}
-							className="fill-white"
+						<CommonImage
+							src={`/icons/chevron-right.svg`}
+							alt="chevron right"
+							width={iconProps.size}
+							height={iconProps.size}
+							unoptimized
 						/>
 					</button>
 				</>

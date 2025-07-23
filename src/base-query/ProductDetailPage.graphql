@@ -1,39 +1,54 @@
-#["/PDPforproduct", "/PDPforvariant"] 
-query getProductDetailCmsPage($path: String!) {
-  GenericPage ( where: { Url: {eq: $path } } ) {
-    items {
-      WidgetContainer {
-        __typename
-        Widgets {
-          ...BasicBannerData
-          ...BasicButtonData
-          ...BasicGridData
-          ...BasicImageData
-          ...BasicLinkData
-          ...BasicLogoData
-          ...BasicQuestionAnswersData
-          ...BasicRichContentData
-          ...BasicRowData
-          ...BasicRowsData
-          ...BasicSocialLinksData
-          ...CategoryListData
-          ...CommonCartLinkData
-          ...CommonHeaderSignInData
-          ...CommonPlaceholderData
-          ...CommonProductCarouselData
-          ...CommonRatingAndReviewData
-          ...CommonSignInData
-          ...FooterContainerData
-          ...HeaderMainNavigationData
-          ...HeaderSearchInputData
-          ...LinkListData
-          ...ProductDetailsViewData
-          ...ProductListCardListData
-          ...ProductListColumnsData
-          ...SharedContentData
-          ...SlideShowData
-        }
-      }
-    }
-  }
+#["/PDPforproduct", "/PDPforvariant"]
+query getProductDetailCmsPage($path: String!, $siteId: String!, $languageCode: String!) {
+	GenericPage(
+		where: {
+			Url: { eq: $path }
+			WebsiteId: { eq: $siteId }
+			Language: { LanguageCode: { eq: $languageCode } }
+		}
+	) {
+		items {
+			BreadcrumbContainer {
+				BreadCrumbs {
+					PageId
+					PageUrl
+					PageTitle
+					CategoryId
+				}
+			}
+			WidgetContainer {
+				__typename
+				Widgets {
+					...BasicBannerData
+					...BasicButtonData
+					...BasicGridData
+					...BasicImageData
+					...BasicLinkData
+					...BasicLogoData
+					...BasicQuestionAnswersData
+					...BasicRichContentData
+					...BasicRowData
+					...BasicRowsData
+					...BasicSocialLinksData
+					...CategoryListData
+					...CommonCartLinkData
+					...CommonHeaderSignInData
+					...CommonPlaceholderData
+					...CommonProductCarouselData
+					...CommonRatingAndReviewData
+					...CommonSignInData
+					...FooterContainerData
+					...HeaderMainNavigationData
+					...HeaderSearchInputData
+					...LinkListData
+					...ProductDetailsViewData
+					...ProductListCardListData
+					...ProductListColumnsData
+					...SharedContentData
+					...SlideShowData
+					...CustomVideoData
+				}
+			}
+		}
+	}
 }

@@ -3,7 +3,6 @@ import React from 'react';
 import { OrderHistorySearchFieldOrderTotalProps } from './types';
 
 const OrderHistorySearchFieldOrderTotal: React.FC<OrderHistorySearchFieldOrderTotalProps> = (props) => {
-  console.log(`OrderHistorySearchFieldOrderTotal props:`, props);
   return (
     <>
       <h1>OrderHistorySearchFieldOrderTotal</h1>

@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { getImgSrc } from "@/components/utils";
 import NextImage from "next/image";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 import { SlideItem } from "@/gql/graphql";
+import { SmartLink } from "@/components/shared/smartLink";
 
 export default function PLPTopSlide({ data }: { data: SlideItem[] }) {
 	return (
@@ -16,7 +16,8 @@ export default function PLPTopSlide({ data }: { data: SlideItem[] }) {
 							data-component="card-information"
 							className={cn(
 								"relative",
-								`${index !== 0 ? "border-l-[1px] border-muted" : ""
+								`${
+									index !== 0 ? "border-l-[1px] border-muted" : ""
 								} flex flex-col items-center gap-6 text-center`
 							)}
 						>
@@ -38,7 +39,7 @@ export default function PLPTopSlide({ data }: { data: SlideItem[] }) {
 							)}
 							{item.ButtonLabel && (
 								<Button
-									buttonLabel={item.ButtonLabel}
+									title={item.ButtonLabel}
 									href={item.ButtonLink?.Value || "/"}
 									variant="tertiary"
 									className="border-white font-frutiger-bold leading-5 px-6 py-4 h-auto mt-auto"
@@ -47,7 +48,7 @@ export default function PLPTopSlide({ data }: { data: SlideItem[] }) {
 								</Button>
 							)}
 							{item.BackgroundLink?.Url && (
-								<Link
+								<SmartLink
 									href={item.BackgroundLink.Url}
 									aria-label={"Background Link"}
 									className="absolute top-0 left-0 right-0 bottom-0"

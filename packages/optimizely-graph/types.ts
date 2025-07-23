@@ -1,65 +1,71 @@
-import type { OptiCmsSchema } from "./client/types"
+import type { OptiCmsSchema } from "./client/types";
 
 export type OptimizelyGraphConfigInternal = {
-    /**
-     * Optimizely Graph AppKey, it is recommended to not let this key leave the server side
-     */
-    single_key: string
+	/**
+	 * Optimizely Graph AppKey, it is recommended to not let this key leave the server side
+	 */
+	single_key: string;
 
-    /**
-     * Optimizely Graph Service domain, it is recommended to not let this key leave the server side
-     */
-    gateway: string
+	/**
+	 * Optimizely Graph Service domain, it is recommended to not let this key leave the server side
+	 */
+	gateway: string;
 
-    /**
-     * Optimizely CMS Domain, it is recommended to not let this key leave the server side
-     */
-    dxp_url?: string
+	/**
+	 * Optimizely CMS Domain, it is recommended to not let this key leave the server side
+	 */
+	dxp_url?: string;
 
-    /**
-     * The auto-generated domain for the deployment
-     */
-    deploy_domain?: string
+	/**
+	 * The auto-generated domain for the deployment
+	 */
+	deploy_domain?: string;
 
-    /**
-     * Set to true to enable debug output to the console
-     */
-    debug: boolean
+	/**
+	 * The default domain for the local development
+	 */
+	default_domain?: string;
 
-    /**
-     * Set to true to log all GraphQL queries to the console
-     */
-    query_log: boolean
+	/**
+	 * Set to true to enable debug output to the console
+	 */
+	debug: boolean;
 
-    /**
-     * Optimizely Graph Secret, this value must never leave the server side
-     */
-    secret?: string
+	/**
+	 * Set to true to log all GraphQL queries to the console
+	 */
+	query_log: boolean;
 
-    /**
-     * Optimizely Graph AppKey, this value must never leave the server side
-     */
-    app_key?: string
+	/**
+	 * Optimizely Graph Secret, this value must never leave the server side
+	 */
+	secret?: string;
 
-    /**
-     * Publishing token to validate webhooks - if implemented
-     */
-    publish?: string
+	/**
+	 * Optimizely Graph AppKey, this value must never leave the server side
+	 */
+	app_key?: string;
 
-    /**
-     * The CMS Schema version that is used
-     */
-    opti_cms_schema: OptiCmsSchema
+	/**
+	 * Publishing token to validate webhooks - if implemented
+	 */
+	publish?: string;
 
-    /**
-     * The Turnstile Tenant ID that must be used - if any
-     */
-    tenant_id?: string
-}
+	/**
+	 * The CMS Schema version that is used
+	 */
+	opti_cms_schema: OptiCmsSchema;
 
-export type OptimizelyGraphConfig = Partial<Omit<OptimizelyGraphConfigInternal, 'single_key'>> & Pick<OptimizelyGraphConfigInternal, 'single_key'>
+	/**
+	 * The Turnstile Tenant ID that must be used - if any
+	 */
+	tenant_id?: string;
+};
+
+export type OptimizelyGraphConfig = Partial<Omit<OptimizelyGraphConfigInternal, "single_key">> &
+	Pick<OptimizelyGraphConfigInternal, "single_key">;
 
 /**
  * @deprecated Reference OptimizelyGraphConfig
  */
-export type ContentGraphConfig = OptimizelyGraphConfig
+export type ContentGraphConfig = OptimizelyGraphConfig;

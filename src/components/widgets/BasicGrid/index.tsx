@@ -53,11 +53,10 @@ const BasicGrid: React.FC<BasicGridProps> = (props) => {
       customClass = 'gap-10'
       break;
     case 'BannerItem':
-      // customClass = 'lg:pr-0 py-10 lg:my-0 px-4 lg:p-0'
       customClass = 'pr-0 gap-4 lg:gap-8'
       break;
     case 'NavPrimary':
-      customClass = 'place-items-center'
+      customClass = 'place-items-center flex items-center justify-between flex-wrap lg:grid [&>div:last-child]:hidden lg:[&>div:last-child]:block'
       break;
     case 'CategoryBlock':
       customClass = 'container grid grid-cols-2 lg:grid-cols-4 gap-x-4 lg:gap-x-6 gap-y-6 lg:gap-y-10 -mt-[32px] lg:-mt-20 pb-10 lg:pb-20'
@@ -69,13 +68,13 @@ const BasicGrid: React.FC<BasicGridProps> = (props) => {
       customClass = 'gap-0'
       break;
     case "PdpTechSpecs":
-      customClass = "flex flex-col lg:flex-row justify-start gap-[128px]"
+      customClass = "flex flex-col lg:flex-row justify-start gap-10 lg:gap-[128px]"
       break;
     case "PdpStickyNav":
       customClass = 'flex gap-4 p-0 grow'
       break;
     case "USP":
-      customClass = Info?.ProductNumber && "flex justify-between items-center text-blue uppercase"
+      customClass = Info?.ProductNumber && "flex flex-col lg:flex-row justify-between items-center text-blue uppercase"
       break;
     case "Guarantee":
       customClass = "gap-4 lg:gap-8"

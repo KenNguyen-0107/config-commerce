@@ -1,279 +1,281 @@
 fragment ProductData on Product {
-  __typename
-  ActivateOn
-  AllowZeroPricing
-  AttributeTypeContainer {
-    AttributeTypes {
-      AttributeValueContainer {
-        AttributeValues {
-          Id
-          SortOrder
-          Value
-          ValueDisplay
-        }
-      }
-      Id
-      IncludeOnProduct
-      IsComparable
-      IsFilter
-      IsSearchable
-      Label
-      Name
-      SortOrder
-    }
-  }
-  CanAddToCart
-  CanAddToWishlist
-  CanConfigure
-  CanShowPrice
-  CanShowUnitOfMeasure
-  CanonicalUrl
-  CantBuy
-  Categories
-  ChildTraitValuesContainer {
-    ChildTraitValues {
-      Id
-      StyleTraitId
-      Value
-      ValueDisplay
-    }
-  }
-  ConfigurationType
-  ContentContainer {
-    MetaDescription
-    MetaKeywords
-    OpenGraphImage
-    OpenGraphTitle
-    OpenGraphUrl
-    PageTitle
-    Contents {
-      PublishToProductionOn
-      CustomerSegment
-      DeviceType
-      Html
-      Language
-    }
-  }
-  CustomerProductNumber
-  # CustomerUnitOfMeasurecode
-  DeactivateOn
-  DefaultChildProductId
-  Detail {
-    AllowAnyGiftCardAmount
-    CanBackOrder
-    Configuration {
-      HasDefaults
-      IsKit
-    }
-    HasMsds
-    IsGiftCard
-    IsHazardousGood
-    IsSpecialOrder
-    IsSubscription
-    ModelNumber
-    MultipleSaleQty
-    Name
-    PriceCode
-    ProductCode
-    ReplacementProductId
-    RoundingRule
-    ShippingClassification
-    ShippingHeight
-    ShippingLength
-    ShippingWeight
-    ShippingWidth
-    Sku
-    SortOrder
-    Subscription {
-      SubscriptionAddToInitialOrder
-      SubscriptionAllMonths
-      SubscriptionApril
-      SubscriptionAugust
-      SubscriptionDecember
-      SubscriptionFebruary
-      SubscriptionFixedPrice
-      SubscriptionJanuary
-      SubscriptionJuly
-      SubscriptionJune
-      SubscriptionMarch
-      SubscriptionMay
-      SubscriptionNovember
-      SubscriptionOctober
-      SubscriptionPeriodsPerCycle
-      SubscriptionSeptember
-      SubscriptionTotalCycles
-    }
-    TaxCategory
-    TaxCode1
-    TaxCode2
-    Unspsc
-    UpcCode
-  }
-  DocumentContainer {
-    Documents {
-      Description
-      DocumentType
-      FilePath
-      Id
-      Name
-    }
-  }
-  ExcludeFromRecommendations
-  ExcludeWhenOutOfSeason
-  Id
-  ImageAltText
-  ImageContainer {
-    Images {
-      Id
-      ImageAltText
-      ImageType
-      LargeImagePath
-      MediumImagePath
-      Name
-      SmallImagePath
-      SortOrder
-    }
-  }
-  InventoryFulfillment {
-    CustomAvailabilityMessage
-    ErpManaged
-    IsStocked
-    IsStockedAtWarehouseLevel
-    LowStockLevel
-    ReplacementProductId
-    TrackInventory
-    UnitOfMeasure
-  }
-  IsDiscontinued
-  IsSponsored
-  IsVariantParent
-  LargeImagePath
-  ManufacturerItem
-  MediumImagePath
-  MinimumOrderQty
-  PackDescription
-  PriceFacet
-  ProductNumber
-  RelatedProductContainer {
-    RelatedProducts {
-      ProductId
-      RelatedProductId
-      RelationName
-      SortOrder
-      SystemListValueId
-    }
-  }
-  ProductTitle
-  QuoteRequired
-  RestrictionGroupContainer {
-    RestrictionGroups {
-      CustomerRuleManagerId
-      Description
-      DisplayType
-      IsActive
-      IsLocationBased
-      Name
-      ProductRuleManagerId
-    }
-  }
-  SalePriceLabel
-  Score
-  Seasonal {
-    IsSeasonal
-    SeasonalApril
-    SeasonalAugust
-    SeasonalDecember
-    SeasonalFebruary
-    SeasonalJanuary
-    SeasonalJuly
-    SeasonalJune
-    SeasonalMarch
-    SeasonalMay
-    SeasonalNovember
-    SeasonalOctober
-    SeasonalSeptember
-  }
-  SmallImagePath
-  SortPriority
-  SpecificationContainer {
-    Specifications {
-      Description
-      HtmlContent
-      Id
-      Name
-      NameDisplay
-      SortOrder
-      Value
-    }
-  }
-  TrackInventory
-  UnitListPrice
-  UnitListPriceDisplay
-  UnitOfMeasureContainer {
-    UnitOfMeasures {
-      Description
-      Id
-      IsDefault
-      QtyPerBaseUnitOfMeasure
-      RoundingRule
-      UnitOfMeasureDisplay
-      UnitOfMeasureText
-    }
-  }
-  Uri
-  Url
-  UrlSegment
-  VariantTraitContainer {
-    VariantTraits {
-      DisplayTextWithSwatch
-      DisplayType
-      Id
-      Name
-      NameDisplay
-      NumberOfSwatchesVisible
-      SortOrder
-      TraitValueContainer {
-        TraitValues {
-          Id
-          IsDefault
-          Product {
-            CanAddToCart
-            ImageContainer {
-              Images {
-                Id
-                ImageAltText
-                ImageType
-                LargeImagePath
-                MediumImagePath
-                Name
-                SmallImagePath
-              }
-            }
-            ProductId
-            ProductNumber
-            ProductTitle
-            UnitListPrice
-            UnitPriceDisplay
-            UrlSegment
-          }
-          SortOrder
-          SwatchColorValue
-          SwatchImageValue
-          SwatchType
-          Value
-          ValueDisplay
-        }
-      }
-      UnselectedValue
-    }
-  }
-  VariantTypeId
-  WarehouseContainer {
-    Warehouses {
-      Description
-      Id
-      Name
-      QtyAvailable
-    }
-  }
+	__typename
+	ParentId
+	ActivateOn
+	AllowZeroPricing
+	CurrencyCode
+	AttributeTypeContainer {
+		AttributeTypes {
+			AttributeValueContainer {
+				AttributeValues {
+					Id
+					SortOrder
+					Value
+					ValueDisplay
+				}
+			}
+			Id
+			IncludeOnProduct
+			IsComparable
+			IsFilter
+			IsSearchable
+			Label
+			Name
+			SortOrder
+		}
+	}
+	CanAddToCart
+	CanAddToWishlist
+	CanConfigure
+	CanShowPrice
+	CanShowUnitOfMeasure
+	CanonicalUrl
+	CantBuy
+	Categories
+	ChildTraitValuesContainer {
+		ChildTraitValues {
+			Id
+			StyleTraitId
+			Value
+			ValueDisplay
+		}
+	}
+	ConfigurationType
+	ContentContainer {
+		MetaDescription
+		MetaKeywords
+		OpenGraphImage
+		OpenGraphTitle
+		OpenGraphUrl
+		PageTitle
+		Contents {
+			PublishToProductionOn
+			CustomerSegment
+			DeviceType
+			Html
+			Language
+		}
+	}
+	CustomerProductNumber
+	# CustomerUnitOfMeasurecode
+	DeactivateOn
+	DefaultChildProductId
+	Detail {
+		AllowAnyGiftCardAmount
+		CanBackOrder
+		Configuration {
+			HasDefaults
+			IsKit
+		}
+		HasMsds
+		IsGiftCard
+		IsHazardousGood
+		IsSpecialOrder
+		IsSubscription
+		ModelNumber
+		MultipleSaleQty
+		Name
+		PriceCode
+		ProductCode
+		ReplacementProductId
+		RoundingRule
+		ShippingClassification
+		ShippingHeight
+		ShippingLength
+		ShippingWeight
+		ShippingWidth
+		Sku
+		SortOrder
+		Subscription {
+			SubscriptionAddToInitialOrder
+			SubscriptionAllMonths
+			SubscriptionApril
+			SubscriptionAugust
+			SubscriptionDecember
+			SubscriptionFebruary
+			SubscriptionFixedPrice
+			SubscriptionJanuary
+			SubscriptionJuly
+			SubscriptionJune
+			SubscriptionMarch
+			SubscriptionMay
+			SubscriptionNovember
+			SubscriptionOctober
+			SubscriptionPeriodsPerCycle
+			SubscriptionSeptember
+			SubscriptionTotalCycles
+		}
+		TaxCategory
+		TaxCode1
+		TaxCode2
+		Unspsc
+		UpcCode
+	}
+	DocumentContainer {
+		Documents {
+			Description
+			DocumentType
+			FilePath
+			Id
+			Name
+		}
+	}
+	ExcludeFromRecommendations
+	ExcludeWhenOutOfSeason
+	Id
+	ImageAltText
+	ImageContainer {
+		Images {
+			Id
+			ImageAltText
+			ImageType
+			LargeImagePath
+			MediumImagePath
+			Name
+			SmallImagePath
+			SortOrder
+		}
+	}
+	InventoryFulfillment {
+		CustomAvailabilityMessage
+		ErpManaged
+		IsStocked
+		IsStockedAtWarehouseLevel
+		LowStockLevel
+		ReplacementProductId
+		TrackInventory
+		UnitOfMeasure
+	}
+	IsDiscontinued
+	IsSponsored
+	IsVariantParent
+	LargeImagePath
+	ManufacturerItem
+	MediumImagePath
+	MinimumOrderQty
+	PackDescription
+	PriceFacet
+	ProductNumber
+	RelatedProductContainer {
+		RelatedProducts {
+			ProductId
+			RelatedProductId
+			RelationName
+			SortOrder
+			SystemListValueId
+		}
+	}
+	ProductTitle
+	QuoteRequired
+	RestrictionGroupContainer {
+		RestrictionGroups {
+			CustomerRuleManagerId
+			Description
+			DisplayType
+			IsActive
+			IsLocationBased
+			Name
+			ProductRuleManagerId
+		}
+	}
+	SalePriceLabel
+	Score
+	Seasonal {
+		IsSeasonal
+		SeasonalApril
+		SeasonalAugust
+		SeasonalDecember
+		SeasonalFebruary
+		SeasonalJanuary
+		SeasonalJuly
+		SeasonalJune
+		SeasonalMarch
+		SeasonalMay
+		SeasonalNovember
+		SeasonalOctober
+		SeasonalSeptember
+	}
+	SmallImagePath
+	SortPriority
+	SpecificationContainer {
+		Specifications {
+			Description
+			HtmlContent
+			Id
+			Name
+			NameDisplay
+			SortOrder
+			Value
+		}
+	}
+	TrackInventory
+	UnitListPrice
+	UnitListPriceDisplay
+	UnitOfMeasureContainer {
+		UnitOfMeasures {
+			Description
+			Id
+			IsDefault
+			QtyPerBaseUnitOfMeasure
+			RoundingRule
+			UnitOfMeasureDisplay
+			UnitOfMeasureText
+		}
+	}
+	Uri
+	Url
+	UrlSegment
+	VariantTraitContainer {
+		VariantTraits {
+			DisplayTextWithSwatch
+			DisplayType
+			Id
+			Name
+			NameDisplay
+			NumberOfSwatchesVisible
+			SortOrder
+			TraitValueContainer {
+				TraitValues {
+					Id
+					IsDefault
+					Product {
+						CanAddToCart
+						ImageContainer {
+							Images {
+								Id
+								ImageAltText
+								ImageType
+								LargeImagePath
+								MediumImagePath
+								Name
+								SmallImagePath
+							}
+						}
+						ProductId
+						ProductNumber
+						ProductTitle
+						UnitListPrice
+						UnitPriceDisplay
+						UrlSegment
+					}
+					SortOrder
+					SwatchColorValue
+					SwatchImageValue
+					SwatchType
+					Value
+					ValueDisplay
+				}
+			}
+			UnselectedValue
+		}
+	}
+	VariantTypeId
+	WarehouseContainer {
+		Warehouses {
+			Description
+			Id
+			Name
+			QtyAvailable
+		}
+	}
 }

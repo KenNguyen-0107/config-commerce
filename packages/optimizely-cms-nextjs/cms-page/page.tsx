@@ -1,10 +1,10 @@
 import deepmerge from "deepmerge";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation.js";
-
 // GraphQL Client & Services
 import {
 	OptiCmsSchema,
+	readEnvironmentVariables,
 	RouteResolver,
 	type ChannelDefinition,
 	type ClientFactory,
@@ -36,6 +36,8 @@ import getContentByPathBase, {
 	type GetProductDetailsContentMethod,
 } from "./data";
 import { localeToGraphLocale, urlToPath } from "./utils";
+import { DefaultPageSeo, getCategory } from "../components/page-seo";
+import JsonLdComponent from "../components/JsonLdComponent";
 
 export type DefaultCmsPageParams = {
 	path?: string[];
@@ -43,10 +45,7 @@ export type DefaultCmsPageParams = {
 export type DefaultCmsPageSearchParams = {};
 
 export type DefaultCmsPageProps<
-	TParams extends Record<
-		string,
-		string | Array<string> | undefined
-	> = DefaultCmsPageParams,
+	TParams extends Record<string, string | Array<string> | undefined> = DefaultCmsPageParams,
 	TSearchParams extends Record<
 		string,
 		string | Array<string> | undefined
@@ -57,10 +56,7 @@ export type DefaultCmsPageProps<
 };
 
 export type OptiCmsNextJsPage<
-	TParams extends Record<
-		string,
-		string | Array<string> | undefined
-	> = DefaultCmsPageParams,
+	TParams extends Record<string, string | Array<string> | undefined> = DefaultCmsPageParams,
 	TSearchParams extends Record<
 		string,
 		string | Array<string> | undefined
@@ -93,9 +89,7 @@ export type OptiCmsNextJsPage<
 	 * @param       props           The properties of the page
 	 * @returns     The component to render the page
 	 */
-	CmsPage: (
-		props: DefaultCmsPageProps<TParams, TSearchParams>
-	) => Promise<JSX.Element>;
+	CmsPage: (props: DefaultCmsPageProps<TParams, TSearchParams>) => Promise<JSX.Element>;
 };
 
 export enum SystemLocales {
@@ -105,10 +99,7 @@ export enum SystemLocales {
 
 export type CreatePageOptions<
 	LocaleEnum = SystemLocales,
-	TParams extends Record<
-		string,
-		string | Array<string> | undefined
-	> = DefaultCmsPageParams,
+	TParams extends Record<string, string | Array<string> | undefined> = DefaultCmsPageParams,
 	TSearchParams extends Record<
 		string,
 		string | Array<string> | undefined
@@ -126,6 +117,7 @@ export type CreatePageOptions<
 	 * page.
 	 */
 	client: ClientFactory;
+	siteId: () => Promise<string>;
 
 	/**
 	 * The channel information used to resolve locales, domains and more
@@ -153,9 +145,7 @@ export type CreatePageOptions<
 	 * @return      The path to be retrieved from Router or getContentByPath
 	 *              function
 	 */
-	propsToCmsPath: (
-		props: DefaultCmsPageProps<TParams, TSearchParams>
-	) => string | null;
+	propsToCmsPath: (props: DefaultCmsPageProps<TParams, TSearchParams>) => Promise<string | null>;
 
 	/**
 	 * Take the route from the Routing Service and transform that to the route
@@ -173,11 +163,23 @@ const CreatePageOptionDefaults: CreatePageOptions<string> = {
 	getFixContent: getFixContentBase,
 	getProductDetailsContentByPath: getProductDetailsContentBase,
 	client: getServerClient,
+	siteId: () => Promise.resolve(""),
 	routerFactory: (client) => new RouteResolver(client),
-	propsToCmsPath: ({ params }) => buildRequestPath(params),
+	propsToCmsPath: async ({ params }) => {
+		const processedParams = await Promise.resolve(params);
+		return buildRequestPath(processedParams);
+	},
 	routeToParams: (route) => {
 		return { path: urlToPath(route.url), lang: route.locale };
 	},
+};
+
+export const WEBSITE_DOMAIN = readEnvironmentVariables().deploy_domain || "";
+//export const DEFAULT_DOMAIN = readEnvironmentVariables().default_domain || "";
+
+export const getWebsiteDomain = () => {
+	if (WEBSITE_DOMAIN) return WEBSITE_DOMAIN;
+	return "";
 };
 
 /**
@@ -191,10 +193,7 @@ const CreatePageOptionDefaults: CreatePageOptions<string> = {
  */
 export function createPage<
 	LocaleEnum = SystemLocales,
-	TParams extends Record<
-		string,
-		string | Array<string> | undefined
-	> = DefaultCmsPageParams,
+	TParams extends Record<string, string | Array<string> | undefined> = DefaultCmsPageParams,
 	TSearchParams extends Record<
 		string,
 		string | Array<string> | undefined
@@ -208,6 +207,7 @@ export function createPage<
 		getContentByPath,
 		getFixContent,
 		client: clientFactory,
+		siteId,
 		channel,
 		propsToCmsPath,
 		routeToParams,
@@ -222,6 +222,7 @@ export function createPage<
 
 	// Create the global Router instance
 	const router = routerFactory(globalClient);
+
 	const getInfoByPath = async (requestPath: string, siteId?: string) => {
 		const route = await router.getContentInfoByPath(requestPath, siteId);
 		if (!route) return undefined;
@@ -242,13 +243,13 @@ export function createPage<
 			return a;
 		},
 		generateMetadata: async (props, parent) => {
-			// Read variables from request
+			// Read variables from request and get current domain
 			const siteId = channel
 				? globalClient.currentOptiCmsSchema == OptiCmsSchema.CMS12
 					? channel.id
 					: channel.defaultDomain
 				: undefined;
-			const requestPath = propsToCmsPath(props);
+			const requestPath = await propsToCmsPath(props);
 			if (!requestPath) return Promise.resolve({});
 			if (isDebug())
 				console.log(
@@ -263,16 +264,11 @@ export function createPage<
 			// Resolve the route to a content link
 			const routeInfo = await getInfoByPath(requestPath, siteId);
 			if (!routeInfo) {
-				if (isDebug())
-					console.log("⚪ [CmsPage.generateMetadata] No data received");
+				if (isDebug()) console.log("⚪ [CmsPage.generateMetadata] No data received");
 				return Promise.resolve({});
 			}
 			const [route, contentLink, contentType, graphLocale] = routeInfo;
-			if (isDebug())
-				console.log(
-					`⚪ [CmsPage.generateMetadata] Retrieved content info:`,
-					route
-				);
+			if (isDebug()) console.log(`⚪ [CmsPage.generateMetadata] Retrieved content info:`, route);
 
 			// Update context
 			const context = getServerContext();
@@ -288,15 +284,10 @@ export function createPage<
 			]);
 
 			if (isDebug())
-				console.log(
-					`⚪ [CmsPage.generateMetadata] Component yielded metadata:`,
-					pageMetadata
-				);
+				console.log(`⚪ [CmsPage.generateMetadata] Component yielded metadata:`, pageMetadata);
 
 			// Make sure merging of objects goes correctly
-			for (const metaKey of Object.getOwnPropertyNames(
-				pageMetadata
-			) as (keyof Metadata)[]) {
+			for (const metaKey of Object.getOwnPropertyNames(pageMetadata) as (keyof Metadata)[]) {
 				if (
 					typeof pageMetadata[metaKey] == "object" &&
 					pageMetadata[metaKey] != null &&
@@ -304,11 +295,9 @@ export function createPage<
 					baseMetadata[metaKey] != null
 				) {
 					//@ts-expect-error Silence error due to failed introspection...
-					pageMetadata[metaKey] = deepmerge(
-						baseMetadata[metaKey],
-						pageMetadata[metaKey],
-						{ arrayMerge: (target, source) => [...source] }
-					);
+					pageMetadata[metaKey] = deepmerge(baseMetadata[metaKey], pageMetadata[metaKey], {
+						arrayMerge: (target, source) => [...source],
+					});
 				}
 			}
 
@@ -328,7 +317,7 @@ export function createPage<
 			context.setComponentFactory(factory);
 
 			// Analyze the Next.JS Request props
-			const requestPath = propsToCmsPath(props); // là 1 cái path dạng string
+			const requestPath = await propsToCmsPath(props);
 			if (isDebug())
 				console.log(
 					`⚪ [CmsPage] Processed Next.JS route: ${JSON.stringify(
@@ -341,12 +330,9 @@ export function createPage<
 
 			// Resolve the content based upon the path
 			const requestVars = {
-				path: requestPath, // TODO: update for SAAS-CMS using pathForRequest
-				siteId: channel
-					? globalClient.currentOptiCmsSchema == OptiCmsSchema.CMS12
-						? channel.id
-						: getPrimaryURL(channel).href
-					: undefined,
+				path: requestPath,
+				siteId: await siteId(),
+				languageCode: process.env.SITE_LANGUAGE,
 			};
 			if (isDebug())
 				console.log(
@@ -359,15 +345,18 @@ export function createPage<
 			let response = await getContentByPath(globalClient, requestVars);
 			let info = (response?.B2BPage?.items ?? [])[0];
 
-			if (requestPath.includes("/product/") && !!getFixContent) {
+			if (requestPath.match(/\/\wroduct\//) && !!getFixContent) {
 				response = await getProductDetailByPath(globalClient, requestVars);
 				const responseFixContent = await getFixContent(globalClient, {
 					path:
 						(response?.Product?.items?.[0] as unknown as Record<string, any>)
-							.ChildTraitValuesContainer?.ChildTraitValues?.length > 0
+							?.ChildTraitValuesContainer?.ChildTraitValues?.length > 0
 							? "/PDPforvariant"
 							: "/PDPforproduct",
+					siteId: await siteId(),
+					languageCode: process.env.SITE_LANGUAGE,
 				});
+				if (!response?.Product?.items?.[0]) return notFound();
 
 				info = {
 					...(responseFixContent?.GenericPage?.items ?? [])[0],
@@ -392,18 +381,35 @@ export function createPage<
 				);
 			}
 
-			console.log({ info });
+			let seoData: any = { ...info, NoIndex: info.HideFromSearchEngines, NoFollow: false };
 
-			// Render the content link
+			if (info.Type === "ProductListPage" && info.CategoryId) {
+				const category = await getCategory(info.CategoryId);
+				if (category?.Category?.items?.[0]) {
+					const { PageTitle, MetaDescription, OpenGraphImage, OpenGraphUrl, OpenGraphTitle } =
+						category.Category.items[0] || {};
+					seoData.Title = PageTitle;
+					seoData.MetaDescription = MetaDescription;
+					seoData.OpenGraphDescription = MetaDescription;
+					seoData.OpenGraphImage = OpenGraphImage;
+					seoData.OpenGraphUrl = OpenGraphUrl;
+					seoData.OpenGraphTitle = OpenGraphTitle;
+				}
+			}
+
 			return (
-				<RenderAllWidgets
-					factory={factory}
-					categoryId={info.CategoryId}
-					widgets={info.WidgetContainer?.Widgets?.filter(
-						(widget: WidgetProps) => Object.keys(widget).length > 0
-					)}
-					info={info}
-				/>
+				<>
+					<DefaultPageSeo info={seoData} />
+					<RenderAllWidgets
+						factory={factory}
+						categoryId={info.CategoryId}
+						widgets={info.WidgetContainer?.Widgets?.filter(
+							(widget: WidgetProps) => Object.keys(widget).length > 0
+						)}
+						info={info}
+					/>
+					<JsonLdComponent info={info} />
+				</>
 			);
 		},
 	};
@@ -412,18 +418,18 @@ export function createPage<
 }
 
 /**
- *
+ * Builds the request path from the given parameters
  *
  * @param   param0  The URL parameters
  * @returns The request path as understood by Graph
  */
-function buildRequestPath({
+async function buildRequestPath({
 	lang,
 	path,
 }: {
 	lang?: string | null;
 	path?: (string | null)[] | null;
-}): string {
+}): Promise<string> {
 	const slugs: string[] = [];
 	if (path) slugs.push(...(path.filter((x) => x) as string[]));
 	if (lang) slugs.unshift(lang);
@@ -436,19 +442,5 @@ function buildRequestPath({
 			.map((x) => decodeURIComponent(x))
 			.join("/");
 
-	// TODO: double check fullPath here
-	// if (!slugs[slugs.length - 1].includes('.'))
-	//     return fullPath + '/'
 	return fullPath;
-}
-
-function getPrimaryURL(chnl: ChannelDefinition): URL {
-	const dd =
-		chnl.domains.filter((x) => x.isPrimary).at(0) ?? chnl.domains.at(0);
-	if (!dd) return chnl.getPrimaryDomain();
-	const s =
-		dd.name.startsWith("localhost") || dd.name.indexOf(".local") > 0
-			? "http:"
-			: "https:";
-	return new URL(`${s}//${dd.name}`);
 }

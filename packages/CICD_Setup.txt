@@ -1,0 +1,25 @@
+Now you have a complete automated CI/CD setup with:
+1. Automatic Version Bumping when PRs are merged to main/master
+- Uses the PR title to determine bump type (patch, minor, major)
+- Follows Conventional Commits format
+2. Automatic Publishing to npm
+- Publishes when new versions are pushed to main/master
+- Creates GitHub releases automatically
+- Only publishes if the version doesn't already exist
+3. Documentation Generation and Publishing
+- Generates API documentation using TypeDoc
+- Publishes to GitHub Pages automatically
+- Documentation is accessible via GitHub Pages URL
+To get this working:
+1. Add NPM Token to GitHub Secrets:
+- Generate an npm token at https://www.npmjs.com/settings/[your-username]/tokens
+- Go to your GitHub repository → Settings → Secrets and variables → Actions
+- Add a new repository secret called NPM_TOKEN with your npm token
+2. Enable GitHub Pages:
+- After the first docs workflow runs, go to GitHub repository → Settings → Pages
+- Set the source to "Deploy from a branch" and select "gh-pages" branch
+3. Add Documentation with TypeDoc Comments:
+- Add JSDoc comments to your components to improve documentation
+- Example:
+
+Your package is now fully set up for automated publishing and documentation generation!

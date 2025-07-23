@@ -1,7 +1,10 @@
 import { RowGridMap } from "@/components/widgets/BasicRow/gridMap";
 import { BasicRowProps } from "@/components/widgets/BasicRow/types";
 import { cn } from "@/lib/utils";
-import NavMenuItemCsr from "./NavMenuItemCsr";
+import dynamic from "next/dynamic";
+
+const NavMenuItemCsr = dynamic(() => import("./NavMenuItemCsr"))
+const NavMenuItemMobile = dynamic(() => import("./NavMenuItemMobile"))
 
 const NavMenuItem: React.FC<BasicRowProps> = (props) => {
 	const { children, __typename, Id, Columns, Variant } = props;
@@ -12,7 +15,7 @@ const NavMenuItem: React.FC<BasicRowProps> = (props) => {
 				data-component={__typename}
 				data-component-id={Id}
 				data-section={Variant}
-				className={cn("grid grid-cols-12 mx-auto gap-8 w-full")}
+				className={cn("hidden lg:grid grid-cols-12 mx-auto gap-8 w-full")}
 			>
 				{Array.isArray(children) ? (
 					children.map((child: any, index: number) => (
@@ -25,6 +28,7 @@ const NavMenuItem: React.FC<BasicRowProps> = (props) => {
 				)}
 			</div>
 			<NavMenuItemCsr {...props} />
+			<NavMenuItemMobile {...props} />
 		</>
 	);
 };

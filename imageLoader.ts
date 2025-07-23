@@ -12,11 +12,11 @@ export default function customImageLoader({ src, width }: { src: string; width: 
 
   // If it's a standard Next.js image URL without a quality parameter
   if (src.includes("/_next/image") || src.includes("_next/image")) {
-    return `${src}${src.includes("?") ? "&" : "?"}q=35`
+    return `${src}${src.includes("?") ? "&" : "?"}q=60`
   }
 
   // For regular image URLs, create the Next.js image URL structure
   const baseUrl = "/_next/image"
   const encodedUrl = encodeURIComponent(src)
-  return `${baseUrl}?url=${encodedUrl}&w=${width}&q=35`
+  return `${baseUrl}?url=${encodedUrl}&w=${width}&q=60`
 }

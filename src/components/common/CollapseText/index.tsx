@@ -6,14 +6,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 
 const CollapseText: React.FC<BasicBannerProps> = (props) => {
-	const {
-		Id,
-		Heading,
-		Subheading,
-		Description,
-		Variant,
-		ButtonLabel,
-	} = props;
+	const { Id, Heading, Subheading, Description, Variant, ButtonLabel } = props;
 
 	const CustomClass = {
 		Wrapper: "bg-transparent text-left items-start",
@@ -25,9 +18,7 @@ const CollapseText: React.FC<BasicBannerProps> = (props) => {
 		ClampText: "line-clamp-3",
 	};
 
-	const [collapseClass, setCollapseClass] = React.useState(
-		CustomClass.ClampText
-	);
+	const [collapseClass, setCollapseClass] = React.useState(CustomClass.ClampText);
 
 	return (
 		<div
@@ -68,6 +59,7 @@ const CollapseText: React.FC<BasicBannerProps> = (props) => {
 			{ButtonLabel && (
 				<div>
 					<Button
+						buttonLabel={ButtonLabel}
 						variant={(Variant as ButtonVariant) || "primary"}
 						className={CustomClass.CtaButton}
 						onClick={() => {

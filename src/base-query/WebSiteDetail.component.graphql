@@ -1,0 +1,15 @@
+query getWebSiteDetail {
+	Website {
+		items {
+			CompanyName
+			CompanyLogo
+			CompanyDescription
+			CompanyAddress1
+			CompanyCity
+			CompanyState
+			CompanyPostalCode
+			CompanyPhone
+			CompanyCountry
+		}
+	}
+}

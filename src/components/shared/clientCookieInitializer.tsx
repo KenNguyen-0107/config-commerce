@@ -1,12 +1,19 @@
 "use client"
 
+import { useUpdateCart } from "@/hook/useUpdateCart";
+import { useUpdateSiteSettings } from "@/hook/useUpdateSiteSettings";
 import useAuthenStore from "@/store/authen-store";
 import { useEffect } from "react";
 
 export function ClientCookieInitializer() {
 	const { setUserInfo } = useAuthenStore();
+	const { syncCurrentCart } = useUpdateCart();
+	const { fetchCountriesData } = useUpdateSiteSettings();
 
   useEffect(() => {
+		syncCurrentCart();
+    fetchCountriesData();
+
     const initializeClientCookies = async () => {
       try {
         const response = await fetch("/api/sessions/current")
@@ -36,7 +43,7 @@ export function ClientCookieInitializer() {
     }
 
     initializeClientCookies()
-  }, [setUserInfo])
+  }, [])
 
   return <></>
 }

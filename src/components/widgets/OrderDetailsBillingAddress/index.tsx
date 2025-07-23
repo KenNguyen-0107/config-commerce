@@ -1,14 +1,11 @@
 
 import React from 'react';
 import { OrderDetailsBillingAddressProps } from './types';
+import RenderOrderBilling from '@/app/my-account/orders/[orderId]/RenderOrderBilling';
 
 const OrderDetailsBillingAddress: React.FC<OrderDetailsBillingAddressProps> = (props) => {
-  console.log(`OrderDetailsBillingAddress props:`, props);
   return (
-    <>
-      <h1>OrderDetailsBillingAddress</h1>
-      {/* Render more fields from OrderDetailsBillingAddressData here */}
-    </>
+    <RenderOrderBilling />
   );
 };
 

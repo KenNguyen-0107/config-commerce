@@ -1,0 +1,38 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm install -g typedoc
+
+      - name: Generate documentation
+        run: |
+          # Create docs directory if it doesn't exist
+          mkdir -p docs
+          # Generate TypeDoc documentation
+          typedoc --out docs src --name "@niteco/jsonld-nextjs" --readme README.md
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: docs
+          branch: gh-pages
+          clean: true

@@ -1,28 +1,29 @@
 fragment LinkListData on LinkList {
-  __typename
-  Alignment
-  CustomCSS
-  Direction
-  Id
-  IsLayout
-  Links {
-    LinkItems {
-      Destination {
-        Type
-        Value
-      }
-      Icon
-      OpenInNewWindow
-      OverriddenTitle
-      OverrideTitle
-      Title
-    }
-  }
-  ParentId
-  Title
-  TitleLink {
-    Type
-    Value
-  }
-  Zone
+	__typename
+	Alignment
+	CustomCSS
+	Direction
+	Id
+	IsLayout
+	Links {
+		LinkItems {
+			Destination {
+				Type
+				Value
+				Url
+			}
+			Icon
+			OpenInNewWindow
+			OverriddenTitle
+			OverrideTitle
+			Title
+		}
+	}
+	ParentId
+	Title
+	TitleLink {
+		Type
+		Value
+	}
+	Zone
 }

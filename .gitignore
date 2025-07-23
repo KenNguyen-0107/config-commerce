@@ -31,7 +31,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env
+# .env
 
 # vercel
 .vercel
@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# SpecStory explanation file
+.specstory/.what-is-this.md
+
+/.specstory/*
+/packages/niteco-jsonld-nextjs/.cursorindexingignore
+/packages/niteco-jsonld-nextjs/.specstory*
+/packages/niteco-jsonld-nextjs/src/.cursorindexingignore
+/packages/niteco-jsonld-nextjs/src/.specstory/history/2025-05-06_04-24-typescript-config-file-issue.md
+/.cursorindexingignore
+/packages/.cursorindexingignore
+/packages/.specstory/*
+/packages/niteco-seo-nextjs/.specstory/*
+/packages/niteco-seo-nextjs/.cursorindexingignore

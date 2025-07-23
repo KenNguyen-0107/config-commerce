@@ -24,13 +24,13 @@ const MyShippingAddress = () => {
         // redirect to login page
         throw new Error("Failed to fetch current session");
       }
-      const reqGetCurrentBillTo = await fetch("/api/billTos/current");
+      const reqGetCurrentBillTo = await fetch("/api/billtos/current");
       if (!reqGetCurrentBillTo.ok) {
         throw new Error("Failed to fetch current bill to");
       }
 
       const currentBillToId = JSON.parse(await reqGetCurrentBillTo.text()).id
-      const getRelatedShipTo = await fetch(`/api/billTos/${currentBillToId}/shiptos/${currentBillToId}`)
+      const getRelatedShipTo = await fetch(`/api/billtos/${currentBillToId}/shiptos/${currentBillToId}`)
       if (!getRelatedShipTo.ok) {
         throw new Error("Failed to fetch related ship to")
       }
@@ -41,13 +41,11 @@ const MyShippingAddress = () => {
       // }
 
       // const allAddress = await fetchAddress()
-      const getAllShipTos = await fetch("/api/billTos/current/shipTos")
+      const getAllShipTos = await fetch("/api/billtos/current/shiptos")
       if (!getAllShipTos.ok) {
         throw new Error("Failed to fetch all ship tos")
       }
     
-      console.log('allAddressallAddress', JSON.parse(await getAllShipTos.text()));
-
       // => setState({ allAddress })
     };
 
@@ -60,7 +58,6 @@ const MyShippingAddress = () => {
 
   const handleSaveAddress = (formData: any) => {
     // Xử lý lưu địa chỉ mới
-    console.log("Saved address:", formData);
     // Cập nhật shipping address
     setIsModalOpen(false);
   };

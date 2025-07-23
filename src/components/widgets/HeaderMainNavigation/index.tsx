@@ -1,10 +1,12 @@
-import Icon from "@/components/shared/icons";
+import { SmartLink } from "@/components/shared/smartLink";
 import { LinkFields } from "@/gql/graphql";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import dynamic from "next/dynamic";
 import React, { Fragment } from "react";
-import NavMenuItem from "./NavMenuItem";
+import MegaMenu from "./MegaMenu";
 import { HeaderMainNavigationProps } from "./types";
+
+const MegaMenuMobile = dynamic(() => import("./Mobile/MegaMenu/MegaMenuMobile"));
 export interface ISubLinks {
 	Id?: string;
 	Level?: number;
@@ -26,31 +28,44 @@ const HeaderMainNavigation: React.FC<HeaderMainNavigationProps> = (props) => {
 	if (!data?.length || !Section) return null;
 
 	if (Section === "NavMenuItem") {
-		return <NavMenuItem linkItems={props.Links?.LinkItems as LinkFields[]} />;
+		return (
+			<>
+				<MegaMenu linkItems={data as LinkFields[]} />
+				<MegaMenuMobile linkItems={data as LinkFields[]} />
+			</>
+		);
 	}
 
 	return (
-		<div data-zone={Zone} className="hidden border-muted lg:block">
-			<div className="container mx-auto">
-				<nav className="flex items-center justify-between gap-4">
-					{data?.map((item, index) => (
-						<Fragment key={index}>
-							{index === 0 && Section === "NavSecondary" && (
-								<Icon iconName="wrench" size={24} viewSize={24} />
+		<div data-zone={Zone} className="container mx-auto">
+			<nav className="flex items-center justify-between gap-4">
+				{data?.map((item, index) => (
+					<Fragment key={index}>
+						{index === 0 && Section === "NavSecondary" && (
+							<img
+								src={`/icons/wrench.svg`}
+								alt="search"
+								width={24}
+								height={24}
+								className="hidden lg:inline-block"
+							/>
+						)}
+						<SmartLink
+							title={item?.Title || "link title"}
+							href={item?.Destination?.Url || ""}
+							className={cn(
+								"flex items-center space-x-1 border-b border-transparent hover:border-b-blue",
+								"text-xs md:text-base",
+								"text-center md:text-left",
+								"text-blue hover:text-blue/80",
+								index > 4 && "hidden md:block"
 							)}
-							<Link
-								title={item?.Title || "link title"}
-								href={item?.Destination?.Url || ""}
-								className={cn(
-									"flex items-center space-x-1 text-blue hover:text-blue/80 border-b border-transparent hover:border-b-blue"
-								)}
-							>
-								{item?.Title}
-							</Link>
-						</Fragment>
-					))}
-				</nav>
-			</div>
+						>
+							{item?.Title}
+						</SmartLink>
+					</Fragment>
+				))}
+			</nav>
 		</div>
 	);
 };

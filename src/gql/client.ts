@@ -181,6 +181,17 @@ export const BasicBannerDataFragmentDoc = gql`
   Loading
 }
     `;
+export const BasicBreadcrumbsDataFragmentDoc = gql`
+    fragment BasicBreadcrumbsData on BasicBreadcrumbs {
+  __typename
+  CustomCSS
+  Id
+  IsLayout
+  ParentId
+  Type
+  Zone
+}
+    `;
 export const BasicButtonDataFragmentDoc = gql`
     fragment BasicButtonData on BasicButton {
   __typename
@@ -951,6 +962,7 @@ export const LinkListDataFragmentDoc = gql`
       Destination {
         Type
         Value
+        Url
       }
       Icon
       OpenInNewWindow
@@ -1898,9 +1910,52 @@ export const SubscribeDataFragmentDoc = gql`
   Zone
 }
     `;
+export const getCategoryDocument = gql`
+    query getCategory($id: String!, $siteId: [String!]!) {
+  Category(where: {Id: {eq: $id}, Website: {Id: {in: $siteId}}}) {
+    items {
+      _deleted
+      _modified
+      _score
+      _id
+      Id
+      Name
+      ShortDescription
+      UrlSegment
+      SmallImagePath
+      LargeImagePath
+      ImageAltText
+      MetaKeywords
+      MetaDescription
+      HtmlContent
+      SortOrder
+      IsFeatured
+      IsDynamic
+      Path
+      MobileBannerImageUrl
+      MobilePrimaryText
+      MobileSecondaryText
+      MobileTextJustification
+      MobileTextColor
+      OpenGraphImage
+      OpenGraphTitle
+      OpenGraphUrl
+      PageTitle
+      ParentId
+      ContentManagerId
+      PropertyContainer {
+        Properties {
+          Name
+          Value
+        }
+      }
+    }
+  }
+}
+    `;
 export const getCheckoutShippingPageContentDocument = gql`
-    query getCheckoutShippingPageContent {
-  CheckoutShippingPage {
+    query getCheckoutShippingPageContent($siteId: String!) {
+  CheckoutShippingPage(where: {WebsiteId: {eq: $siteId}}) {
     items {
       Type
       WidgetContainer {
@@ -2014,8 +2069,8 @@ ${SharedContentDataFragmentDoc}
 ${SlideShowDataFragmentDoc}
 ${SubscribeDataFragmentDoc}`;
 export const getCheckoutReviewAndSubmitPageContentDocument = gql`
-    query getCheckoutReviewAndSubmitPageContent {
-  CheckoutReviewAndSubmitPage {
+    query getCheckoutReviewAndSubmitPageContent($siteId: String!) {
+  CheckoutReviewAndSubmitPage(where: {WebsiteId: {eq: $siteId}}) {
     items {
       Type
       WidgetContainer {
@@ -2129,8 +2184,8 @@ ${SharedContentDataFragmentDoc}
 ${SlideShowDataFragmentDoc}
 ${SubscribeDataFragmentDoc}`;
 export const getOrderConfirmationPageContentDocument = gql`
-    query getOrderConfirmationPageContent {
-  OrderConfirmationPage {
+    query getOrderConfirmationPageContent($siteId: String!) {
+  OrderConfirmationPage(where: {WebsiteId: {eq: $siteId}}) {
     items {
       Type
       WidgetContainer {
@@ -2321,13 +2376,20 @@ ${SharedContentDataFragmentDoc}
 ${SlideShowDataFragmentDoc}
 ${SubscribeDataFragmentDoc}`;
 export const getContentByPathDocument = gql`
-    query getContentByPath($path: String!) {
-  B2BPage(where: {Url: {eq: $path}}) {
+    query getContentByPath($path: String!, $siteId: String!) {
+  B2BPage(where: {Url: {eq: $path}, WebsiteId: {eq: $siteId}}) {
     items {
       Type
       ...B2BHomePageData
       ...B2BPageData
       ...ProductListPageData
+      BreadcrumbContainer {
+        BreadCrumbs {
+          PageUrl
+          PageTitle
+          PageId
+        }
+      }
       WidgetContainer {
         __typename
         Widgets {
@@ -2398,8 +2460,8 @@ ${SharedContentDataFragmentDoc}
 ${SlideShowDataFragmentDoc}
 ${SubscribeDataFragmentDoc}`;
 export const getContentByTypeDocument = gql`
-    query getContentByType($type: String!) {
-  B2BPage(where: {Type: {eq: $type}}) {
+    query getContentByType($type: String!, $siteId: String!) {
+  B2BPage(where: {Type: {eq: $type}, WebsiteId: {eq: $siteId}}) {
     items {
       Type
       ...B2BHomePageData
@@ -2637,10 +2699,17 @@ ${SignInExistingAccountDataFragmentDoc}
 ${SlideShowDataFragmentDoc}
 ${SubscribeDataFragmentDoc}`;
 export const getMyAccountPageContentDocument = gql`
-    query getMyAccountPageContent {
-  MyAccountPage {
+    query getMyAccountPageContent($siteId: String!) {
+  MyAccountPage(where: {WebsiteId: {eq: $siteId}}) {
     items {
       Type
+      BreadcrumbContainer {
+        BreadCrumbs {
+          PageId
+          PageUrl
+          PageTitle
+        }
+      }
       WidgetContainer {
         __typename
         Widgets {
@@ -2774,10 +2843,17 @@ ${SharedContentDataFragmentDoc}
 ${SignInCreateNewAccountDataFragmentDoc}
 ${SignInExistingAccountDataFragmentDoc}`;
 export const getAddressesPageContentDocument = gql`
-    query getAddressesPageContent {
-  AddressesPage {
+    query getAddressesPageContent($siteId: String!) {
+  AddressesPage(where: {WebsiteId: {eq: $siteId}}) {
     items {
       Type
+      BreadcrumbContainer {
+        BreadCrumbs {
+          PageId
+          PageUrl
+          PageTitle
+        }
+      }
       WidgetContainer {
         __typename
         Widgets {
@@ -2911,10 +2987,17 @@ ${SharedContentDataFragmentDoc}
 ${SignInCreateNewAccountDataFragmentDoc}
 ${SignInExistingAccountDataFragmentDoc}`;
 export const getOrderHistoryPageContentDocument = gql`
-    query getOrderHistoryPageContent {
-  OrderHistoryPage {
+    query getOrderHistoryPageContent($siteId: String!) {
+  OrderHistoryPage(where: {WebsiteId: {eq: $siteId}}) {
     items {
       Type
+      BreadcrumbContainer {
+        BreadCrumbs {
+          PageId
+          PageUrl
+          PageTitle
+        }
+      }
       WidgetContainer {
         __typename
         Widgets {
@@ -3048,14 +3131,22 @@ ${SharedContentDataFragmentDoc}
 ${SignInCreateNewAccountDataFragmentDoc}
 ${SignInExistingAccountDataFragmentDoc}`;
 export const getOrderDetailsPageContentDocument = gql`
-    query getOrderDetailsPageContent {
-  OrderDetailsPage {
+    query getOrderDetailsPageContent($siteId: String!) {
+  OrderDetailsPage(where: {WebsiteId: {eq: $siteId}}) {
     items {
       Type
+      BreadcrumbContainer {
+        BreadCrumbs {
+          PageId
+          PageUrl
+          PageTitle
+        }
+      }
       WidgetContainer {
         __typename
         Widgets {
           ...BasicRowData
+          ...BasicRichContentData
           ...BasicGridData
           ...BasicNavigationListData
           ...AddressBookData
@@ -3123,6 +3214,7 @@ export const getOrderDetailsPageContentDocument = gql`
   }
 }
     ${BasicRowDataFragmentDoc}
+${BasicRichContentDataFragmentDoc}
 ${BasicGridDataFragmentDoc}
 ${BasicNavigationListDataFragmentDoc}
 ${AddressBookDataFragmentDoc}
@@ -3185,10 +3277,17 @@ ${SharedContentDataFragmentDoc}
 ${SignInCreateNewAccountDataFragmentDoc}
 ${SignInExistingAccountDataFragmentDoc}`;
 export const getRequestRmaPageContentDocument = gql`
-    query getRequestRmaPageContent {
-  RequestRmaPage {
+    query getRequestRmaPageContent($siteId: String!) {
+  RequestRmaPage(where: {WebsiteId: {eq: $siteId}}) {
     items {
       Type
+      BreadcrumbContainer {
+        BreadCrumbs {
+          PageId
+          PageUrl
+          PageTitle
+        }
+      }
       WidgetContainer {
         __typename
         Widgets {
@@ -3321,6 +3420,51 @@ ${RequestRmaProductListButtonsDataFragmentDoc}
 ${SharedContentDataFragmentDoc}
 ${SignInCreateNewAccountDataFragmentDoc}
 ${SignInExistingAccountDataFragmentDoc}`;
+export const getNotFoundErrorPageDocument = gql`
+    query getNotFoundErrorPage($siteId: String!) {
+  NotFoundErrorPage(where: {WebsiteId: {eq: $siteId}}) {
+    items {
+      _id
+      Id
+      Status
+      PageStatus
+      WidgetContainer {
+        __typename
+        Widgets {
+          ... on BasicRichContent {
+            __typename
+            BackgroundColor
+            Content
+            CssClass
+            CustomCSS
+            Id
+            IsLayout
+            Padding
+            ParentId
+            Zone
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const getProductListPageDocument = gql`
+    query getProductListPage($url: String!, $siteId: String!) {
+  ProductListPage(where: {Url: {eq: $url}, WebsiteId: {eq: $siteId}}) {
+    items {
+      BreadcrumbContainer {
+        BreadCrumbs {
+          PageId
+          PageUrl
+          PageTitle
+        }
+      }
+      CategoryId
+    }
+  }
+}
+    `;
 export const getProductsByCategoryIdsDocument = gql`
     query getProductsByCategoryIds($ids: [String!]!) {
   Product(where: {Categories: {in: $ids}}) {
@@ -3334,6 +3478,13 @@ export const getProductsByIdsDocument = gql`
     query getProductsByIds($ids: [String!]!) {
   Product(where: {Id: {in: $ids}}) {
     items {
+      BreadcrumbContainer {
+        BreadCrumbs {
+          PageId
+          PageUrl
+          PageTitle
+        }
+      }
       ...ProductData
     }
   }
@@ -3349,9 +3500,17 @@ export const getProductDetailByPathDocument = gql`
 }
     ${ProductDataFragmentDoc}`;
 export const getProductDetailCmsPageDocument = gql`
-    query getProductDetailCmsPage($path: String!) {
-  GenericPage(where: {Url: {eq: $path}}) {
+    query getProductDetailCmsPage($path: String!, $siteId: String!) {
+  GenericPage(where: {Url: {eq: $path}, WebsiteId: {eq: $siteId}}) {
     items {
+      BreadcrumbContainer {
+        BreadCrumbs {
+          PageId
+          PageUrl
+          PageTitle
+          CategoryId
+        }
+      }
       WidgetContainer {
         __typename
         Widgets {
@@ -3414,6 +3573,44 @@ ${ProductListCardListDataFragmentDoc}
 ${ProductListColumnsDataFragmentDoc}
 ${SharedContentDataFragmentDoc}
 ${SlideShowDataFragmentDoc}`;
+export const getRatingReviewDocument = gql`
+    query getRatingReview($url: String!) {
+  RatingAndReviewPage(where: {Destination: {Url: {eq: $url}}}) {
+    items {
+      Status
+      Id
+      LayoutPageId
+      Name
+      NodeId
+      ParentId
+      SortOrder
+      TemplateHash
+      Type
+      VariantName
+      WebsiteId
+      ExcludeFromNavigation
+      ExcludeFromSignInRequired
+      HideBreadcrumbs
+      HideFooter
+      HideHeader
+      HorizontalRule
+      LayoutPage
+      StructuredPageData
+      MetaKeywords
+      MetaDescription
+      OpenGraphTitle
+      OpenGraphUrl
+      OpenGraphImage
+      Title
+      UrlSegment
+      Url
+      Body
+      Rating
+      Verified
+    }
+  }
+}
+    `;
 export const getProductByKeywordDocument = gql`
     query getProductByKeyword($keyword: String!) {
   Product(where: {_fulltext: {contains: $keyword}}) {
@@ -3424,8 +3621,8 @@ export const getProductByKeywordDocument = gql`
 }
     ${ProductDataFragmentDoc}`;
 export const getSiginPageContentDocument = gql`
-    query getSiginPageContent {
-  SignInPage {
+    query getSiginPageContent($siteId: String!) {
+  SignInPage(where: {WebsiteId: {eq: $siteId}}) {
     items {
       WidgetContainer {
         Widgets {
@@ -3540,12 +3737,123 @@ ${SignInCreateNewAccountDataFragmentDoc}
 ${SignInExistingAccountDataFragmentDoc}
 ${SlideShowDataFragmentDoc}
 ${SubscribeDataFragmentDoc}`;
-export const getAddressDocument = gql`
-    query getAddress {
-  Website {
+export const getSiteSettingsDocument = gql`
+    query getSiteSettings($siteId: [String!]!) {
+  SettingsCollection(where: {Website: {Id: {in: $siteId}}}) {
     items {
-      Id
-      ParentId
+      AccountSettings {
+        AllowCreateAccount
+        AllowGuestCheckout
+        AllowSubscribeToNewsLetter
+        AllowEmptyShipping
+        RequireSelectCustomerOnSignIn
+        PasswordMinimumLength
+        PasswordMinimumRequiredLength
+        PasswordRequiresSpecialCharacter
+        PasswordRequiresUppercase
+        PasswordRequiresLowercase
+        PasswordRequiresDigit
+        RememberMe
+        KeepMeSignedIn
+        DaysToRetainUser
+        UseEmailAsUserName
+        EnableWarehousePickup
+        LogOutUserAfterPasswordChange
+        RequireActivateAccount
+      }
+      CartSettings {
+        CanRequestDeliveryDate
+        CanRequisition
+        CanEditCostCode
+        AddToCartPopupTimeout
+        BypassCvvForSavedCards
+        EnableRequestPickUpDate
+        EnableSavedCreditCards
+        MaximumDeliveryPeriod
+        OnePageCheckout
+        RequiresPoNumber
+        ShowCostCode
+        ShowCreditCard
+        ShowLineNotes
+        ShowNewsletterSignup
+        ShowPayPal
+        ShowPoNumber
+        ShowTaxAndShipping
+      }
+      ProductSettings {
+        AllowBackOrder
+        AllowBackOrderForDelivery
+        AllowBackOrderForPickup
+        AlternateUnitsOfMeasure
+        AttributesTabSortOrder
+        CanAddToCart
+        CanSeePrices
+        CanSeeProducts
+        CanShowPriceFilters
+        CatalogUrlPath
+        DefaultViewType
+        DisplayAttributesInTabs
+        DisplayDocumentsInTabs
+        DisplayFacetsForStockedItems
+        DisplayInventoryPerWarehouse
+        DisplayInventoryPerWarehouseOnlyOnProductDetail
+        DocumentsTabSortOrder
+        EnableProductComparisons
+        EnableProductRecommendations
+        EnableVat
+        ImageProvider
+        InventoryIncludedWithPricing
+        LowStockQuantity
+        NumberOfProductsToLoad
+        PeeriusApiVersion
+        PeeriusSiteName
+        PeeriusTrackingUrl
+        PricingService
+        ProductLoadStyle
+        RealTimeInventory
+        RealTimePricing
+        ShowAddToCartConfirmationDialog
+        ShowInventoryAvailability
+        ShowSavingsAmount
+        ShowSavingsPercent
+        StorefrontAccess
+        ThirdPartyReviews
+        UseUpdatedRoundingLogic
+        VatPriceDisplay
+      }
+      WebsiteSettings {
+        DefaultPageSize
+      }
+      CustomerSettings {
+        AllowBillToAddressEdit
+        AllowShipToAddressEdit
+        AllowCreateNewShipToAddress
+        BillToCompanyRequired
+        BillToFirstNameRequired
+        BillToLastNameRequired
+        ShipToCompanyRequired
+        ShipToFirstNameRequired
+        ShipToLastNameRequired
+        BudgetsFromOnlineOnly
+        BillToStateRequired
+        ShipToStateRequired
+        DisplayAccountsReceivableBalances
+        AllowOneTimeAddresses
+      }
+    }
+  }
+}
+    `;
+export const getWebSiteInfoDocument = gql`
+    query getWebSiteInfo($siteId: [String!]!) {
+  Website(where: {Id: {in: $siteId}}) {
+    items {
+      SiteMessageContainer {
+        SiteMessages {
+          Key
+          Value
+        }
+      }
       BillToAddressContainer {
         BillToAddresses {
           FieldName
@@ -3572,96 +3880,6 @@ export const getAddressDocument = gql`
   }
 }
     `;
-export const getRatingReviewDocument = gql`
-    query getRatingReview($url: String!) {
-  RatingAndReviewPage(where: {Destination: {Url: {eq: $url}}}) {
-    items {
-      Status
-      Id
-      LayoutPageId
-      Name
-      NodeId
-      ParentId
-      SortOrder
-      TemplateHash
-      Type
-      VariantName
-      WebsiteId
-      ExcludeFromNavigation
-      ExcludeFromSignInRequired
-      HideBreadcrumbs
-      HideFooter
-      HideHeader
-      HorizontalRule
-      LayoutPage
-      StructuredPageData
-      MetaKeywords
-      MetaDescription
-      OpenGraphTitle
-      OpenGraphUrl
-      OpenGraphImage
-      Title
-      UrlSegment
-      Url
-      Body
-      Rating
-      Verified
-    }
-  }
-}
-    `;
-export const getCategoryDocument = gql`
-    query getCategory($id: String!) {
-  Category(where: {Id: {eq: $id}}) {
-    items {
-      _deleted
-      _modified
-      _score
-      _id
-      Id
-      Name
-      ShortDescription
-      UrlSegment
-      SmallImagePath
-      LargeImagePath
-      ImageAltText
-      MetaKeywords
-      MetaDescription
-      HtmlContent
-      SortOrder
-      IsFeatured
-      IsDynamic
-      Path
-      MobileBannerImageUrl
-      MobilePrimaryText
-      MobileSecondaryText
-      MobileTextJustification
-      MobileTextColor
-      OpenGraphImage
-      OpenGraphTitle
-      OpenGraphUrl
-      PageTitle
-      ParentId
-      ContentManagerId
-      PropertyContainer {
-        Properties {
-          Name
-          Value
-        }
-      }
-    }
-  }
-}
-    `;
-export const getProductListPageDocument = gql`
-    query getProductListPage($url: String!) {
-  ProductListPage(where: {Url: {eq: $url}}) {
-    items {
-      CategoryId
-    }
-  }
-}
-    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -3670,13 +3888,16 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getCheckoutShippingPageContent(variables?: Schema.getCheckoutShippingPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getCheckoutShippingPageContentQuery> {
+    getCategory(variables: Schema.getCategoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getCategoryQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getCategoryQuery>(getCategoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategory', 'query', variables);
+    },
+    getCheckoutShippingPageContent(variables: Schema.getCheckoutShippingPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getCheckoutShippingPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getCheckoutShippingPageContentQuery>(getCheckoutShippingPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCheckoutShippingPageContent', 'query', variables);
     },
-    getCheckoutReviewAndSubmitPageContent(variables?: Schema.getCheckoutReviewAndSubmitPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getCheckoutReviewAndSubmitPageContentQuery> {
+    getCheckoutReviewAndSubmitPageContent(variables: Schema.getCheckoutReviewAndSubmitPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getCheckoutReviewAndSubmitPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getCheckoutReviewAndSubmitPageContentQuery>(getCheckoutReviewAndSubmitPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCheckoutReviewAndSubmitPageContent', 'query', variables);
     },
-    getOrderConfirmationPageContent(variables?: Schema.getOrderConfirmationPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getOrderConfirmationPageContentQuery> {
+    getOrderConfirmationPageContent(variables: Schema.getOrderConfirmationPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getOrderConfirmationPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getOrderConfirmationPageContentQuery>(getOrderConfirmationPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrderConfirmationPageContent', 'query', variables);
     },
     getContentById(variables: Schema.getContentByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getContentByIdQuery> {
@@ -3688,20 +3909,26 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getContentByType(variables: Schema.getContentByTypeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getContentByTypeQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getContentByTypeQuery>(getContentByTypeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getContentByType', 'query', variables);
     },
-    getMyAccountPageContent(variables?: Schema.getMyAccountPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getMyAccountPageContentQuery> {
+    getMyAccountPageContent(variables: Schema.getMyAccountPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getMyAccountPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getMyAccountPageContentQuery>(getMyAccountPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMyAccountPageContent', 'query', variables);
     },
-    getAddressesPageContent(variables?: Schema.getAddressesPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getAddressesPageContentQuery> {
+    getAddressesPageContent(variables: Schema.getAddressesPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getAddressesPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getAddressesPageContentQuery>(getAddressesPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAddressesPageContent', 'query', variables);
     },
-    getOrderHistoryPageContent(variables?: Schema.getOrderHistoryPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getOrderHistoryPageContentQuery> {
+    getOrderHistoryPageContent(variables: Schema.getOrderHistoryPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getOrderHistoryPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getOrderHistoryPageContentQuery>(getOrderHistoryPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrderHistoryPageContent', 'query', variables);
     },
-    getOrderDetailsPageContent(variables?: Schema.getOrderDetailsPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getOrderDetailsPageContentQuery> {
+    getOrderDetailsPageContent(variables: Schema.getOrderDetailsPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getOrderDetailsPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getOrderDetailsPageContentQuery>(getOrderDetailsPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrderDetailsPageContent', 'query', variables);
     },
-    getRequestRmaPageContent(variables?: Schema.getRequestRmaPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getRequestRmaPageContentQuery> {
+    getRequestRmaPageContent(variables: Schema.getRequestRmaPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getRequestRmaPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getRequestRmaPageContentQuery>(getRequestRmaPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getRequestRmaPageContent', 'query', variables);
+    },
+    getNotFoundErrorPage(variables: Schema.getNotFoundErrorPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getNotFoundErrorPageQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getNotFoundErrorPageQuery>(getNotFoundErrorPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNotFoundErrorPage', 'query', variables);
+    },
+    getProductListPage(variables: Schema.getProductListPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getProductListPageQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getProductListPageQuery>(getProductListPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductListPage', 'query', variables);
     },
     getProductsByCategoryIds(variables: Schema.getProductsByCategoryIdsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getProductsByCategoryIdsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getProductsByCategoryIdsQuery>(getProductsByCategoryIdsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsByCategoryIds', 'query', variables);
@@ -3715,23 +3942,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getProductDetailCmsPage(variables: Schema.getProductDetailCmsPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getProductDetailCmsPageQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getProductDetailCmsPageQuery>(getProductDetailCmsPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductDetailCmsPage', 'query', variables);
     },
-    getProductByKeyword(variables: Schema.getProductByKeywordQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getProductByKeywordQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getProductByKeywordQuery>(getProductByKeywordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductByKeyword', 'query', variables);
-    },
-    getSiginPageContent(variables?: Schema.getSiginPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getSiginPageContentQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getSiginPageContentQuery>(getSiginPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSiginPageContent', 'query', variables);
-    },
-    getAddress(variables?: Schema.getAddressQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getAddressQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getAddressQuery>(getAddressDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAddress', 'query', variables);
-    },
     getRatingReview(variables: Schema.getRatingReviewQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getRatingReviewQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getRatingReviewQuery>(getRatingReviewDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getRatingReview', 'query', variables);
     },
-    getCategory(variables: Schema.getCategoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getCategoryQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getCategoryQuery>(getCategoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategory', 'query', variables);
+    getProductByKeyword(variables: Schema.getProductByKeywordQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getProductByKeywordQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getProductByKeywordQuery>(getProductByKeywordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductByKeyword', 'query', variables);
     },
-    getProductListPage(variables: Schema.getProductListPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getProductListPageQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getProductListPageQuery>(getProductListPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductListPage', 'query', variables);
+    getSiginPageContent(variables: Schema.getSiginPageContentQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getSiginPageContentQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getSiginPageContentQuery>(getSiginPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSiginPageContent', 'query', variables);
+    },
+    getSiteSettings(variables: Schema.getSiteSettingsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getSiteSettingsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getSiteSettingsQuery>(getSiteSettingsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSiteSettings', 'query', variables);
+    },
+    getWebSiteInfo(variables: Schema.getWebSiteInfoQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getWebSiteInfoQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getWebSiteInfoQuery>(getWebSiteInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWebSiteInfo', 'query', variables);
     }
   };
 }

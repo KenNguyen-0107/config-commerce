@@ -1,298 +1,299 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Form } from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox"
 
+import { HttpMethod } from "@/app/api/clientApi";
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import { useUpdateCart } from "@/hook/useUpdateCart";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cart-store";
+import { useSiteSettingsStore } from "@/store/site-settings-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { getValidateCurrentSession } from "../review/utils";
 import BillingAddress from "./BillingAddress";
 import ShippingAddress from "./ShippingAddress";
-
-export const formSchema = z.object({
-  shippingAddress: z.object({
-    title: z.string(),
-    firstName: z.string(),
-    surName: z.string(),
-    companyName: z.string(),
-    email: z.string()
-      .min(1, "Email is required")
-      .regex(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Please enter a valid email address"
-      ),
-    state: z.string().optional(),
-    fax: z.string().optional(),
-    phone: z
-      .string()
-      .min(1, "Phone is required")
-      .regex(/^[0-9\s\-\+]{10,}$/, "Please enter a valid phone number")
-      .transform((val) => Number(val)),
-    addressLine1: z.string(),
-    addressLine2: z.string(),
-    addressLine3: z.string().optional(),
-    addressLine4: z.string().optional(),
-    townCity: z.string(),
-    postCode: z
-      .string()
-      .transform((val) => Number(val)), // transform string to number
-    country: z.string(),
-  }),
-  billingAddress: z.object({
-    title: z.string(),
-    firstName: z.string(),
-    surName: z.string(),
-    companyName: z.string(),
-    email: z.string()
-      .min(1, "Email is required")
-      .regex(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Please enter a valid email address"
-      ),
-    state: z.string().optional(),
-    fax: z.string().optional(),
-    phone: z
-      .string()
-      .min(1, "Phone is required")
-      .regex(/^[0-9\s\-\+]{10,}$/, "Please enter a valid phone number")
-      .transform((val) => Number(val)),
-    addressLine1: z.string(),
-    addressLine2: z.string(),
-    addressLine3: z.string().optional(),
-    addressLine4: z.string().optional(),
-    townCity: z.string(),
-    postCode: z
-      .string()
-      .transform((val) => Number(val)), // transform string to number
-    country: z.string(),
-  }),
-  sameAsShipping: z.boolean().default(true),
-});
-export interface AddressField {
-  FieldName: string;
-  DisplayName: string;
-  IsVisible: boolean;
-  IsSystemField: boolean;
-  IsRequired: boolean;
-  IsMaxFieldLengthRequired: boolean;
-  MaxFieldLength: number;
-}
-
-export interface AddressContainer {
-  ShipToAddresses: AddressField[];
-  BillToAddresses: AddressField[];
-}
-
-export interface AddressDataProps {
-  Id: string;
-  ParentId: string | null;
-  BillToAddressContainer: AddressContainer;
-  ShipToAddressContainer: AddressContainer;
-}
+import { AddressDataProps } from "./types";
+import { DEFAULT_INFO, formSchema } from "./utils";
 
 type FormValues = z.infer<typeof formSchema>;
 
 const UserAddressInfo = ({ data }: { data: AddressDataProps }) => {
-  const [sameAsShipping, setSameAsShipping] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { updateUserInfo, userInfo } = useCartStore();
-  const router = useRouter();
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [sessionData, setSessionData] = useState<{ shipTo: any; billTo: any } | undefined>(
+		undefined
+	);
 
-  const updateUserAddreses = (values: z.infer<typeof formSchema>) => {
-    console.log('values.billingAddress', values.billingAddress);
-    console.log('values.shippingAddress', values.shippingAddress);
+	const router = useRouter();
+	const { updateUserInfo, isLoadingCart, items, sameAsShipping, setSameAsShipping } =
+		useCartStore();
+	const { syncCurrentCart } = useUpdateCart();
+	const { countries } = useSiteSettingsStore();
 
-    const updateAddress = (
-      type: "billing" | "shipping",
-      address: typeof values.billingAddress | typeof values.shippingAddress
-    ) => {
-      updateUserInfo(type, {
-        customerName: address.title,
-        state: address.state,
-        fax: address.fax,
-        firstName: address.firstName,
-        lastName: address.surName,
-        companyName: address.companyName,
-        email: address.email,
-        phone: address.phone,
-        addressLine1: address.addressLine1,
-        addressLine2: address.addressLine2,
-        addressLine3: address.addressLine3,
-        addressLine4: address.addressLine4,
-        city: address.townCity,
-        postCode: address.postCode,
-        country: address.country,
-      });
-    };
+	const updateUserAddreses = (values: z.infer<typeof formSchema>) => {
+		const updateAddress = (
+			type: "billing" | "shipping",
+			address: typeof values.billingAddress | typeof values.shippingAddress
+		) => {
+			updateUserInfo(type, {
+				firstName: address.firstName,
+				lastName: address.lastName,
+				companyName: address.companyName,
+				address1: address.address1,
+				address2: address.address2,
+				address3: address.address3,
+				address4: address.address4,
+				city: address.city,
+				state: address.state,
+				country: address.country,
+				postalCode: address.postalCode,
+				fax: address.fax,
+				phone: address.phone,
+				email: address.email,
+			});
+		};
 
-    updateAddress("shipping", values.shippingAddress);
-    updateAddress("billing", sameAsShipping ? values.shippingAddress : values.billingAddress);
-  };
+		updateAddress("shipping", values.shippingAddress);
+		updateAddress("billing", sameAsShipping ? values.shippingAddress : values.billingAddress);
+	};
 
-  const defaultShipping = {
-    title: userInfo.shipping.customerName || "",
-    firstName: userInfo.shipping.firstName || "",
-    surName: userInfo.shipping.lastName || "",
-    companyName: userInfo.shipping.companyName || "",
-    email: userInfo.shipping.email || "",
-    phone: userInfo.shipping.phone || ("" as unknown as number),
-    addressLine1: userInfo.shipping.addressLine1 || "",
-    addressLine2: userInfo.shipping.addressLine2 || "",
-    addressLine3: userInfo.shipping.addressLine3 || "",
-    addressLine4: userInfo.shipping.addressLine4 || "",
-    townCity: userInfo.shipping.city || "",
-    postCode: userInfo.shipping.postCode || ("" as unknown as number),
-    country: userInfo.shipping.country || "",
-    state: userInfo.shipping.state || "",
-    fax: userInfo.shipping.fax || "",
-  };
+	const form = useForm<FormValues>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			shippingAddress: !!sessionData?.shipTo ? sessionData.shipTo : DEFAULT_INFO,
+			billingAddress: !!sessionData?.billTo ? sessionData?.billTo : DEFAULT_INFO,
+			sameAsShipping: sameAsShipping,
+			notes: "",
+		},
+	});
 
-  const defaultBilling = {
-    title: userInfo.billing.customerName || "",
-    firstName: userInfo.billing.firstName || "",
-    surName: userInfo.billing.lastName || "",
-    companyName: userInfo.billing.companyName || "",
-    email: userInfo.billing.email || "",
-    phone: userInfo.billing.phone || ("" as unknown as number),
-    addressLine1: userInfo.billing.addressLine1 || "",
-    addressLine2: userInfo.billing.addressLine2 || "",
-    addressLine3: userInfo.billing.addressLine3 || "",
-    addressLine4: userInfo.billing.addressLine4 || "",
-    townCity: userInfo.billing.city || "",
-    postCode: userInfo.billing.postCode || ("" as unknown as number),
-    country: userInfo.billing.country || "",
-    state: userInfo.billing.state || "",
-    fax: userInfo.billing.fax || "",
-  };
+	const fetchCurrentCart = useCallback(async () => {
+		const cart = await syncCurrentCart();
+		form.setValue("notes", cart?.notes);
+	}, []);
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      shippingAddress: defaultShipping,
-      billingAddress: defaultShipping,
-      sameAsShipping,
-    },
-    
-  });
+	const fetchCurrentSession = useCallback(async () => {
+		setSessionData(await getValidateCurrentSession());
+	}, []);
 
-  async function onSubmit(formEvent: FormEvent<HTMLFormElement>, data: FormValues) {
-    formEvent.preventDefault();
-    try {
-      setIsSubmitting(true);
-      // Validate all required fields
-      if(sameAsShipping) {
-        form.setValue("billingAddress", form.getValues("shippingAddress"))
-      }
-      const result = await form.trigger();
-      if (!result) {
-        // If validation fails, scroll to the first error
-        const firstError = document.querySelector('[aria-invalid="true"]');
-        firstError?.scrollIntoView({ behavior: "smooth", block: "center" });
-        return;
-      }
+	useEffect(() => {
+		form.setValue("shippingAddress", {
+			...sessionData?.shipTo,
+			country: sessionData?.shipTo?.country?.id,
+		});
+		form.setValue("billingAddress", {
+			...sessionData?.billTo,
+			country: sessionData?.billTo?.country?.id,
+		});
+	}, [sessionData]);
 
-      updateUserAddreses(data);
+	useEffect(() => {
+		if (!isLoadingCart && items.length === 0) {
+			router.push("/cart");
+		}
+	}, [isLoadingCart, items.length, router]);
 
-      const patchUserInfo = await fetch("/api/cart/current", {
-        method: "PATCH",
-        body: JSON.stringify(data),
-      });
+	useEffect(() => {
+		fetchCurrentCart();
+		fetchCurrentSession();
+	}, [router]);
 
-      if (patchUserInfo.status !== 200) return
-      const reqValidate = await fetch(
-        "/api/cart/full-validate",
-        {
-          method: "GET"
-        }
-      )
-      console.log({ reqValidate })
-      if (reqValidate.status !== 200) return
+	async function onSubmit(formEvent: FormEvent<HTMLFormElement>, data: FormValues) {
+		formEvent.preventDefault();
+		try {
+			setIsSubmitting(true);
+			// Validate all required fields
+			if (data.sameAsShipping) {
+				form.setValue("billingAddress", form.getValues("shippingAddress"));
+			}
 
-      router.push("/checkout/review");
+			await form.trigger();
+			const firstError = document.querySelector('[aria-invalid="true"]');
+			if (firstError) {
+				firstError?.scrollIntoView({ behavior: "smooth", block: "center" });
+				return;
+			}
 
-      // Proceed to next step
-      console.log("Proceeding to step 2");
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+			updateUserAddreses(data);
+			const reqAddNewAddress = await fetch(
+				`/api/billtos/${sessionData?.billTo?.id}/shiptos${
+					sessionData?.shipTo?.id ? "/" + sessionData?.shipTo?.id : ""
+				}`,
+				{
+					method: sessionData?.shipTo?.id ? "PATCH" : "POST",
+					body: JSON.stringify({
+						...data.shippingAddress,
+						country: {
+							...countries.find((c) => c.id === data.shippingAddress.country),
+							states: [],
+						},
+						state: countries
+							.find((c) => c.id === data.shippingAddress.country)
+							?.states?.find((s) => s.id === data.shippingAddress.state),
+					}),
+				}
+			);
+			if (!reqAddNewAddress.ok) return;
+			const patchUserInfo = await fetch("/api/cart/current", {
+				method: "PATCH",
+				body: sameAsShipping
+					? JSON.stringify({
+							...data,
+							billingAddress: {
+								...data.shippingAddress,
+								country: {
+									...countries.find((c) => c.id === data.shippingAddress.country),
+									states: [],
+								},
+								state: countries
+									.find((c) => c.id === data.shippingAddress.country)
+									?.states?.find((s) => s.id === data.shippingAddress.state),
+							},
+					  })
+					: JSON.stringify({
+							...data,
+							shippingAddress: {
+								...data.shippingAddress,
+								country: {
+									...countries.find((c) => c.id === data.shippingAddress.country),
+									states: [],
+								},
+								state: countries
+									.find((c) => c.id === data.shippingAddress.country)
+									?.states?.find((s) => s.id === data.shippingAddress.state),
+							},
+							billingAddress: {
+								...data.billingAddress,
+								country: {
+									...countries.find((c) => c.id === data.billingAddress.country),
+									states: [],
+								},
+								state: countries
+									.find((c) => c.id === data.billingAddress.country)
+									?.states?.find((s) => s.id === data.billingAddress.state),
+							},
+							sameAsShipping: false,
+					  }),
+			});
+			if (!patchUserInfo.ok) return;
+			const resPatchUserInfo = JSON.parse(await patchUserInfo.text());
 
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={(e) => onSubmit(e, form.getValues())}
-        className="space-y-10"
-      >
-        <ShippingAddress
-          data={data.ShipToAddressContainer.ShipToAddresses}
-          form={form}
-        />
-        <div className="h-[1px] w-full bg-muted"></div>
-        <div className="">
-          <h2 className="text-xl font-semibold text-blue mb-4">
-            BILLING ADDRESS
-          </h2>
+			if (!sameAsShipping) {
+				const reqSaveAddressInfo = await fetch(`/api/billtos/${resPatchUserInfo?.billTo?.id}`, {
+					method: HttpMethod.PATCH,
+					body: JSON.stringify({
+						...data.billingAddress,
+						country: countries.find((c) => c.id === data.billingAddress.country),
+					}),
+				});
+				if (!reqSaveAddressInfo.ok) return;
+			}
 
-          <div className="flex items-center space-x-2 mb-4">
-            <Checkbox
-              id="same-address"
-              checked={sameAsShipping}
-              onCheckedChange={(checked) => {
-                setSameAsShipping(checked as boolean);
-              }}
-            />
-            <label
-              htmlFor="same-address"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Billing address is the same as Shipping address
-            </label>
-          </div>
-          {!sameAsShipping && (
-            <BillingAddress
-              data={data.BillToAddressContainer.BillToAddresses}
-              form={form}
-            />
-          )}
-        </div>
-        <div>
-          <Button
-            type="submit"
-            formNoValidate
-            disabled={isSubmitting}
-            className={cn(
-              "h-14 w-full bg-blue hover:bg-blue/90 text-white py-6 text-lg relative",
-              "transition-all duration-200 ease-in-out",
-              "active:scale-[0.99] active:bg-blue/80",
-              "disabled:opacity-70 disabled:cursor-not-allowed",
-              "focus:outline-none focus:ring-2 focus:ring-blue focus:ring-offset-2"
-            )}
-            aria-busy={isSubmitting}
-            aria-disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <div className="flex items-center justify-center gap-2">
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                <span>Processing...</span>
-              </div>
-            ) : (
-              "CHECKOUT"
-            )}
-          </Button>
-          <div className="font-lora text-sm text-muted mt-4">
-            I confirm these personal details and addresses are correct
-          </div>
-        </div>
-      </form>
-    </Form>
-  );
+			const reqValidate = await fetch("/api/cart/full-validate");
+			if (!reqValidate.ok) return;
+
+			router.push("/checkout/review");
+		} catch (error) {
+			console.error("Error:", error);
+		} finally {
+			setIsSubmitting(false);
+		}
+	}
+
+	return (
+		<Form {...form}>
+			<form noValidate onSubmit={(e) => onSubmit(e, form.getValues())} className="space-y-10">
+				<ShippingAddress
+					data={data.ShipToAddressContainer.ShipToAddresses}
+					form={form}
+					countriesData={countries}
+				/>
+
+				<div className="h-[1px] w-full bg-muted"></div>
+				<div className="">
+					<h2 className="text-xl font-semibold text-blue mb-4">BILLING ADDRESS</h2>
+
+					<div className="flex items-center space-x-2 mb-4">
+						<Checkbox
+							id="same-address"
+							checked={sameAsShipping}
+							onCheckedChange={(checked) => {
+								setSameAsShipping(checked as boolean);
+							}}
+							disabled={true}
+						/>
+						<label
+							htmlFor="same-address"
+							className="text-sm font-medium font-lora leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+						>
+							Billing address is the same as Shipping address
+						</label>
+					</div>
+
+					{!sameAsShipping && (
+						<BillingAddress
+							data={data.BillToAddressContainer.BillToAddresses}
+							form={form}
+							countriesData={countries}
+						/>
+					)}
+				</div>
+				<div className="h-[1px] w-full bg-muted"></div>
+				<div className="">
+					<h2 className="text-xl font-semibold text-blue mb-4">ORDER NOTES</h2>
+					<FormField
+						control={form.control}
+						name="notes"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Textarea
+										className="bg-white border border-[#E5E5E5] rounded-none min-h-[120px] px-4 py-3 font-lora"
+										{...field}
+									/>
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+				</div>
+				<div>
+					<Button
+						type="submit"
+						formNoValidate
+						disabled={isSubmitting}
+						buttonLabel="Checkout"
+						className={cn(
+							"h-14 w-full bg-blue hover:bg-blue/90 text-white py-6 text-lg relative",
+							"transition-all duration-200 ease-in-out",
+							"active:scale-[0.99] active:bg-blue/80",
+							"disabled:opacity-70 disabled:cursor-not-allowed",
+							"focus:outline-none focus:ring-2 focus:ring-blue focus:ring-offset-2"
+						)}
+						aria-busy={isSubmitting}
+						aria-disabled={isSubmitting}
+					>
+						{isSubmitting ? (
+							<div className="flex items-center justify-center gap-2">
+								<div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+								<span>Processing...</span>
+							</div>
+						) : (
+							"CHECKOUT"
+						)}
+					</Button>
+					<div className="font-lora text-sm text-muted mt-4">
+						I confirm these personal details and addresses are correct
+					</div>
+				</div>
+			</form>
+		</Form>
+	);
 };
 
 export default UserAddressInfo;

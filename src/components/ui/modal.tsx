@@ -26,38 +26,34 @@ interface ModalProps {
 }
 
 export function Modal({
-  title,
-  description,
-  isOpen,
-  onClose,
-  children,
-  className,
-  showCloseButton = true,
-  footer,
+	title,
+	description,
+	isOpen,
+	onClose,
+	children,
+	className,
+	footer,
 }: ModalProps) {
-  return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className={cn("sm:max-w-md bg-white", className)}>
-        {(title || description) && (
-          <DialogHeader>
-            {title && <DialogTitle className="text-blue text-3xl font-bold">{title}</DialogTitle>}
-            {description && <DialogDescription>{description}</DialogDescription>}
-          </DialogHeader>
-        )}
-        {showCloseButton && (
-          <Button
-            onClick={onClose}
-            variant="stroke-blue"
-            className="absolute right-4 top-4 h-3 w-3 p-0 border-none text-blue"
-            aria-label="Close modal"
-          >
-            <X className="h-3 w-3" />
-          </Button>
-        )}
-        <div>{children}</div>
-        {footer && <DialogFooter>{footer}</DialogFooter>}
-      </DialogContent>
-    </Dialog>
-  )
+	return (
+		<Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+			<DialogContent className={cn("sm:max-w-md bg-white", className)}>
+				{(title || description) && (
+					<DialogHeader>
+						{title && (
+							<DialogTitle className="text-blue text-3xl font-bold">
+								{title}
+							</DialogTitle>
+						)}
+						{description && (
+							<DialogDescription>{description}</DialogDescription>
+						)}
+					</DialogHeader>
+				)}
+
+				<div>{children}</div>
+				{footer && <DialogFooter>{footer}</DialogFooter>}
+			</DialogContent>
+		</Dialog>
+	);
 }
 

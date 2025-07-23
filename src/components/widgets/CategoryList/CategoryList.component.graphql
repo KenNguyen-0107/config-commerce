@@ -1,33 +1,33 @@
 fragment CategoryListData on CategoryList {
-  __typename
-  Categories {
-    Items {
-      HtmlContent
-      Id
-      ImageAltText
-      IsDynamic
-      IsFeatured
-      LargeImagePath
-      MetaDescription
-      MetaKeywords
-      MobileBannerImageUrl
-      MobilePrimaryText
-      MobileSecondaryText
-      MobileTextColor
-      MobileTextJustification
-      Name
-      Path
-      ShortDescription
-      SmallImagePath
-      SortOrder
-      UrlSegment
-    }
-  }
-  CustomCSS
-  Id
-  IsLayout
-  ParentId
-  ShowImages
-  ShowOnlyTopLevelCategories
-  Zone
+	__typename
+	Categories {
+		Items {
+			HtmlContent
+			Id
+			ImageAltText
+			IsDynamic
+			IsFeatured
+			LargeImagePath
+			MetaDescription
+			MetaKeywords
+			MobileBannerImageUrl
+			MobilePrimaryText
+			MobileSecondaryText
+			MobileTextColor
+			MobileTextJustification
+			Name
+			Path
+			ShortDescription
+			SmallImagePath
+			SortOrder
+			UrlSegment
+		}
+	}
+	CustomCSS
+	Id
+	IsLayout
+	ParentId
+	ShowImages
+	ShowOnlyTopLevelCategories
+	Zone
 }

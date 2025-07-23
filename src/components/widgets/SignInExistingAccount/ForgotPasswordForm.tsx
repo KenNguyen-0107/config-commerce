@@ -4,12 +4,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
 	Form,
 	FormControl,
@@ -30,10 +25,7 @@ interface ForgotPasswordFormProps {
 	onOpenChange: (open: boolean) => void;
 }
 
-export default function ForgotPasswordForm({
-	open,
-	onOpenChange,
-}: ForgotPasswordFormProps) {
+export default function ForgotPasswordForm({ open, onOpenChange }: ForgotPasswordFormProps) {
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -54,7 +46,9 @@ export default function ForgotPasswordForm({
 						Reset password
 					</DialogTitle>
 				</DialogHeader>
-				<p className="text-blue text-base lg:text-lg font-lora">Enter your username and we’ll send you an email that will allow you to reset your password</p>
+				<p className="text-blue text-base lg:text-lg font-lora">
+					Enter your username and we'll send you an email that will allow you to reset your password
+				</p>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<FormField
@@ -70,6 +64,7 @@ export default function ForgotPasswordForm({
 											placeholder="Enter your user name"
 											className="h-14 placeholder:text-blue placeholder:opacity-50 rounded mt-2"
 											{...field}
+											ariaLabel="Username"
 										/>
 									</FormControl>
 									<FormMessage />
@@ -83,10 +78,13 @@ export default function ForgotPasswordForm({
 								variant="secondary"
 								onClick={() => onOpenChange(false)}
 								className="w-full border-blue"
+								buttonLabel="Return to sign in"
 							>
 								return to sign in
 							</Button>
-							<Button type="submit" className="w-full">send e-mail</Button>
+							<Button type="submit" className="w-full" buttonLabel="Send e-mail">
+								send e-mail
+							</Button>
 						</div>
 					</form>
 				</Form>

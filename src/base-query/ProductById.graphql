@@ -1,7 +1,14 @@
 query getProductsByIds($ids: [String!]!) {
-  Product(where: { Id: { in: $ids } }) {
-    items {
-      ...ProductData
-    }
-  }
+	Product(where: { Id: { in: $ids } }) {
+		items {
+			BreadcrumbContainer {
+				BreadCrumbs {
+					PageId
+					PageUrl
+					PageTitle
+				}
+			}
+			...ProductData
+		}
+	}
 }

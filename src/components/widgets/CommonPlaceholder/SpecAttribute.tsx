@@ -2,7 +2,7 @@ import { ProductAttributeType } from "@/gql/graphql";
 
 const PDPSpecAttribute = ({ data }: { data: ProductAttributeType[] }) => {
 	return (
-		<div className="space-y-12">
+		<div className="space-y-6 lg:space-y-12">
 			<h2 className="text-blue uppercase">Technical Specifications</h2>
 
 			{!!data.length && (

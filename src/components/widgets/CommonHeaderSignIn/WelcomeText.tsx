@@ -1,8 +1,7 @@
+import { UserInfo } from "@/store/authen-store";
+
 const WelcomeText = ({userInfo}: {
-	userInfo: {
-		userLabel: string;
-		userName: string;
-	}
+	userInfo: UserInfo;
 }) => {
 
 	if (!!userInfo) {

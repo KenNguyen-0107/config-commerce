@@ -1,16 +1,18 @@
-import { ComponentTypeDictionary } from "@packages/optimizely-cms-react"
-import SignInCreateNewAccount from "./SignInCreateNewAccount"
-import SignInExistingAccount from "./SignInExistingAccount"
+import { ComponentTypeDictionary } from "@packages/optimizely-cms-react";
+import SignInCreateNewAccount from "./SignInCreateNewAccount";
+import SignInExistingAccount from "./SignInExistingAccount";
+
+const envPrefix = process.env.GRAPH_ENV || "";
 
 export const SigninWidgetDictionary: ComponentTypeDictionary = [
-  {
-    type: "SignInCreateNewAccount",
-    component: SignInCreateNewAccount
-  },
-  {
-    type: "SignInExistingAccount",
-    component: SignInExistingAccount
-  },
+	{
+    type: `${envPrefix}SignInCreateNewAccount`,
+    component: SignInCreateNewAccount,
+	},
+	{
+    type: `${envPrefix}SignInExistingAccount`,
+    component: SignInExistingAccount,
+	},
 ]
 
-export default SigninWidgetDictionary
+export default SigninWidgetDictionary;

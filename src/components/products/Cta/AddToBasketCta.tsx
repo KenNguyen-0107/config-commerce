@@ -1,37 +1,45 @@
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { CartItem, useCartStore } from "@/store/cart-store";
 import { useUpdateCart } from "@/hook/useUpdateCart";
+import { cn } from "@/lib/utils";
+import { CartItem } from "@/store/cart-store";
 import { toast } from "react-toastify";
+import { useState } from "react";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
+import { useSiteSettingsStore } from "@/store/site-settings-store";
 
 export interface IAddToBasketCta extends CartItem {
 	className?: string;
 	canAddToCart?: boolean;
 	showControl?: boolean;
 	buttonClass?: string;
+	onChangeQuantity?: (value: number) => void;
 }
 
 const AddToBasketCta = ({
 	id,
-	name,
-	code,
-	price,
-	priceDisplay,
 	canAddToCart,
-	url,
-	image,
 	quantity,
+	stockQuantity,
 	className,
-}: IAddToBasketCta) => {
-	const { addItem, removeItem, setCartId } = useCartStore();
+}: Omit<IAddToBasketCta, "qtyLeft" | "qtyOnHand">) => {
 	const { syncCurrentCart } = useUpdateCart();
+	const [isAddingToCart, setIsAddingToCart] = useState(false);
+	const { siteSettings } = useSiteSettingsStore();
 
 	const handleAddToCart = async (id: string) => {
 		if (!quantity || quantity < 1) {
 			return toast("Quantity should be > 0", {
 				type: "error",
+				autoClose: siteSettings.CartSettings?.AddToCartPopupTimeout || 3000,
 			});
 		}
+		if (stockQuantity && stockQuantity > 0 && quantity > stockQuantity) {
+			return toast(`Only ${stockQuantity} product(s) left in the stock`, {
+				type: "error",
+				autoClose: siteSettings.CartSettings?.AddToCartPopupTimeout || 3000,
+			});
+		}
+		setIsAddingToCart(true);
 		const req = await fetch("/api/cart/add-product", {
 			method: "POST",
 			body: JSON.stringify({
@@ -44,52 +52,26 @@ const AddToBasketCta = ({
 		if (!req.ok) {
 			toast("Something went wrong", {
 				type: "error",
+				autoClose: siteSettings.CartSettings?.AddToCartPopupTimeout || 3000,
 			});
 		} else {
 			toast("Item(s) added to your cart", {
 				type: "success",
+				autoClose: siteSettings.CartSettings?.AddToCartPopupTimeout || 3000,
 			});
 		}
 		syncCurrentCart();
-		// addItem({
-		// 	id: id,
-		// 	name: name,
-		// 	code: code,
-		// 	price: price,
-		// 	priceDisplay: priceDisplay,
-		// 	url: url,
-		// 	quantity: quantity,
-		// 	image: image,
-		// });
-
-		// toast("Item(s) added to your cart", {
-		// 	type: "success",
-		// });
-
-		// validateAddProduct()
+		setIsAddingToCart(false);
 	};
-
-	const validateAddProduct = async () => {
-		const req = await fetch("/api/cart/validate")
-		if (req.status === 200 || !id) {
-			const res = await req.text()
-			return setCartId(JSON.parse(res).trackId.split("-")[0])
-		}
-
-		removeItem(id);
-
-		return toast("Something went wrong", {
-			type: "error",
-		});
-	}
 
 	return (
 		<Button
-			disabled={!canAddToCart}
+			disabled={!canAddToCart || isAddingToCart}
 			className={cn("w-1/2", className)}
 			onClick={() => handleAddToCart(id || "")}
+			buttonLabel="Add to cart"
 		>
-			ADD TO BASKET
+			{isAddingToCart ? <LoadingIndicator text="ADDING..." /> : "ADD TO BASKET"}
 		</Button>
 	);
 };

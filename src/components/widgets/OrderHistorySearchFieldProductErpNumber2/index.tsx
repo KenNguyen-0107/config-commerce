@@ -3,7 +3,6 @@ import React from 'react';
 import { OrderHistorySearchFieldProductErpNumber2Props } from './types';
 
 const OrderHistorySearchFieldProductErpNumber2: React.FC<OrderHistorySearchFieldProductErpNumber2Props> = (props) => {
-  console.log(`OrderHistorySearchFieldProductErpNumber2 props:`, props);
   return (
     <>
       <h1>OrderHistorySearchFieldProductErpNumber2</h1>

@@ -1,63 +1,65 @@
-query getSiginPageContent {
-  SignInPage {
-    items {
-      WidgetContainer {
-        Widgets {
-          ...BasicBannerData
-          ...BasicButtonData
-          ...BasicGridData
-          ...BasicImageData
-          ...BasicLinkData
-          ...BasicLogoData
-          ...BasicPageTitleData
-          ...BasicQuestionAnswersData
-          ...BasicRichContentData
-          ...BasicRowData
-          ...BasicRowsData
-          ...BasicSocialLinksData
-          ...CartActionsData
-          ...CartApproverMessageData
-          ...CartFulfillmentMethodSelectorData
-          ...CartHeaderData
-          ...CartLinesData
-          ...CartPageContainerData
-          ...CartTotalData
-          ...CategoryListData
-          ...CheckoutReviewAndSubmitActionButtonsData
-          ...CheckoutReviewAndSubmitCarrierServiceData
-          ...CheckoutReviewAndSubmitCartTotalData
-          ...CheckoutReviewAndSubmitHeaderData
-          ...CheckoutReviewAndSubmitPageContainerData
-          ...CheckoutReviewAndSubmitPaymentDetailsData
-          ...CheckoutReviewAndSubmitProductListData
-          ...CheckoutReviewAndSubmitPromotionCodeData
-          ...CheckoutReviewAndSubmitShippingInfoData
-          ...CheckoutShippingAddressesData
-          ...CheckoutShippingCartTotalData
-          ...CheckoutShippingFulfillmentMethodSelectorData
-          ...CheckoutShippingHeaderData
-          ...CheckoutShippingOrderNotesEntryData
-          ...CheckoutShippingPageContainerData
-          ...CommonCartLinkData
-          ...CommonHeaderSignInData
-          ...CommonPlaceholderData
-          ...CommonProductCarouselData
-          ...CommonRatingAndReviewData
-          ...CommonSignInData
-          ...FooterContainerData
-          ...HeaderMainNavigationData
-          ...HeaderSearchInputData
-          ...LinkListData
-          ...ProductDetailsViewData
-          ...ProductListCardListData
-          ...ProductListColumnsData
-          ...SharedContentData
-          ...SignInCreateNewAccountData
-          ...SignInExistingAccountData
-          ...SlideShowData
-          ...SubscribeData
-        }
-      }
-    }
-  }
+query getSiginPageContent($siteId: String!, $languageCode: String!) {
+	SignInPage(
+		where: { WebsiteId: { eq: $siteId }, Language: { LanguageCode: { eq: $languageCode } } }
+	) {
+		items {
+			WidgetContainer {
+				Widgets {
+					...BasicBannerData
+					...BasicButtonData
+					...BasicGridData
+					...BasicImageData
+					...BasicLinkData
+					...BasicLogoData
+					...BasicPageTitleData
+					...BasicQuestionAnswersData
+					...BasicRichContentData
+					...BasicRowData
+					...BasicRowsData
+					...BasicSocialLinksData
+					...CartActionsData
+					...CartApproverMessageData
+					...CartFulfillmentMethodSelectorData
+					...CartHeaderData
+					...CartLinesData
+					...CartPageContainerData
+					...CartTotalData
+					...CategoryListData
+					...CheckoutReviewAndSubmitActionButtonsData
+					...CheckoutReviewAndSubmitCarrierServiceData
+					...CheckoutReviewAndSubmitCartTotalData
+					...CheckoutReviewAndSubmitHeaderData
+					...CheckoutReviewAndSubmitPageContainerData
+					...CheckoutReviewAndSubmitPaymentDetailsData
+					...CheckoutReviewAndSubmitProductListData
+					...CheckoutReviewAndSubmitPromotionCodeData
+					...CheckoutReviewAndSubmitShippingInfoData
+					...CheckoutShippingAddressesData
+					...CheckoutShippingCartTotalData
+					...CheckoutShippingFulfillmentMethodSelectorData
+					...CheckoutShippingHeaderData
+					...CheckoutShippingOrderNotesEntryData
+					...CheckoutShippingPageContainerData
+					...CommonCartLinkData
+					...CommonHeaderSignInData
+					...CommonPlaceholderData
+					...CommonProductCarouselData
+					...CommonRatingAndReviewData
+					...CommonSignInData
+					...FooterContainerData
+					...HeaderMainNavigationData
+					...HeaderSearchInputData
+					...LinkListData
+					...ProductDetailsViewData
+					...ProductListCardListData
+					...ProductListColumnsData
+					...SharedContentData
+					...SignInCreateNewAccountData
+					...SignInExistingAccountData
+					...SlideShowData
+					...SubscribeData
+				}
+			}
+		}
+	}
 }

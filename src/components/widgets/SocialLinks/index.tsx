@@ -1,13 +1,22 @@
-import Link from "next/link";
 import { SocialLinksProps } from "./types";
 import { cn } from "@/lib/utils";
-import Icon from "@/components/shared/icons";
+import CommonImage from "@/components/shared/CommonImage";
+import { SmartLink } from "@/components/shared/smartLink";
 
 const SocialLinks = (props: SocialLinksProps) => {
-	const { __typename, Id, Direction = "horizontal", Alignment = "center", IconSize = 24, Links } = props;
+	const {
+		__typename,
+		Id,
+		Direction = "horizontal",
+		Alignment = "center",
+		IconSize = 24,
+		Links,
+	} = props;
 
 	return (
-		<div data-component={__typename} data-component-id={Id}
+		<div
+			data-component={__typename}
+			data-component-id={Id}
 			className={cn(
 				"flex",
 				`${Direction === "horizontal" ? "flex-row" : "flex-col"}`,
@@ -16,14 +25,21 @@ const SocialLinks = (props: SocialLinksProps) => {
 			)}
 		>
 			{Links.LinkItems?.map((link, index) => (
-				<Link key={index}
+				<SmartLink
+					key={index}
 					href={link?.Destination?.Value || ""}
 					target={link?.OpenInNewWindow ? "_blank" : "_self"}
 					className="block"
 					aria-label={`${link?.Icon || "Social"} link`}
 				>
-					<Icon iconName={link?.Icon || ""} size={IconSize} />
-				</Link>
+					<CommonImage
+						src={`/icons/${link?.Icon || ""}.svg`}
+						alt={link?.Icon || ""}
+						width={IconSize}
+						height={IconSize}
+						unoptimized
+					/>
+				</SmartLink>
 			))}
 		</div>
 	);

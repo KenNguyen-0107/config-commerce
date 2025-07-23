@@ -11,4 +11,5 @@ ParentId?: Maybe<Scalars['String']['output']>;
 Type?: Maybe<Scalars['String']['output']>;
 Zone?: Maybe<Scalars['String']['output']>;
 _id?: Maybe<Scalars['String']['output']>;
+total: number;
 };

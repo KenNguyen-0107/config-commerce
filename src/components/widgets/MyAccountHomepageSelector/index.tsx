@@ -3,7 +3,6 @@ import React from 'react';
 import { MyAccountHomepageSelectorProps } from './types';
 
 const MyAccountHomepageSelector: React.FC<MyAccountHomepageSelectorProps> = (props) => {
-  console.log(`MyAccountHomepageSelector props:`, props);
   return (
     <>
       <h1>MyAccountHomepageSelector</h1>

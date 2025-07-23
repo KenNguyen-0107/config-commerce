@@ -4,7 +4,6 @@ import { CurrentBillingAddressProps } from './types';
 import MyShippingAddress from '@/app/my-account/address/MyShippingAddress';
 
 const CurrentBillingAddress: React.FC<CurrentBillingAddressProps> = (props) => {
-  console.log(`CurrentBillingAddress props:`, props);
   return (
     <MyShippingAddress />
   );

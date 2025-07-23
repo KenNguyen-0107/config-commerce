@@ -1,18 +1,19 @@
 fragment BasicImageData on BasicImage {
-  __typename
-  AltText
-  CssClass
-  CustomCSS
-  Id
-  ImageUrl
-  IsLayout
-  ParentId
-  Zone
-  ImageLink {
-    Type
-    Value
-    Url  
-  }
-  ImageWidth
-  ImageHeight
+	__typename
+	AltText
+	CssClass
+	CustomCSS
+	Id
+	ImageUrl
+	IsLayout
+	ParentId
+	Zone
+	ImageLink {
+		Type
+		Value
+		Url
+	}
+	ImageWidth
+	ImageHeight
+	ImageLoading
 }

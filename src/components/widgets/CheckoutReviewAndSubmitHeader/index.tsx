@@ -3,7 +3,6 @@ import React from 'react';
 import { CheckoutReviewAndSubmitHeaderProps } from './types';
 
 const CheckoutReviewAndSubmitHeader: React.FC<CheckoutReviewAndSubmitHeaderProps> = (props) => {
-  console.log(`CheckoutReviewAndSubmitHeader props:`, props);
   return (
       <div className="text-3xl lg:text-[40px] flex items-center justify-between mb-10">
         <div className="flex justify-start gap-4 items-end">

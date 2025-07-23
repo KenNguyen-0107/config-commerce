@@ -1,0 +1,21 @@
+query getHreflangConfig($path: String!, $siteId: String!, $languageCode: String!) {
+	B2BPage(
+		where: {
+			Url: { eq: $path }
+			WebsiteId: { eq: $siteId }
+			Language: { LanguageCode: { eq: $languageCode } }
+		}
+	) {
+		items {
+			Type
+			Locales {
+				Items {
+					Code
+					Segment
+					__typename
+					IsDefault
+				}
+			}
+		}
+	}
+}

@@ -1,109 +1,172 @@
-import { gql, GraphQLClient } from "graphql-request"
+import { gql, GraphQLClient } from "graphql-request";
+const envPrefix = process.env.GRAPH_ENV || "";
 
 export type GetContentByPathVariables<LocaleType = string> = {
-    path: string | string[],
-    locale?: Array<LocaleType> | LocaleType,
-    siteId?: string
-}
+	path: string | string[];
+	locale?: Array<LocaleType> | LocaleType;
+	siteId?: string;
+};
 
-type MayBe<T> = T extends Array<infer R> ? Array<R | null> | null : T | null
+export type GetSiteIdVariables = {
+	domain: string;
+};
+
+type MayBe<T> = T extends Array<infer R> ? Array<R | null> | null : T | null;
 
 export type GetContentByPathResponse = {
-    content?: MayBe<{
-        items?: MayBe<Array<{
-            __typename?: MayBe<string>
-            _type?: MayBe<string>
-        } & Record<string,any>>>
-    }>
-    B2BPage?: MayBe<{
-        items?: MayBe<Array<Record<string,any>>>
-    }>
-    GenericPage?: MayBe<{
-        items?: MayBe<Array<Record<string,any>>>
-    }>
-    Product?: MayBe<{
-        items?: MayBe<Array<Record<string,any>>>
-    }>
-}
+	content?: MayBe<{
+		items?: MayBe<
+			Array<
+				{
+					__typename?: MayBe<string>;
+					_type?: MayBe<string>;
+				} & Record<string, any>
+			>
+		>;
+	}>;
+	B2BPage?: MayBe<{
+		items?: MayBe<Array<Record<string, any>>>;
+	}>;
+	GenericPage?: MayBe<{
+		items?: MayBe<Array<Record<string, any>>>;
+	}>;
+	Product?: MayBe<{
+		items?: MayBe<Array<Record<string, any>>>;
+	}>;
+};
+
+export type GetSiteIdResponse = {
+	Website?: {
+		items?: Array<{
+			Id?: string;
+			WebsiteName?: string;
+		} | null> | null;
+	};
+};
 
 export type GetMetaDataByPathResponse = {
-    getGenericMetaData?: {
-        items?: Array<{
-            name?: string,
-            alternatives?: Array<{
-                locale?: string | null
-                href?: string | null
-            } | null> | null
-            canonical?: string | null
-        } | null>
-    }
-}
+	getGenericMetaData?: {
+		items?: Array<{
+			name?: string;
+			alternatives?: Array<{
+				locale?: string | null;
+				href?: string | null;
+			} | null> | null;
+			canonical?: string | null;
+		} | null>;
+	};
+};
 
-export type GetContentByPathMethod<LocaleType = string> = (client: GraphQLClient, variables: GetContentByPathVariables<LocaleType>, query?: string) => Promise<GetContentByPathResponse>
-export type GetMetaDataByPathMethod<LocaleType = string> = (client: GraphQLClient, variables: GetContentByPathVariables<LocaleType>) => Promise<GetMetaDataByPathResponse>
-export type GetFixContentMethod<LocaleType = string> = (client: GraphQLClient, variables: GetContentByPathVariables<LocaleType>, query?: string) => Promise<GetContentByPathResponse>
-export type GetProductDetailsContentMethod<LocaleType = string> = (client: GraphQLClient, variables: GetContentByPathVariables<LocaleType>, query?: string) => Promise<GetContentByPathResponse>
+const siteIdQuery = gql`
+	query getSiteId($domain: [String!]!) {
+		Website: ${envPrefix}Website(where: { Domains: { in: $domain } }) {
+			items {
+				Id
+				WebsiteName
+			}
+		}
+	}
+`;
 
-export const getMetaDataByPath: GetMetaDataByPathMethod = (client, variables) =>
-{
-    return client.request<GetMetaDataByPathResponse,GetContentByPathVariables>(metadataQuery, variables)
-}
+export type GetSiteIdMethod = (
+	client: GraphQLClient,
+	variables: GetSiteIdVariables
+) => Promise<GetSiteIdResponse>;
 
-export const getContentByPath: GetContentByPathMethod = (client, variables) =>
-{
-    return client.request<GetContentByPathResponse,GetContentByPathVariables>(contentQuery, variables)
-}
+export const getSiteId: GetSiteIdMethod = (client, variables) => {
+	return client.request<GetSiteIdResponse, GetSiteIdVariables>(siteIdQuery, variables);
+};
 
-export const getFixContent: GetFixContentMethod = (client) =>
-{
-    return client.request<GetContentByPathResponse>(fixContentQuery)
-}
+export type GetContentByPathMethod<LocaleType = string> = (
+	client: GraphQLClient,
+	variables: GetContentByPathVariables<LocaleType>,
+	query?: string
+) => Promise<GetContentByPathResponse>;
+export type GetMetaDataByPathMethod<LocaleType = string> = (
+	client: GraphQLClient,
+	variables: GetContentByPathVariables<LocaleType>
+) => Promise<GetMetaDataByPathResponse>;
+export type GetFixContentMethod<LocaleType = string> = (
+	client: GraphQLClient,
+	variables: GetContentByPathVariables<LocaleType>,
+	query?: string
+) => Promise<GetContentByPathResponse>;
+export type GetProductDetailsContentMethod<LocaleType = string> = (
+	client: GraphQLClient,
+	variables: GetContentByPathVariables<LocaleType>,
+	query?: string
+) => Promise<GetContentByPathResponse>;
 
-export const getProductDetailsContent: GetProductDetailsContentMethod = (client) =>
-{
-    return client.request<GetContentByPathResponse>(productQuery)
-}
+export const getMetaDataByPath: GetMetaDataByPathMethod = (client, variables) => {
+	return client.request<GetMetaDataByPathResponse, GetContentByPathVariables>(
+		metadataQuery,
+		variables
+	);
+};
 
-export default getContentByPath
+export const getContentByPath: GetContentByPathMethod = (client, variables) => {
+	return client.request<GetContentByPathResponse, GetContentByPathVariables>(
+		contentQuery,
+		variables
+	);
+};
 
-const contentQuery = gql`query getContentByPathBase($path: String!, $domain: String, $locale: [Locales]) {
-    B2BHomePage {
-        items {
-            MetaKeywords
-            Title
-            MetaDescription
-        }
-    }
-}`
+export const getFixContent: GetFixContentMethod = (client, variables) => {
+	return client.request<GetContentByPathResponse>(fixContentQuery, variables);
+};
 
-const productQuery = gql`query getProductDetailByPathBase($path: String!, $domain: String, $locale: [Locales]) {
-    Product {
-        items {
-            ProductTitle
-        }
-    }
-}`
+export const getProductDetailsContent: GetProductDetailsContentMethod = (client, variables) => {
+	return client.request<GetContentByPathResponse>(productQuery, variables);
+};
 
-const fixContentQuery = gql`query getFixContent {
-    ProductDetailsPage {
-        items {
-            __typename
-        }
-    }
-}`
+export default getContentByPath;
 
-const metadataQuery = gql`query getGenericMetaData($path: String!, $locale: [Locales], $siteId: String) {
-    getGenericMetaData: Content (
-        where: { RelativePath: { eq: $path }, SiteId: { eq: $siteId } }
-        locale: $locale
-    ) {
-        items {
-            name: Name,
-            alternatives: ExistingLanguages {
-                locale: Name
-                href: Link
-            }
-            canonical: Url
-        }
-    }
-}`
+const contentQuery = gql`
+	query getContentByPathBase($path: String!, $siteId: String!) {
+		B2BHomePage(where: { WebsiteId: { eq: $siteId } }) {
+			items {
+				MetaKeywords
+				Title
+				MetaDescription
+			}
+		}
+	}
+`;
+
+const productQuery = gql`
+	query getProductDetailByPathBase($siteId: String!) {
+		Product(where: { WebsiteId: { eq: $siteId } }) {
+			items {
+				ProductTitle
+			}
+		}
+	}
+`;
+
+const fixContentQuery = gql`
+	query getFixContent($siteId: String!) {
+		ProductDetailsPage(where: { WebsiteId: { eq: $siteId } }) {
+			items {
+				__typename
+			}
+		}
+	}
+`;
+
+const metadataQuery = gql`
+	query getGenericMetaData($path: String!, $locale: [Locales], $siteId: String!) {
+		getGenericMetaData: Content(
+			where: { RelativePath: { eq: $path }, WebsiteId: { eq: $siteId } }
+			locale: $locale
+		) {
+			items {
+				name: Name
+				alternatives: ExistingLanguages {
+					locale: Name
+					href: Link
+				}
+				canonical: Url
+			}
+		}
+	}
+`;

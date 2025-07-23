@@ -39,11 +39,11 @@ export const TabsTrigger = ({ children, value }: { children: React.ReactNode, va
       onClick={() => setActiveTab(value)}
       className={cn(
         "text-sm lg:text-lg text-blue uppercase",
-        "bg-secondary-background hover:bg-white/30 transition-colors",
+        "bg-secondary-background transition-colors hover:border-t-yellow",
         "min-h-[70px] lg:min-h-0 px-6 py-3",
         activeTab === value
           ? 'bg-muted-background shadow-none border-t-[3px] border-t-yellow'
-          : 'border-t-[3px] border-t-transparent'
+          : 'border-t-[3px] border-t-white'
       )}>
         {children}
     </button>

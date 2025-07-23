@@ -3,35 +3,37 @@ import { create, StateCreator } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export interface IOrderInfo {
-  orderDate: string;
-  orderCode: string;
-  status: string;
-  cartLines: CartLine[]
-};
+	orderDate: string;
+	orderCode: string;
+	status: string;
+	cartLines: CartLine[];
+	notes: string;
+}
 export interface IYourOrder {
-  yourOrder: IOrderInfo;
-  updateYourOrder: (data: IOrderInfo) => void
+	yourOrder: IOrderInfo;
+	updateYourOrder: (data: IOrderInfo) => void;
 }
 
 const cartStoreCreator: StateCreator<
-  IYourOrder,
-  [],
-  [["zustand/persist", unknown]]
+	IYourOrder,
+	[],
+	[["zustand/persist", unknown]]
 > = (set, get) => ({
-  yourOrder: {
-    orderDate: "",
-    orderCode: "",
-    status: "",
-    cartLines: []
-  },
-  updateYourOrder: (data: IOrderInfo) => {
-    set((state) => ({
-      yourOrder: {
-        ...state.yourOrder,
-        ...data,
-      },
-    }));
-  },
+	yourOrder: {
+		orderDate: "",
+		orderCode: "",
+		status: "",
+		cartLines: [],
+		notes: "",
+	},
+	updateYourOrder: (data: IOrderInfo) => {
+		set((state) => ({
+			yourOrder: {
+				...state.yourOrder,
+				...data,
+			},
+		}));
+	},
 });
 
 // Use the state creator with persist

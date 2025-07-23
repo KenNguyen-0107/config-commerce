@@ -1,7 +1,0 @@
-query getProductListPage($url: String!){
-  ProductListPage(where: {Url: { eq: $url}}){
-    items {
-      CategoryId
-    }
-  }
-}

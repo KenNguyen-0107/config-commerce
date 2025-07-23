@@ -1,14 +1,18 @@
 "use client";
 
+import LoadingIndicator from "@/components/common/LoadingIndicator";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cart-store";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function PriceSummary() {
-	const { price } = useCartStore();
+	const { price, cartErrorMessage } = useCartStore();
+	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
 
 	const handleCheckout = async () => {
+		setIsLoading(true);
 		const req = await fetch("/api/address/addressfields");
 		if (!req.ok) return;
 
@@ -18,6 +22,7 @@ export function PriceSummary() {
 		if (reqFullValidateCart.status !== 200) return;
 
 		router.push(`/checkout/address`);
+		setIsLoading(false);
 	};
 
 	return (
@@ -31,9 +36,7 @@ export function PriceSummary() {
 							<span className="text-xl">{price?.subTotal}</span>
 						</div>
 						<div className="flex justify-between items-center">
-							<span className="text-blue font-semibold text-lg">
-								SHIPPING FEE
-							</span>
+							<span className="text-blue font-semibold text-lg">SHIPPING FEE</span>
 							<span className="text-xl">{price?.shippingFee}</span>
 						</div>
 						<div className="flex justify-between items-center">
@@ -45,17 +48,21 @@ export function PriceSummary() {
 							<span className="text-xl">{price?.tax}</span>
 						</div>
 						<div className="flex justify-between items-center">
-							<span className="text-blue font-bold text-2xl">
-								TOTAL INC VAT
-							</span>
+							<span className="text-blue font-bold text-2xl">TOTAL INC VAT</span>
 							{/* <span className="font-bold text-2xl">£{getTotalIncVat().toFixed(2)}</span> */}
 							<span className="font-bold text-2xl">{price?.totalIncVat}</span>
 						</div>
 					</div>
 
 					<div className="text-right">
-						<Button onClick={() => handleCheckout()} className="text-sm h-12">
-							CHECKOUT SECURELY
+						{cartErrorMessage && <div className="text-red font-lora mb-4">{cartErrorMessage}</div>}
+						<Button
+							onClick={() => handleCheckout()}
+							disabled={!!cartErrorMessage || isLoading}
+							className="text-sm h-12"
+							buttonLabel="Checkout securely"
+						>
+							{isLoading ? <LoadingIndicator text="CHECKOUT..." /> : "CHECKOUT SECURELY"}
 						</Button>
 					</div>
 				</div>

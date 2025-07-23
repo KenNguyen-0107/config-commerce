@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react",
+    "declaration": true,
+    "outDir": "lib",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "paths": {
+      "next/head": ["./node_modules/next/head.d.ts"],
+      "next/script": ["./node_modules/next/script.d.ts"],
+      "src/*": ["./*"]
+    }
+  },
+  "include": ["./**/*"],
+  "exclude": ["node_modules", "**/*.spec.tsx", "dist", "coverage", "lib"]
+}

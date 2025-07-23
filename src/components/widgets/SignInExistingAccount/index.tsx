@@ -22,21 +22,35 @@ import { toast } from "react-toastify";
 import * as z from "zod";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import { SignInExistingAccountProps } from "./types";
+import { useOrderHistoryStore } from "@/store/order-history-store";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
+import { useUpdateCart } from "@/hook/useUpdateCart";
+import { useCheckoutStore } from "@/store/checkout-store";
 
 const formSchema = z.object({
-	username: z.string().min(1, "Username is required"),
-	password: z.string().min(6, "Password must be at least 6 characters"),
+	username: z
+		.string()
+		.min(1, "Username is required")
+		.regex(/^\S*$/, "Username cannot contain spaces"),
+	password: z
+		.string()
+		.min(1, "Password is required")
+		.min(8, "Password must be at least 8 characters"),
 	rememberMe: z.boolean().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-const SignInExistingAccount: React.FC<SignInExistingAccountProps> = () => {
+const SignInExistingAccount: React.FC<SignInExistingAccountProps> = (props) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const { userInfo, setUserInfo } = useAuthenStore();
+	const { userInfo, setUserInfo, setIsLogin } = useAuthenStore();
 	const router = useRouter();
+	const { storeCurrentShipping, storeCurrentBilling } = useOrderHistoryStore();
+	const { Settings } = props;
+	const { syncCurrentCart } = useUpdateCart();
+	const { isCheckoutPage } = useCheckoutStore();
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -47,25 +61,65 @@ const SignInExistingAccount: React.FC<SignInExistingAccountProps> = () => {
 		},
 	});
 
+	const cartExpandedUrl =
+		"/api/cart/current?expand=shipping,validation,cartLines,restrictions,carriers,paymentOptions,costCodes,tax&forceRecalculation=true&allowInvalidAddress=true";
+	const cartCurrentUrl = "/api/cart/current";
+	const createSessionUrl = "/api/sessions/manage";
+	const currentSessionUrl = "/api/sessions/current";
+
 	const onSubmit = async (values: FormValues) => {
 		setLoading(true);
-
 		try {
-			const createSession = await fetch(`/api/sessions/manage`, {
+			if (isCheckoutPage) {
+				const tokenResponse = await fetch("/api/auth/token", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						username: values.username,
+						password: values.password,
+					}),
+				});
+
+				if (!tokenResponse.ok) {
+					return onError(tokenResponse);
+				}
+
+				const cartExpanded = await fetch(cartExpandedUrl);
+				const result = await cartExpanded.json();
+				const patchUserInfo = await fetch(cartCurrentUrl, {
+					method: "PATCH",
+					body: JSON.stringify(result),
+				});
+				if (!patchUserInfo.ok) {
+					return onError(patchUserInfo);
+				}
+
+				const reqDeleteCart = await fetch(currentSessionUrl, {
+					method: HttpMethod.DELETE,
+				});
+				if (!reqDeleteCart.ok) {
+					return onError(reqDeleteCart);
+				}
+			}
+
+			const createSession = await fetch(createSessionUrl, {
 				method: HttpMethod.POST,
 				body: JSON.stringify(values),
 			});
-
 			if (!createSession.ok) {
-				onError();
+				return onError(createSession);
 			}
 
-			const reqCurrentSession = await fetch("/api/sessions/current");
+			const reqCurrentSession = await fetch(currentSessionUrl);
 			if (!reqCurrentSession.ok) {
-				onError();
+				return onError(reqCurrentSession);
 			}
 
 			const userData = JSON.parse(await reqCurrentSession.text());
+			storeCurrentShipping(userData.shipTo);
+			storeCurrentBilling(userData.billTo);
 
 			setUserInfo({
 				userName: userData.userName,
@@ -73,24 +127,24 @@ const SignInExistingAccount: React.FC<SignInExistingAccountProps> = () => {
 				userLabel: userData.userLabel,
 				email: userData.email,
 				currency: userData.currency.currencySymbol,
+				billTo: userData.billTo.id,
 			});
-
-			router.back();
-		} catch (err) {
-			toast("Error creating account", {
-				type: "success",
-			});
-			console.error("Error creating account:", err);
+			setIsLogin(true);
+			syncCurrentCart();
+			if (reqCurrentSession.status === 200) {
+				return router.back();
+			}
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const onError = () => {
-		toast("Error logging in", {
+	const onError = async (response: Response) => {
+		const responseData = JSON.parse(await response.text());
+		const errorMsg = JSON.parse(responseData.details).message || "Something went wrong";
+		return toast(errorMsg, {
 			type: "error",
 		});
-		throw new Error("Failed to log in");
 	};
 
 	useEffect(() => {
@@ -101,11 +155,11 @@ const SignInExistingAccount: React.FC<SignInExistingAccountProps> = () => {
 
 	return (
 		<>
-			<div className="pb-10 lg:pb-0 lg:pr-20 border-r-0 border-b lg:border-b-0 lg:border-r border-muted">
+			<div className="pb-10 lg:pb-0 lg:pr-20">
 				<h2 className="text-blue mb-6">ALREADY HAVE AN ACCOUNT?</h2>
 
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 lg:space-y-4">
 						<FormField
 							control={form.control}
 							name="username"
@@ -116,8 +170,9 @@ const SignInExistingAccount: React.FC<SignInExistingAccountProps> = () => {
 									</FormLabel>
 									<FormControl>
 										<Input
+											ariaLabel="Username"
 											placeholder="Enter your user name"
-											className="h-14 placeholder:text-blue placeholder:opacity-50 mt-2"
+											className="h-14 placeholder:text-blue placeholder:opacity-50 mt-2 font-lora"
 											{...field}
 										/>
 									</FormControl>
@@ -137,9 +192,10 @@ const SignInExistingAccount: React.FC<SignInExistingAccountProps> = () => {
 									<FormControl>
 										<div className="relative">
 											<Input
+												ariaLabel="Password"
 												type={showPassword ? "text" : "password"}
 												placeholder="Enter your password"
-												className="h-14 placeholder:text-blue placeholder:opacity-50"
+												className="h-14 placeholder:text-blue placeholder:opacity-50 font-lora hide-password-toggle"
 												{...field}
 											/>
 											<button
@@ -161,46 +217,46 @@ const SignInExistingAccount: React.FC<SignInExistingAccountProps> = () => {
 						/>
 
 						<div className="flex items-center justify-between">
-							<FormField
-								control={form.control}
-								name="rememberMe"
-								render={({ field }) => (
-									<FormItem className="flex items-center gap-2">
-										<FormControl>
-											<Checkbox
-												className="border-muted rounded"
-												checked={field.value}
-												onCheckedChange={field.onChange}
-											/>
-										</FormControl>
-										<FormLabel className="text-sm font-lora cursor-pointer text-[#6D6C6F]">
-											Remember Me
-										</FormLabel>
-									</FormItem>
-								)}
-							/>
+							{Settings?.AccountSettings?.RememberMe && (
+								<FormField
+									control={form.control}
+									name="rememberMe"
+									render={({ field }) => (
+										<FormItem className="flex items-center gap-2 space-y-0">
+											<FormControl>
+												<Checkbox
+													className="border-muted rounded"
+													checked={field.value}
+													onCheckedChange={field.onChange}
+												/>
+											</FormControl>
+											<FormLabel className="text-sm font-lora cursor-pointer text-[#6D6C6F]">
+												Remember Me
+											</FormLabel>
+										</FormItem>
+									)}
+								/>
+							)}
 
 							<button
 								type="button"
 								onClick={() => setShowForgotPasswordForm(true)}
-								className="text-blue text-sm font-medium underline"
+								className="text-blue text-sm underline"
 								disabled={loading}
+								title="Forgot password"
 							>
 								FORGOT PASSWORD?
 							</button>
 						</div>
 
-						<Button type="submit" className="w-full">
-							SIGN IN
+						<Button type="submit" className="w-full" disabled={loading} buttonLabel="Sign in">
+							{loading ? <LoadingIndicator text="SIGNING IN..." /> : "SIGN IN"}
 						</Button>
 					</form>
 				</Form>
 			</div>
 
-			<ForgotPasswordForm
-				open={showForgotPasswordForm}
-				onOpenChange={setShowForgotPasswordForm}
-			/>
+			<ForgotPasswordForm open={showForgotPasswordForm} onOpenChange={setShowForgotPasswordForm} />
 		</>
 	);
 };

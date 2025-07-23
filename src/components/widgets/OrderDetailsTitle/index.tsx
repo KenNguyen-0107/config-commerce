@@ -1,15 +1,12 @@
-
-import React from 'react';
-import { OrderDetailsTitleProps } from './types';
+import React from "react";
+import { OrderDetailsTitleProps } from "./types";
 
 const OrderDetailsTitle: React.FC<OrderDetailsTitleProps> = (props) => {
-  console.log(`OrderDetailsTitle props:`, props);
-  return (
-    <>
-      <h1>OrderDetailsTitle</h1>
-      {/* Render more fields from OrderDetailsTitleData here */}
-    </>
-  );
+	return (
+		<div className="text-[40px] font-bold text-blue px-4 lg:px-0">
+			ORDER #{props.Info?.params.orderId}
+		</div>
+	);
 };
 
 export default OrderDetailsTitle;

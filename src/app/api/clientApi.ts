@@ -1,45 +1,45 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { corsHeaders } from "@/app/utils/cors"
+import { type NextRequest, NextResponse } from "next/server";
+import { corsHeaders } from "@/app/utils/cors";
 
 /**
  * Enum for HTTP methods
  */
 export enum HttpMethod {
-  GET = "GET",
-  POST = "POST",
-  PUT = "PUT",
-  DELETE = "DELETE",
-  PATCH = "PATCH",
-  HEAD = "HEAD",
-  OPTIONS = "OPTIONS",
+	GET = "GET",
+	POST = "POST",
+	PUT = "PUT",
+	DELETE = "DELETE",
+	PATCH = "PATCH",
+	HEAD = "HEAD",
+	OPTIONS = "OPTIONS",
 }
 
 interface FetchWithCookiesOptions {
-  method?: HttpMethod
-  headers?: Record<string, string>
-  body?: unknown
-  cache?: RequestCache
-  next?: { revalidate?: number }
-  forwardResponseCookies?: boolean
-  forwardRequestCookies?: boolean
+	method?: HttpMethod;
+	headers?: Record<string, string>;
+	body?: unknown;
+	cache?: RequestCache;
+	next?: { revalidate?: number };
+	forwardResponseCookies?: boolean;
+	forwardRequestCookies?: boolean;
 }
 
 interface CookieOption {
-  path?: string
-  domain?: string
-  maxAge?: number
-  expires?: Date
-  secure?: boolean
-  httpOnly?: boolean
-  sameSite?: "strict" | "lax" | "none"
+	path?: string;
+	domain?: string;
+	maxAge?: number;
+	expires?: Date;
+	secure?: boolean;
+	httpOnly?: boolean;
+	sameSite?: "strict" | "lax" | "none";
 }
 /**
  * Return type for the proxyRequestWithCookies function
  */
 interface ProxyRequestResult {
-  data: unknown
-  response: NextResponse
-  externalResponse: Response
+	data: unknown;
+	response: NextResponse;
+	externalResponse: Response;
 }
 /**
  * Parses a cookie string and extracts the cookie options
@@ -48,31 +48,31 @@ interface ProxyRequestResult {
  * @returns An object with the cookie name, value, and options
  */
 function parseCookieString(cookieString: string) {
-  const [mainPart, ...optionParts] = cookieString.split("; ")
-  const [name, value] = mainPart.split("=")
+	const [mainPart, ...optionParts] = cookieString.split("; ");
+	const [name, value] = mainPart.split("=");
 
-  const cookieOptions: CookieOption = {}
+	const cookieOptions: CookieOption = {};
 
-  optionParts.forEach((option) => {
-    if (option.toLowerCase().startsWith("max-age=")) {
-      cookieOptions.maxAge = Number.parseInt(option.split("=")[1], 10)
-    } else if (option.toLowerCase().startsWith("expires=")) {
-      cookieOptions.expires = new Date(option.split("=")[1])
-    } else if (option.toLowerCase().startsWith("path=")) {
-      cookieOptions.path = option.split("=")[1]
-    } else if (option.toLowerCase() === "secure") {
-      cookieOptions.secure = true
-    } else if (option.toLowerCase() === "httponly") {
-      cookieOptions.httpOnly = true
-    } else if (option.toLowerCase().startsWith("samesite=")) {
-      const sameSite = option.split("=")[1].toLowerCase()
-      if (sameSite === "strict" || sameSite === "lax" || sameSite === "none") {
-        cookieOptions.sameSite = sameSite as "strict" | "lax" | "none"
-      }
-    }
-  })
+	optionParts.forEach((option) => {
+		if (option.toLowerCase().startsWith("max-age=")) {
+			cookieOptions.maxAge = Number.parseInt(option.split("=")[1], 10);
+		} else if (option.toLowerCase().startsWith("expires=")) {
+			cookieOptions.expires = new Date(option.split("=")[1]);
+		} else if (option.toLowerCase().startsWith("path=")) {
+			cookieOptions.path = option.split("=")[1];
+		} else if (option.toLowerCase() === "secure") {
+			cookieOptions.secure = true;
+		} else if (option.toLowerCase() === "httponly") {
+			cookieOptions.httpOnly = true;
+		} else if (option.toLowerCase().startsWith("samesite=")) {
+			const sameSite = option.split("=")[1].toLowerCase();
+			if (sameSite === "strict" || sameSite === "lax" || sameSite === "none") {
+				cookieOptions.sameSite = sameSite as "strict" | "lax" | "none";
+			}
+		}
+	});
 
-  return { name, value, options: cookieOptions }
+	return { name, value, options: cookieOptions };
 }
 
 /**
@@ -82,15 +82,18 @@ function parseCookieString(cookieString: string) {
  * @param clientResponse The NextResponse to send to the client
  * @returns The updated NextResponse with cookies from the external API
  */
-export function forwardCookiesToClient(externalResponse: Response, clientResponse: NextResponse): NextResponse {
-  const cookies = externalResponse.headers.getSetCookie()
+export function forwardCookiesToClient(
+	externalResponse: Response,
+	clientResponse: NextResponse
+): NextResponse {
+	const cookies = externalResponse.headers.getSetCookie();
 
-  cookies.forEach((cookieString) => {
-    const { name, value, options } = parseCookieString(cookieString)
-    clientResponse.cookies.set(name, value, options)
-  })
+	cookies.forEach((cookieString) => {
+		const { name, value, options } = parseCookieString(cookieString);
+		clientResponse.cookies.set(name, value, options);
+	});
 
-  return clientResponse
+	return clientResponse;
 }
 
 /**
@@ -102,135 +105,136 @@ export function forwardCookiesToClient(externalResponse: Response, clientRespons
  * @returns An object containing the parsed response data and the external API response
  */
 export async function proxyRequestWithCookies(
-  request: NextRequest,
-  url: string,
-  options: FetchWithCookiesOptions = {},
+	request: NextRequest,
+	url: string,
+	options: FetchWithCookiesOptions = {}
 ): Promise<ProxyRequestResult> {
-  // Prepare headers for the external request
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    ...options.headers,
-  }
-  // Add cookies to headers if forwardRequestCookies is true
-  if (options.forwardRequestCookies) {
-    // Get all cookies from the incoming client request
-    const cookieHeader = request.headers.get("cookie") || ""
-    if (cookieHeader) {
-      headers["Cookie"] = cookieHeader
-    }
-  }
-  // Prepare the request body if provided
-  let body: string | undefined
-  if (options.body) {
-    body = typeof options.body === "string" ? options.body : JSON.stringify(options.body)
-  }
+	// Prepare headers for the external request
+	const headers: Record<string, string> = {
+		"Content-Type": "application/json",
+		...options.headers,
+	};
+	// Add cookies to headers if forwardRequestCookies is true
+	if (options.forwardRequestCookies) {
+		// Get all cookies from the incoming client request
+		const cookieHeader = request.headers.get("cookie") || "";
+		if (cookieHeader) {
+			const decodedValue = decodeURIComponent(cookieHeader);
+			headers["Cookie"] = decodedValue;
+		}
+	}
+	// Prepare the request body if provided
+	let body: string | undefined;
+	if (options.body) {
+		body = typeof options.body === "string" ? options.body : JSON.stringify(options.body);
+	}
 
-  // Make the request to the external API
-  const response = await fetch(url, {
-    method: options.method || HttpMethod.GET,
-    headers,
-    body,
-    cache: options.cache,
-    next: options.next,
-  })
+	// Make the request to the external API
+	const response = await fetch(url, {
+		method: options.method || HttpMethod.GET,
+		headers,
+		body,
+		cache: options.cache,
+		next: options.next,
+	});
 
-  if (!response.ok) {
-    const errorText = await response.text()
-    const nextResponseError = NextResponse.json(
-      {
-        error: "External API error",
-        status: response.status,
-        statusText: response.statusText,
-        details: errorText,
-      },
-      {
-        status: response.status,
-        headers: corsHeaders,
-      },
-    )
-    return {
-      data: {},
-      response: nextResponseError,
-      externalResponse: response,
-    }
-  }
+	if (!response.ok) {
+		const errorText = await response.text();
+		const nextResponseError = NextResponse.json(
+			{
+				error: "External API error",
+				status: response.status,
+				statusText: response.statusText,
+				details: errorText,
+			},
+			{
+				status: response.status,
+				headers: corsHeaders,
+			}
+		);
+		return {
+			data: {},
+			response: nextResponseError,
+			externalResponse: response,
+		};
+	}
 
-  // Parse the response based on content type
-  const contentType = response.headers.get("content-type") || ""
-  let data
+	// Parse the response based on content type
+	const contentType = response.headers.get("content-type") || "";
+	let data;
 
-  if (contentType.includes("application/json")) {
-    data = await response.json()
-  } else if (contentType.includes("text/")) {
-    data = await response.text()
-  } else {
-    // For other content types, use the raw response
-    data = response
-  }
+	if (contentType.includes("application/json")) {
+		data = await response.json();
+	} else if (contentType.includes("text/")) {
+		data = await response.text();
+	} else {
+		// For other content types, use the raw response
+		data = response;
+	}
 
-  // Create a NextResponse to return to the client
-  const nextResponse = NextResponse.json(data, { headers: corsHeaders })
+	// Create a NextResponse to return to the client
+	const nextResponse = NextResponse.json(data, { headers: corsHeaders });
 
-  // Forward cookies from the external API to the client if requested
-  if (options.forwardResponseCookies) {
-    forwardCookiesToClient(response, nextResponse)
-  }
+	// Forward cookies from the external API to the client if requested
+	if (options.forwardResponseCookies) {
+		forwardCookiesToClient(response, nextResponse);
+	}
 
-  return {
-    data,
-    response: nextResponse,
-    externalResponse: response, // Include the original response in case it's needed
-  }
+	return {
+		data: {},
+		response: nextResponse,
+		externalResponse: response, // Include the original response in case it's needed
+	};
 }
 
 /**
  * Simplified version that forwards cookies to an external API but doesn't handle response cookies
  */
 export async function forwardCookiesToExternalApi(
-  request: NextRequest,
-  url: string,
-  options: Omit<FetchWithCookiesOptions, "forwardResponseCookies"> = {},
+	request: NextRequest,
+	url: string,
+	options: Omit<FetchWithCookiesOptions, "forwardResponseCookies"> = {}
 ) {
-  // Get all cookies from the incoming client request
-  const cookieHeader = request.headers.get("cookie") || ""
+	// Get all cookies from the incoming client request
+	const cookieHeader = request.headers.get("cookie") || "";
 
-  // Prepare headers
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    Cookie: cookieHeader,
-    ...options.headers,
-  }
+	// Prepare headers
+	const headers: Record<string, string> = {
+		"Content-Type": "application/json",
+		Cookie: cookieHeader,
+		...options.headers,
+	};
 
-  // Prepare the request body if provided
-  let body: string | undefined
-  if (options.body) {
-    body = typeof options.body === "string" ? options.body : JSON.stringify(options.body)
-  }
+	// Prepare the request body if provided
+	let body: string | undefined;
+	if (options.body) {
+		body = typeof options.body === "string" ? options.body : JSON.stringify(options.body);
+	}
 
-  // Make the request to the external API
-  const response = await fetch(url, {
-    method: options.method || HttpMethod.GET,
-    headers,
-    body,
-    cache: options.cache,
-    next: options.next,
-  })
+	// Make the request to the external API
+	const response = await fetch(url, {
+		method: options.method || HttpMethod.GET,
+		headers,
+		body,
+		cache: options.cache,
+		next: options.next,
+	});
 
-  return response
+	return response;
 }
 
 /**
  * Parses the response from the external API
  */
 export async function parseResponse(response: Response) {
-  const contentType = response.headers.get("content-type") || ""
+	const contentType = response.headers.get("content-type") || "";
 
-  if (contentType.includes("application/json")) {
-    return await response.json()
-  } else if (contentType.includes("text/")) {
-    return await response.text()
-  } else {
-    // For other content types, return the raw response
-    return response
-  }
+	if (contentType.includes("application/json")) {
+		return await response.json();
+	} else if (contentType.includes("text/")) {
+		return await response.text();
+	} else {
+		// For other content types, return the raw response
+		return response;
+	}
 }

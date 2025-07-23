@@ -7,7 +7,7 @@ const NavPrimary: React.FC<BasicRowProps> = (props) => {
 
 	const CustomClass = {
 		RowWrapper: "flex h-14 items-center justify-end lg:h-20 sticky top-0 z-10 px-2 bg-white",
-    ColWrapper: "flex justify-end lg:w-full gap-6"
+    ColWrapper: "flex justify-end w-full h-full gap-6 items-center"
 	}
 
 	return (

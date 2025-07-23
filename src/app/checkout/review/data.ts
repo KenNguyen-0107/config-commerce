@@ -8,7 +8,6 @@ export const defaultCardDetail = {
     paymentMethod: "",
     PONumber: "",
 };
-
 export const mockPayload= {
   "uri": "http://b2b.local.com:30000/api/v1/carts/current",
   "cartLinesUri": "http://b2b.local.com:30000/api/v1/carts/current/cartlines",

@@ -1,0 +1,41 @@
+query getCategory($id: [String!]!, $siteId: [String!]!) {
+	Category(where: { Id: { in: $id }, Website: { Id: { in: $siteId } } }) {
+		items {
+			_deleted
+			_modified
+			_score
+			_id
+			Id
+			Name
+			ShortDescription
+			UrlSegment
+			SmallImagePath
+			LargeImagePath
+			ImageAltText
+			MetaKeywords
+			MetaDescription
+			HtmlContent
+			SortOrder
+			IsFeatured
+			IsDynamic
+			Path
+			MobileBannerImageUrl
+			MobilePrimaryText
+			MobileSecondaryText
+			MobileTextJustification
+			MobileTextColor
+			OpenGraphImage
+			OpenGraphTitle
+			OpenGraphUrl
+			PageTitle
+			ParentId
+			ContentManagerId
+			PropertyContainer {
+				Properties {
+					Name
+					Value
+				}
+			}
+		}
+	}
+}

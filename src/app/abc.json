@@ -1,0 +1,17 @@
+[
+	{
+		"urlSlug": "/",
+		"lastModified": "isodate",
+		"languages": ["es", "de"]
+	},
+	{
+		"urlSlug": "product/2222",
+		"lastModified": "isodate",
+		"languages": ["es", "de"]
+	},
+	{
+		"urlSlug": "product/24433",
+		"lastModified": "isodate",
+		"languages": ["es", "de"]
+	}
+]

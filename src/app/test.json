@@ -1,0 +1,26 @@
+[
+  {
+    "urlSlug": "https://acme.com/about",
+    "lastModified": "2023-04-06T15:02:24.021Z",
+    "changefreq": "daily",
+    "priority": "0.7",
+    "alternates": {
+      "languages": {
+        "es": "https://acme.com/es/about",
+        "de": "https://acme.com/de/about"
+      }
+    }
+  },
+  {
+    "urlSlug": "https://acme.com/about",
+    "lastModified": "2023-04-06T15:02:24.021Z",
+    "changefreq": "daily",
+    "priority": "0.7",
+    "alternates": {
+      "languages": {
+        "es": "https://acme.com/es/about",
+        "de": "https://acme.com/de/about"
+      }
+    }
+  }
+]

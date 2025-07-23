@@ -7,6 +7,7 @@ export interface WidgetProps extends IWidget {
 	Section?: string;
 	CategoryId?: string;
 	Info?: Record<string, any>;
+	Settings?: Record<string, any>;
 }
 
 export interface RenderWidgetProps {
@@ -16,6 +17,7 @@ export interface RenderWidgetProps {
 	renderedWidgets?: Set<string>;
 	categoryId?: string;
 	info?: Record<string, any>;
+	settings?: Record<string, any>;
 }
 
 export enum Zone {

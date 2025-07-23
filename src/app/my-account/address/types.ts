@@ -51,9 +51,9 @@ export interface IAddress {
   address4?: string;
   city?: string;
   postalCode?: string;
-  state?: string | null;
+  state?: Country;
   country?: Country;
-  phone?: string;
+  phone?: number;
   fullAddress?: string;
   email?: string;
   fax?: string;
@@ -66,6 +66,6 @@ export interface ICountry {
   id?: string;
   name?: string;
   abbreviation?: string;
-  states?: any[]; // Adjust type if states have a more defined structure
+  states?: Omit<ICountry, "states">[];
   properties?: Record<string, any>;
 }

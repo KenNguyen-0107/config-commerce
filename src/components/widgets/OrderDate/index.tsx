@@ -1,15 +1,9 @@
-
-import React from 'react';
-import { OrderDateProps } from './types';
+import React from "react";
+import { OrderDateProps } from "./types";
+import RenderOrderDate from "@/app/my-account/orders/[orderId]/RenderOrderDate";
 
 const OrderDate: React.FC<OrderDateProps> = (props) => {
-  console.log(`OrderDate props:`, props);
-  return (
-    <>
-      <h1>OrderDate</h1>
-      {/* Render more fields from OrderDateData here */}
-    </>
-  );
+  return <RenderOrderDate />;
 };
 
 export default OrderDate;

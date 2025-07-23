@@ -72,7 +72,31 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-// Handle OPTIONS requests for CORS preflight
+export async function DELETE(request: NextRequest) {
+	try {
+		const url = `${API_BASE_URL}${API_ENDPOINTS.currentSession}`;
+		const { response } = await proxyRequestWithCookies(request, url, {
+			method: HttpMethod.DELETE,
+			forwardResponseCookies: false,
+			forwardRequestCookies: true,
+		});
+
+		return response;
+	} catch (error) {
+		console.error("Proxy request error:", error);
+		return NextResponse.json(
+			{
+				error: "Failed to fetch from external API",
+				details: error instanceof Error ? error.message : "Unknown error",
+			},
+			{
+				status: 500,
+				headers: corsHeaders,
+			}
+		);
+	}
+}
+
 export async function OPTIONS() {
 	return NextResponse.json({}, { headers: corsHeaders });
 }

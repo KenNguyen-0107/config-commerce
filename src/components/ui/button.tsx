@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { SmartLink } from "../shared/smartLink";
 
 export type ButtonVariant =
 	| "primary"
@@ -60,7 +60,7 @@ const Button = React.forwardRef<
 	) => {
 		if (href) {
 			return (
-				<Link
+				<SmartLink
 					href={href}
 					className={cn(buttonVariants({ variant, size, className }))}
 					ref={ref as React.Ref<HTMLAnchorElement>}
@@ -71,7 +71,7 @@ const Button = React.forwardRef<
 					) : (
 						props.children
 					)}
-				</Link>
+				</SmartLink>
 			);
 		}
 

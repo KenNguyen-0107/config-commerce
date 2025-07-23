@@ -1,15 +1,10 @@
-
-import React from 'react';
-import { MyAccountViewProps } from './types';
+import React from "react";
+import { MyAccountViewProps } from "./types";
 
 const MyAccountView: React.FC<MyAccountViewProps> = (props) => {
-  console.log(`MyAccountView props:`, props);
-  return (
-    <>
-      <h1>MyAccountView</h1>
-      {/* Render more fields from MyAccountViewData here */}
-    </>
-  );
+	const { children } = props;
+
+	return <div className="container mx-auto px-0 flex flex-col lg:flex-row gap-8">{children}</div>;
 };
 
 export default MyAccountView;

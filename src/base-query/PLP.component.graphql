@@ -1,0 +1,22 @@
+query getProductListPage($url: [String!]!, $siteId: String!, $languageCode: String!) {
+	ProductListPage(
+		where: {
+			Url: { in: $url }
+			WebsiteId: { eq: $siteId }
+			Language: { LanguageCode: { eq: $languageCode } }
+		}
+	) {
+		items {
+			BreadcrumbContainer {
+				BreadCrumbs {
+					PageId
+					PageUrl
+					PageTitle
+				}
+			}
+			CategoryId
+			UrlSegment
+			Url
+		}
+	}
+}

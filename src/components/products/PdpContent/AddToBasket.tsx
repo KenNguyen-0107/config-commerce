@@ -4,6 +4,7 @@ import { useState } from "react";
 import AddToBasketCta, { IAddToBasketCta } from "../Cta/AddToBasketCta";
 import QuantityControl from "../Cta/QuantityControl";
 import { cn } from "@/lib/utils";
+import { StockType, useStockStore } from "@/store/stock-store";
 
 const AddToBasket = ({
 	id,
@@ -17,20 +18,26 @@ const AddToBasket = ({
 	showControl,
 	className,
 	buttonClass,
+	onChangeQuantity,
 }: Omit<IAddToBasketCta, "quantity">) => {
 	const [quantity, setQuantity] = useState(1);
+	const { getStockByProductId } = useStockStore();
 
-	const onChangeQuantity = (value: number) => {
+	const productStock = id ? getStockByProductId(id) : undefined;
+	const stockQuantity = productStock?.qtyOnHand || 0;
+	const stockType = productStock?.inventoryAvailabilityDtos?.[0]?.availability?.messageType;
+
+	const handleChangeQuantity = (value: number) => {
 		setQuantity(value);
+		if (onChangeQuantity) {
+			onChangeQuantity(value);
+		}
 	};
 
 	return (
-		<div className={cn(
-			"flex flex-col lg:flex-row justify-between lg:items-center gap-2",
-			className
-		)}>
+		<div className={cn("flex flex-row justify-between items-center gap-2", className)}>
 			<QuantityControl
-				onChangeQuantity={onChangeQuantity}
+				onChangeQuantity={handleChangeQuantity}
 				quantity={quantity}
 				showControl={showControl}
 			/>
@@ -41,9 +48,10 @@ const AddToBasket = ({
 				code={code}
 				price={price}
 				priceDisplay={priceDisplay}
-				canAddToCart={canAddToCart}
+				canAddToCart={canAddToCart && stockType !== StockType.OUT_OF_STOCK}
 				url={url}
 				quantity={quantity}
+				stockQuantity={stockQuantity}
 				image={image}
 				className={buttonClass}
 			/>

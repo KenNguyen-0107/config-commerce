@@ -16,18 +16,23 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { CartLine } from "@/components/widgets/Product/types";
 import { useCartStore } from "@/store/cart-store";
 import useCurrentOrderStore from "@/store/current-order-store";
 import { useYourOrderStore } from "@/store/your-order-store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, ChevronUp, Edit2, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { CartLine } from "@/components/widgets/Product/types";
+import AddressInformation from "./AddressInformation";
 import { getValidateCurrentSession } from "./utils";
+import { IWebSiteData } from "@/components/widgets/CheckoutReviewAndSubmitPaymentDetails";
+import { ICountry } from "@/app/my-account/address/types";
+
+// Import the IAddressItem type
+type IAddressItem = ICountry | string;
 
 export const formSchema = z.object({
 	cardName: z.string().min(1, "Card Name required"),
@@ -41,14 +46,40 @@ export const formSchema = z.object({
 });
 type FormValues = z.infer<typeof formSchema>;
 
-const PaymentDetail = () => {
+const PaymentDetail = ({ data }: { data: IWebSiteData }) => {
 	const [paymentMethod, setPaymentMethod] = useState<string>("");
-	const [billingShippingOpen, setBillingShippingOpen] = useState(false);
-	const { userInfo, updatePaymentCardInfo, updatePrice } = useCartStore();
+	const [isPending, setIsPending] = useState(false);
+	const [errMess, setErrMess] = useState<string>("");
+	const [sessionData, setSessionData] = useState<
+		| {
+				shipTo: Record<string, IAddressItem>;
+				billTo: Record<string, IAddressItem>;
+		  }
+		| undefined
+	>(undefined);
+	const mess = data?.SiteMessageContainer?.SiteMessages?.find(
+		(item: { Key: string; Value: string }) =>
+			item.Key.toLowerCase() === "reviewandpay_notenoughinventoryforpickup"
+	);
+
+	const { updatePaymentCardInfo, updatePrice, items, isLoadingCart } = useCartStore();
 	const { setCurrentOrder } = useCurrentOrderStore();
 	const { updateYourOrder } = useYourOrderStore();
 	const router = useRouter();
-	const [isPending, setIsPending] = useState(false)
+
+	useEffect(() => {
+		if (!isLoadingCart && items.length === 0) {
+			router.push("/cart");
+		}
+	}, [isLoadingCart, items.length]);
+
+	const fetchCurrentSession = useCallback(async () => {
+		setSessionData(await getValidateCurrentSession());
+	}, []);
+
+	useEffect(() => {
+		fetchCurrentSession();
+	}, []);
 
 	const handleSubmitPayment = (values: z.infer<typeof formSchema>) => {
 		updatePaymentCardInfo({
@@ -79,10 +110,7 @@ const PaymentDetail = () => {
 		defaultValues: defaultCardDetail,
 	});
 
-	async function onSubmit(
-		e: React.FormEvent<HTMLFormElement>,
-		cartData: FormValues
-	) {
+	async function onSubmit(e: React.FormEvent<HTMLFormElement>, cartData: FormValues) {
 		e.preventDefault();
 		try {
 			const result = await form.trigger();
@@ -94,11 +122,12 @@ const PaymentDetail = () => {
 			}
 
 			handleSubmitPayment(cartData);
-			setIsPending(true)
-			const sessionData = await getValidateCurrentSession();
+			setIsPending(true);
 
 			// full validate cart
-			const reqFullValidateCart = await fetch("/api/cart/full-validate", { method: "GET" });
+			const reqFullValidateCart = await fetch("/api/cart/full-validate", {
+				method: "GET",
+			});
 			if (reqFullValidateCart.status !== 200) return;
 			const dataSummary: {
 				billTo: {
@@ -110,25 +139,14 @@ const PaymentDetail = () => {
 				trackId: string;
 				cartLines: CartLine[];
 				shipVia: {
-					id: string,
-					description: string,
-					isDefault: boolean
-				}
+					id: string;
+					description: string;
+					isDefault: boolean;
+				};
 			} = JSON.parse(await reqFullValidateCart.text());
 
 			setCurrentOrder({
 				id: dataSummary.billTo.id,
-			});
-
-
-			await fetch("/api/sessions/manage", {
-				method: "POST",
-				body: JSON.stringify({
-					password: sessionData.password,
-					email: sessionData.email,
-					isSubscribed: sessionData.isSubscribed,
-					userName: sessionData.userName,
-				}),
 			});
 
 			const patchUserInfo = await fetch("/api/cart/current", {
@@ -140,13 +158,13 @@ const PaymentDetail = () => {
 					billToId: dataSummary.billTo.id,
 					shipToId: dataSummary.shipTo.id,
 					billTo: {
-						id: dataSummary.billTo.id
+						id: dataSummary.billTo.id,
 					},
 					status: "Submitted",
 					paymentMethod: {
 						name: cartData.paymentMethod,
 						description: cartData.paymentMethod,
-						isCreditCard: cartData.paymentMethod === "CC",
+						isCreditCard: cartData.paymentMethod === "Credit Card",
 						isECheck: false,
 						isPaymentProfile: false,
 						isPaymentProfileExpired: false,
@@ -156,69 +174,71 @@ const PaymentDetail = () => {
 						creditCard: {
 							cardType: cartData.cardType,
 							cardHolderName: cartData.cardName,
-							cardNumber: cartData.cardNumber,
+							cardNumber: cartData.cardNumber.replace(/\s+/g, ""),
 							expirationMonth: parseInt(cartData.expirationMonth, 10),
 							expirationYear: parseInt(cartData.expirationYear, 10),
 							securityCode: cartData.securityCode,
 							useBillingAddress: true,
-						}
-					}
+						},
+					},
 				}),
 			});
+
+			const responseText = await patchUserInfo.text();
+
+			if (responseText.includes("insufficient inventory to fulfill your reques")) {
+				setErrMess(mess?.Value || "");
+				return;
+			}
 
 			const orderInfo: {
 				orderDate: string;
 				orderNumber: string;
 				status: string;
-			} = JSON.parse(await patchUserInfo.text());
+				notes: string;
+			} = JSON.parse(responseText);
 
 			updateYourOrder({
 				orderDate: orderInfo.orderDate,
 				orderCode: orderInfo.orderNumber,
 				status: orderInfo.status,
-				cartLines: dataSummary.cartLines
+				cartLines: dataSummary.cartLines,
+				notes: orderInfo.notes,
 			});
-
 			if (patchUserInfo.status !== 200) return;
 			await fetch("/api/cart/full-validate");
-			const reqUpdateOrder = await fetch(
-				`/api/cart/${dataSummary.trackId}`
-			)
+			const reqUpdateOrder = await fetch(`/api/cart/${dataSummary.trackId}`);
 
 			if (reqUpdateOrder.status !== 200) return;
-			const finalOrderData = JSON.parse(await reqUpdateOrder.text())
+			const finalOrderData = JSON.parse(await reqUpdateOrder.text());
 			updatePrice({
 				shippingFee: finalOrderData.shippingAndHandlingDisplay,
 				subTotal: finalOrderData.orderSubTotalDisplay,
-				totalIncVat: finalOrderData.orderGrandTotalDisplay
-			})
+				totalIncVat: finalOrderData.orderGrandTotalDisplay,
+			});
 			return router.push("/checkout/thank-your-order");
 		} catch (error) {
 			console.error("Error:", error);
-			setIsPending(false)
-
+			setIsPending(false);
+		} finally {
+			setIsPending(false);
 		}
 	}
 
 	return (
 		<Form {...form}>
-			<form
-				onSubmit={(e) => onSubmit(e, form.getValues())}
-				className="space-y-8"
-			>
+			<form onSubmit={(e) => onSubmit(e, form.getValues())} className="space-y-8">
 				<div>
 					<div className="mb-6">
-						<h3 className="text-duck text-xl font-bold mb-4">
-							PAYMENT DETAILS
-						</h3>
-						<div className="flex flex-col md:flex-row gap-4 mb-4">
-							<div className="w-full md:w-1/2">
+						<h3 className="text-duck text-xl font-bold mb-4">PAYMENT DETAILS</h3>
+						<div className="flex gap-4 mb-4">
+							<div className="w-1/2">
 								<FormField
 									control={form.control}
 									name="paymentMethod"
 									render={({ field }) => (
-										<FormItem className="space-y-0">
-											<FormLabel className="text-muted text-lg font-lora font-bold mb-2 block">
+										<FormItem className="w-full">
+											<FormLabel className="text-muted text-md lg:text-lg font-lora font-bold mb-2 block">
 												Payment Method*
 											</FormLabel>
 											<Select
@@ -230,14 +250,16 @@ const PaymentDetail = () => {
 												required
 											>
 												<FormControl className="bg-white mt-0">
-													<SelectTrigger className="bg-white text-tertiary font-lora space-y-0 border-secondary-background h-14 rounded-non">
+													<SelectTrigger
+														title="Select method"
+														aria-label="Select method"
+														className="bg-white text-tertiary font-lora space-y-0 border-secondary-background h-14 rounded-non text-sm lg:text-base"
+													>
 														<SelectValue placeholder="Select method" />
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent className="bg-white text-tertiary font-lora border border-muted/50">
-													<SelectItem value="CC">
-														Credit Card
-													</SelectItem>
+													<SelectItem value="Credit Card">Credit Card</SelectItem>
 													{/* <SelectItem value="PC">
 														Payment Card
 													</SelectItem> */}
@@ -248,26 +270,28 @@ const PaymentDetail = () => {
 									)}
 								/>
 							</div>
-							<FormField
-								control={form.control}
-								name="PONumber"
-								render={({ field }) => (
-									<FormItem className="w-full md:w-1/2">
-										<FormLabel className="text-muted text-lg font-lora font-bold mb-2 block">
-											PO Number*
-										</FormLabel>
-										<FormControl>
-											<Input
-												{...field}
-												className="bg-white border-secondary-background h-14 rounded-none"
-												maxLength={40}
-												required
-											/>
-										</FormControl>
-										<FormMessage className="text-red" />
-									</FormItem>
-								)}
-							/>
+							<div className="w-1/2">
+								<FormField
+									control={form.control}
+									name="PONumber"
+									render={({ field }) => (
+										<FormItem className="w-full">
+											<FormLabel className="text-muted text-md lg:text-lg font-lora font-bold mb-2 block">
+												PO Number*
+											</FormLabel>
+											<FormControl>
+												<Input
+													{...field}
+													className="bg-white border-secondary-background h-14 rounded-none font-lora"
+													maxLength={40}
+													required
+												/>
+											</FormControl>
+											<FormMessage className="text-red" />
+										</FormItem>
+									)}
+								/>
+							</div>
 						</div>
 					</div>
 					{paymentMethod && (
@@ -279,13 +303,13 @@ const PaymentDetail = () => {
 									name="cardName"
 									render={({ field }) => (
 										<FormItem className="w-full">
-											<FormLabel className="text-muted text-lg font-lora font-bold mb-2 block">
+											<FormLabel className="text-muted text-md lg:text-lg font-lora font-bold mb-2 block">
 												Card Name*
 											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
-													className="bg-white border-secondary-background h-14 rounded-none"
+													className="bg-white border-secondary-background h-14 rounded-none font-lora"
 													maxLength={40}
 													required
 												/>
@@ -299,13 +323,13 @@ const PaymentDetail = () => {
 									name="cardNumber"
 									render={({ field }) => (
 										<FormItem className="w-full">
-											<FormLabel className="text-muted text-lg font-lora font-bold mb-2 block">
+											<FormLabel className="text-muted text-md lg:text-lg font-lora font-bold mb-2 block">
 												Card Number*
 											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
-													className="bg-white border-secondary-background h-14 rounded-none"
+													className="bg-white border-secondary-background h-14 rounded-none font-lora"
 													maxLength={40}
 													required
 												/>
@@ -319,20 +343,20 @@ const PaymentDetail = () => {
 									name="cardType"
 									render={({ field }) => (
 										<FormItem className="">
-											<FormLabel className="text-muted text-lg font-lora font-bold mb-2 block">
+											<FormLabel className="text-muted text-md lg:text-lg font-lora font-bold mb-2 block">
 												Card Type*
 											</FormLabel>
-											<Select
-												onValueChange={field.onChange}
-												defaultValue={field.value}
-												required
-											>
+											<Select onValueChange={field.onChange} defaultValue={field.value} required>
 												<FormControl className="bg-white">
-													<SelectTrigger className="bg-white border-secondary-background h-14 rounded-non">
+													<SelectTrigger
+														title="Select card"
+														aria-label="Select card"
+														className="bg-white border-secondary-background h-14 rounded-non font-lora text-sm lg:text-base"
+													>
 														<SelectValue placeholder="Select card" />
 													</SelectTrigger>
 												</FormControl>
-												<SelectContent className="bg-white">
+												<SelectContent className="bg-white font-lora">
 													<SelectItem value="visa">Visa</SelectItem>
 													<SelectItem value="mastercard">Mastercard</SelectItem>
 													<SelectItem value="amex">American Express</SelectItem>
@@ -349,7 +373,7 @@ const PaymentDetail = () => {
 											name="expirationMonth"
 											render={({ field }) => (
 												<FormItem className="">
-													<FormLabel className="text-muted text-lg font-lora font-bold mb-2 block">
+													<FormLabel className="text-muted text-md lg:text-lg font-lora font-bold mb-2 block">
 														Expiration Month*
 													</FormLabel>
 													<Select
@@ -358,7 +382,11 @@ const PaymentDetail = () => {
 														required
 													>
 														<FormControl className="bg-white">
-															<SelectTrigger className="bg-white border-secondary-background h-14 rounded-none">
+															<SelectTrigger
+																title="Select month"
+																aria-label="Select month"
+																className="bg-white border-secondary-background h-14 rounded-none font-lora text-sm lg:text-base"
+															>
 																<SelectValue placeholder="Select" />
 															</SelectTrigger>
 														</FormControl>
@@ -371,9 +399,7 @@ const PaymentDetail = () => {
 															<SelectItem value="6">June</SelectItem>
 															<SelectItem value="7">July</SelectItem>
 															<SelectItem value="8">August</SelectItem>
-															<SelectItem value="9">
-																September
-															</SelectItem>
+															<SelectItem value="9">September</SelectItem>
 															<SelectItem value="10">October</SelectItem>
 															<SelectItem value="11">November</SelectItem>
 															<SelectItem value="12">December</SelectItem>
@@ -390,7 +416,7 @@ const PaymentDetail = () => {
 											name="expirationYear"
 											render={({ field }) => (
 												<FormItem className="">
-													<FormLabel className="text-muted text-lg font-lora font-bold mb-2 block">
+													<FormLabel className="text-muted text-md lg:text-lg font-lora font-bold mb-2 block">
 														Expiration Year*
 													</FormLabel>
 													<Select
@@ -399,7 +425,11 @@ const PaymentDetail = () => {
 														required
 													>
 														<FormControl className="bg-white">
-															<SelectTrigger className="bg-white border-secondary-background h-14 rounded-none">
+															<SelectTrigger
+																title="Select year"
+																aria-label="Select year"
+																className="bg-white border-secondary-background h-14 rounded-none font-lora text-sm lg:text-base"
+															>
 																<SelectValue placeholder="Select" />
 															</SelectTrigger>
 														</FormControl>
@@ -424,13 +454,13 @@ const PaymentDetail = () => {
 									name="securityCode"
 									render={({ field }) => (
 										<FormItem className="w-full">
-											<FormLabel className="text-muted text-lg font-lora font-bold mb-2 block">
+											<FormLabel className="text-muted text-md lg:text-lg font-lora font-bold mb-2 block">
 												Security code*
 											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
-													className="bg-white border-secondary-background h-14 rounded-none"
+													className="bg-white border-secondary-background h-14 rounded-none font-lora"
 													maxLength={40}
 													required
 												/>
@@ -440,91 +470,27 @@ const PaymentDetail = () => {
 									)}
 								/>
 							</div>
-
-							{/* Billing & Shipping Information */}
 						</div>
 					)}
-					<div className="mt-6">
-						<button
-							className="w-full bg-secondary-background flex items-center justify-between p-3"
-							onClick={() => setBillingShippingOpen(!billingShippingOpen)}
-						>
-							<span className="text-blue text-lg font-bold">
-								BILLING & SHIPPING INFORMATION
-							</span>
-							{billingShippingOpen ? (
-								<ChevronUp className="h-4 w-4 text-tertiary" />
-							) : (
-								<ChevronDown className="h-4 w-4 text-tertiary" />
-							)}
-						</button>
 
-						{billingShippingOpen && (
-							<div className="border border-secondary-background border-t-0 p-4 bg-white">
-								<div className="flex justify-between mb-4">
-									<div>
-										<div className="text-blue font-bold mb-1">CARRIER</div>
-										<p className="text-tertiary font-lora">Flat Rate</p>
-									</div>
-									<div>
-										<div className="text-blue font-bold mb-1">SERVICE</div>
-										<p className="text-tertiary font-lora">Flat Rate</p>
-									</div>
-								</div>
+					<AddressInformation sessionData={sessionData} />
 
-								<div className="mb-4">
-									<div className="flex justify-between items-start">
-										<h4 className="text-blue font-bold mb-1">
-											SHIPPING ADDRESS
-										</h4>
-										<Link
-											href="/checkout/address"
-											className="text-blue flex items-center"
-										>
-											<Edit2 className="h-3 w-3 mr-1" />
-											EDIT
-										</Link>
-									</div>
-									<div className="text-tertiary font-lora space-y-1">
-										{userInfo.shipping &&
-											Object.values(userInfo.shipping).map((item, index) => {
-												return <p key={index}>{item}</p>;
-											})}
-									</div>
-								</div>
-
-								<div>
-									<div className="flex justify-between items-start">
-										<h4 className="text-blue font-bold mb-1">
-											BILLING ADDRESS
-										</h4>
-										<Link
-											href="/checkout/address"
-											className="text-blue flex items-center"
-										>
-											<Edit2 className="h-3 w-3 mr-1" />
-											EDIT
-										</Link>
-									</div>
-									<div className="text-tertiary font-lora space-y-1">
-										{userInfo.shipping &&
-											Object.values(userInfo.billing).map((item, index) => {
-												return <p key={index}>{item}</p>;
-											})}
-									</div>
-								</div>
-							</div>
-						)}
-					</div>
 					<Button
 						formNoValidate
 						type="submit"
 						disabled={isPending}
+						buttonLabel="Place order"
 						className="w-full bg-tertiary hover:bg-[#011e41] text-white rounded-none h-14 mt-6"
 					>
 						{isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 						PLACE ORDER
 					</Button>
+					{errMess && (
+						<div
+							className="text-red [&>a]:text-blue mt-2"
+							dangerouslySetInnerHTML={{ __html: mess?.Value || "" }}
+						></div>
+					)}
 				</div>
 			</form>
 		</Form>

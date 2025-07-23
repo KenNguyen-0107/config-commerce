@@ -1,0 +1,18 @@
+query getNotFoundErrorPage($siteId: String!, $languageCode: String!) {
+	NotFoundErrorPage(
+		where: { WebsiteId: { eq: $siteId }, Language: { LanguageCode: { eq: $languageCode } } }
+	) {
+		items {
+			_id
+			Id
+			Status
+			PageStatus
+			WidgetContainer {
+				__typename
+				Widgets {
+					...BasicRichContentData
+				}
+			}
+		}
+	}
+}

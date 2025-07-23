@@ -3,7 +3,6 @@ import React from 'react';
 import { OrderDetailsRequestedDateProps } from './types';
 
 const OrderDetailsRequestedDate: React.FC<OrderDetailsRequestedDateProps> = (props) => {
-  console.log(`OrderDetailsRequestedDate props:`, props);
   return (
     <>
       <h1>OrderDetailsRequestedDate</h1>

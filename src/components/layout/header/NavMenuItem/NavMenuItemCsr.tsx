@@ -20,7 +20,7 @@ const NavMenuItemCsr: React.FC<BasicRowProps> = (props) => {
 		setTopPos(pos)
 	}, [])
 
-	if (scrollPosition < 100) return null;
+	if (scrollPosition <= 100) return null;
 
 	return (
 		<div
@@ -28,7 +28,7 @@ const NavMenuItemCsr: React.FC<BasicRowProps> = (props) => {
 			data-component-id={Id}
 			data-section={Variant}
 			className={cn(
-				"grid grid-cols-12 mx-auto gap-8 w-full bg-white",
+				"hidden lg:grid grid-cols-12 mx-auto gap-8 w-full bg-white",
 				"sticky z-[9]",
 				"transition-all duration-300 ease-in-out"
 			)}

@@ -1,0 +1,63 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build package
+        run: npm run build
+
+      - name: Get version from package.json
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Check if version exists
+        id: version-check
+        run: |
+          VERSION=${{ steps.package-version.outputs.current-version }}
+          if npm view @niteco/jsonld-nextjs@$VERSION version &> /dev/null; then
+            echo "Version $VERSION already exists, skipping publish"
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Version $VERSION does not exist, will publish"
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to npm
+        if: steps.version-check.outputs.exists == 'false'
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        if: steps.version-check.outputs.exists == 'false'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.package-version.outputs.current-version }}
+          release_name: Release v${{ steps.package-version.outputs.current-version }}
+          draft: false
+          prerelease: false
